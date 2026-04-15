@@ -294,9 +294,9 @@
     );
   }
 
-  /* Hero gradient — brand-600 at top fading to black at bottom */
+  /* Hero gradient — theme-aware */
   .hero-dark-gradient {
-    background: linear-gradient(to bottom, var(--brand-600), black);
+    background: radial-gradient(circle at 50% -20%, oklch(from var(--brand-500) l c h / 0.12), transparent 60%), var(--background);
   }
   .dark .hero-dark-gradient {
     background: linear-gradient(to bottom, var(--brand-600), black);
