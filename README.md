@@ -72,7 +72,27 @@ The following changes were made to the free Velocity theme to create Astro Rocke
 
 ### Internationalization (i18n)
 
-The base theme is i18n-ready with locale-aware content collection schemas. Full i18n support with language routing and a `LanguageSwitcher` component can be added via the **[create-velocity-astro](https://github.com/southwellmedia/create-velocity-astro)** CLI from Southwell Media.
+The base theme is i18n-ready with locale-aware content collection schemas. Full i18n support — locale-prefixed routes, a `LanguageSwitcher` component, translated navigation, and `hreflang` SEO tags — can be added via the **[create-velocity-astro](https://github.com/southwellmedia/create-velocity-astro)** CLI from Southwell Media.
+
+#### Enabling full i18n
+
+Scaffold a fresh project with i18n turned on:
+
+```bash
+# Pick your package manager
+npm create velocity-astro@latest my-site -- --i18n
+pnpm create velocity-astro my-site --i18n
+yarn create velocity-astro my-site --i18n
+```
+
+Omit `--i18n` to be prompted interactively. The CLI then adds:
+
+- Locale-prefixed routes (`/en/`, `/es/`, `/fr/`, …)
+- A `LanguageSwitcher` component wired into the header
+- Translated navigation and example content per locale
+- `hreflang` SEO tags on every page
+
+For the full list of options and prompts, see the [create-velocity-astro README](https://github.com/southwellmedia/create-velocity-astro). The CLI is maintained by Southwell Media and is the source of truth for i18n setup.
 
 ---
 
