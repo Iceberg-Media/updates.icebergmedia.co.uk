@@ -22,6 +22,20 @@ It covers everything a serious portfolio or marketing site needs: a full design 
 
 It scores **100 on every Lighthouse category** out of the box. It's built for designers, freelancers, and developers who want a site that genuinely impresses from the moment it launches.
 
+## Lighthouse: 100 Across the Board
+
+Astro Rocket scores **100 on every Lighthouse category — on both mobile and desktop** — Performance, Accessibility, Best Practices, and SEO — on the live demo at [astrorocket.dev](https://astrorocket.dev). That's not a tuned benchmark page; it's the full site with animations, a theme switcher, typed headlines, a contact form, the cursor trail, and the LetterGlitch CTA.
+
+<div class="my-10">
+  <LighthouseScoresGrid staggered={false} />
+</div>
+
+Lighthouse runs in a sandboxed Chromium environment with throttled CPU and network, so individual scores can vary a point or two from run to run depending on the host machine, network conditions, and which extensions or processes are competing for resources. The numbers above reflect the typical result on the live demo on both mobile and desktop, not a guaranteed ceiling.
+
+The result ships back into the theme as a reusable `LighthouseScores` component — four authentic Lighthouse-style circular gauges that animate from zero to 100 as the section enters the viewport, ready to drop into any landing page.
+
+The scores are a side-effect of decisions made throughout the build: Astro's static-first output keeps JavaScript off pages that don't need it, fonts are preloaded, CSS is inlined, layout reads are deferred to `requestAnimationFrame` to eliminate forced reflow, images are processed through Astro's built-in image pipeline, every interactive component meets WCAG contrast and keyboard requirements by default, and the SEO layer ships the full stack rather than just meta tags.
+
 ## 12 Themes. Switch in Seconds.
 
 The theme switcher is one of Astro Rocket's most satisfying details. Twelve colour themes — **Orange, Amber, Lime, Emerald, Teal, Cyan, Sky, Blue, Indigo, Violet, Purple, and Magenta** — toggle instantly from a pill in the header. Click a swatch and every button, link, badge, progress bar, scroll-progress arc, logo monogram, blog cover gradient, and accent on the page updates in a single frame. No waiting, no code changes, no deploy.
@@ -120,20 +134,6 @@ A full technical breakdown of every animation layer is in [Animations in Astro R
 ## LetterGlitch CTA
 
 The closing call-to-action on the homepage, projects index, and about page uses a contained **LetterGlitch** band on desktop — a field of randomised characters cycling at the brand colour, with a centred glass card laid over the top holding the headline and buttons. It's a deliberate moment of visual texture in an otherwise restrained layout, and on mobile it gracefully degrades to a flat brand-coloured section so small screens stay calm.
-
-## Lighthouse: 100 Across the Board
-
-Astro Rocket scores **100 on every Lighthouse category — on both mobile and desktop** — Performance, Accessibility, Best Practices, and SEO — on the live demo at [astrorocket.dev](https://astrorocket.dev). That's not a tuned benchmark page; it's the full site with animations, a theme switcher, typed headlines, a contact form, the cursor trail, and the LetterGlitch CTA.
-
-<div class="my-10">
-  <LighthouseScoresGrid staggered={false} />
-</div>
-
-Lighthouse runs in a sandboxed Chromium environment with throttled CPU and network, so individual scores can vary a point or two from run to run depending on the host machine, network conditions, and which extensions or processes are competing for resources. The numbers above reflect the typical result on the live demo on both mobile and desktop, not a guaranteed ceiling.
-
-The result ships back into the theme as a reusable `LighthouseScores` component — four authentic Lighthouse-style circular gauges that animate from zero to 100 as the section enters the viewport, ready to drop into any landing page.
-
-The scores are a side-effect of decisions made throughout the build: Astro's static-first output keeps JavaScript off pages that don't need it, fonts are preloaded, CSS is inlined, layout reads are deferred to `requestAnimationFrame` to eliminate forced reflow, images are processed through Astro's built-in image pipeline, every interactive component meets WCAG contrast and keyboard requirements by default, and the SEO layer ships the full stack rather than just meta tags.
 
 ## Forms — Wired End-to-End
 
