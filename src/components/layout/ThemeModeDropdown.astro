@@ -327,7 +327,6 @@ const { class: className } = Astro.props;
       const mql = window.matchMedia('(prefers-color-scheme: dark)');
       const onSchemeChange = () => syncSystemSubLine();
       if (mql.addEventListener) mql.addEventListener('change', onSchemeChange);
-      // @ts-expect-error legacy Safari
       else if (mql.addListener) mql.addListener(onSchemeChange);
     }
   }
