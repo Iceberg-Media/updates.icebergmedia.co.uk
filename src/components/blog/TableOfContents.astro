@@ -125,14 +125,14 @@ const headingId = `toc-heading-${Math.random().toString(36).slice(2, 9)}`;
     const io = new IntersectionObserver(
       (entries) => {
         // Pick the topmost heading currently intersecting the upper part
-        // of the viewport. Falls back to the last one above the fold.
+        // of the viewport. We use entry.boundingClientRect (already cached
+        // on the entry by the browser) instead of calling
+        // getBoundingClientRect() on the target — the latter forces a
+        // synchronous layout recompute, which Lighthouse flagged as a
+        // ~200ms forced-reflow source on mobile.
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort(
-            (a, b) =>
-              a.target.getBoundingClientRect().top -
-              b.target.getBoundingClientRect().top,
-          );
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible.length > 0 && visible[0].target.id) {
           setActive(visible[0].target.id);
         }
