@@ -162,6 +162,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           </Card>
         ))}
       </div>
+
+      <div class="flex justify-center">
+        <Button variant="outline" href="/projects">
+          View all projects
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
     </div>
   </section>
 
