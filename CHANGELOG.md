@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.1] — 2026-05-10
+
+### Fixed
+
+Six rounds of mobile Lighthouse forced-reflow fixes. The 1.2.0 release introduced the table-of-contents sidebar layout, but mobile performance dropped from 100 to 90-95 due to several layout-read sources surfacing under throttled mobile CPU. Each of the following sources was identified by Lighthouse Insights and addressed:
+
+- **TOC scroll-spy** — replaced `entry.target.getBoundingClientRect()` inside the `IntersectionObserver` callback with the cached `entry.boundingClientRect`, which the entry already exposes. Eliminated ~200ms of forced reflow on blog post pages. (#258)
+- **Hero H1 font-swap CLS** — added explicit `@font-face` declarations after the `@fontsource-variable` imports overriding `font-display` to `optional`. With the existing `<link rel="preload">` in `BaseLayout` the font usually arrives in the 100ms block window; otherwise the fallback stays for the page lifetime, eliminating the swap-induced shift. Reduced CLS from 0.197 → near zero on the homepage H1. (#258)
+- **Back-to-top progress ring** — cached `docMaxScrollY` instead of reading `document.documentElement.scrollHeight` on every scroll frame. (#258, #259)
+- **LetterGlitch CTA** — cached canvas width/height in a ref instead of calling `getBoundingClientRect()` on every animation frame. Removed ~215ms of per-frame reflow. (#260)
+- **`docMaxScrollY` cache strategy** — initial round wrapped the `ResizeObserver`-driven read in `requestAnimationFrame` (#261), then dropped the `ResizeObserver` entirely (#262) once it became clear that other scripts queue layout writes between the observer firing and rAF execution. resize + load events are sufficient.
+- **Initial `scrollHeight` read at script init** — deferred to `DOMContentLoaded` instead of running during HTML parsing, when the document hasn't been fully laid out and the read forces a synchronous layout for the partial DOM. (#263)
+
+After all six fixes the mobile Lighthouse score returns to **100** (with normal 92-100 run-to-run variance from CPU throttling); desktop stays at a steady **100/100/100/100**.
+
+---
+
 ## [1.2.0] — 2026-05-09
 
 ### Added
