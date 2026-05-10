@@ -267,22 +267,31 @@ schemas.push(...extraSchemas);
         const CIRCUMFERENCE = 131.95;
 
         // Cache `scrollHeight - innerHeight` so the per-frame scroll handler
-        // never reads layout-dependent properties. We deliberately do NOT
-        // use a ResizeObserver here: it fires repeatedly during the page
-        // load period (image loads, animations cascading in, font swap),
-        // and reading scrollHeight in the observer callback re-introduces
-        // forced reflow even when wrapped in rAF, because other scripts
-        // queue layout writes between the observer firing and the rAF.
-        // resize + load events are sufficient: the initial value is
-        // accurate enough for progress UIs, and `load` refreshes it once
-        // every resource has settled. Tiny drift while the page settles
-        // is invisible to the reader.
-        let docMaxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+        // never reads layout-dependent properties. We deliberately:
+        //   * Avoid a ResizeObserver — it fires during the page load period
+        //     (image loads, reveal animations, font swap) and reading
+        //     scrollHeight in those callbacks reintroduces forced reflow.
+        //   * Avoid reading scrollHeight at script-init — this script is
+        //     `is:inline` and runs during HTML parsing, before layout is
+        //     committed. Reading scrollHeight then forces the browser to
+        //     compute layout for the partial document — Lighthouse flagged
+        //     this as ~100ms of forced reflow on mobile.
+        // We start at 0 and read for the first time on DOMContentLoaded
+        // (parser done, initial layout cheap) and again on `load` (after
+        // every resource has settled). The brief window where the cache
+        // is 0 is invisible: the back-to-top button only shows after
+        // scrollY > 400, by which point DOMContentLoaded has fired.
+        let docMaxScrollY = 0;
         function updateDocMaxScrollY() {
           docMaxScrollY = document.documentElement.scrollHeight - window.innerHeight;
         }
         window.addEventListener('resize', updateDocMaxScrollY, { passive: true });
         window.addEventListener('load', updateDocMaxScrollY);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateDocMaxScrollY, { once: true });
+        } else {
+          updateDocMaxScrollY();
+        }
 
         function initBackToTop() {
           const btn = document.getElementById('back-to-top');

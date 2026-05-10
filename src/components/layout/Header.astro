@@ -571,9 +571,22 @@ const buttonId = `${menuId}-button`;
   function initDocMetrics() {
     if (docMetricsInited) return;
     docMetricsInited = true;
-    updateDocMaxScrollY();
+    // Don't read scrollHeight at script-init — this script is processed
+    // by Astro and runs early enough that the document hasn't been
+    // fully parsed/laid out yet. Reading then forces a synchronous
+    // layout for the partial document, which Lighthouse flagged as a
+    // ~100ms forced-reflow source on mobile. Defer the first read to
+    // DOMContentLoaded and refresh on load + resize. Brief startup
+    // window where docMaxScrollY is 0 is invisible: the scroll watcher
+    // only consults it during the auto-hide return branch, which can't
+    // fire until the user has actually scrolled.
     window.addEventListener('resize', updateDocMaxScrollY, { passive: true });
     window.addEventListener('load', updateDocMaxScrollY);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateDocMaxScrollY, { once: true });
+    } else {
+      updateDocMaxScrollY();
+    }
   }
 
   function initScrollDriven() {
