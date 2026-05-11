@@ -83,11 +83,11 @@ The following changes were made to the free Velocity theme to create Astro Rocke
 
 ### Internationalization (i18n)
 
-The base theme is i18n-ready with locale-aware content collection schemas. Full i18n support — locale-prefixed routes, a `LanguageSwitcher` component, translated navigation, and `hreflang` SEO tags — can be added via the **[create-velocity-astro](https://github.com/southwellmedia/create-velocity-astro)** CLI from Southwell Media.
+The base theme is i18n-ready with locale-aware content collection schemas (`src/content.config.ts` carries a `locale` field on `blog` and `pages`). Native locale routing, a `LanguageSwitcher`, translated navigation, and `hreflang` SEO tags are on the roadmap for a future release of Astro Rocket — track issue [#207](https://github.com/hansmartens68/Astro-Rocket/issues/207).
 
-#### Enabling full i18n
+#### Adding i18n today via Southwell Media's CLI
 
-Scaffold a fresh project with i18n turned on:
+Until native support lands, full i18n (locale-prefixed routes, `LanguageSwitcher`, translated nav, `hreflang`) can be set up with the upstream **[create-velocity-astro](https://github.com/southwellmedia/create-velocity-astro)** CLI:
 
 ```bash
 # Pick your package manager
@@ -96,14 +96,17 @@ pnpm create velocity-astro my-site --i18n
 yarn create velocity-astro my-site --i18n
 ```
 
-Omit `--i18n` to be prompted interactively. The CLI then adds:
+> ⚠️ **The CLI scaffolds a fresh Velocity project — it does not patch Astro Rocket.**
+> Run it in an **empty directory**. If you point it at an existing folder (for example, a cloned `Astro-Rocket` repo) and answer "Yes" to *"Directory already exists. Continue and overwrite?"*, it will replace the Astro Rocket files with a plain Velocity skeleton. You'll lose Astro Rocket's theme switcher, layouts, and content. Always scaffold into a new directory first, then layer your changes on top — or wait for the native i18n release.
+
+Omit `--i18n` to be prompted interactively. The CLI adds:
 
 - Locale-prefixed routes (`/en/`, `/es/`, `/fr/`, …)
 - A `LanguageSwitcher` component wired into the header
 - Translated navigation and example content per locale
 - `hreflang` SEO tags on every page
 
-For the full list of options and prompts, see the [create-velocity-astro README](https://github.com/southwellmedia/create-velocity-astro). The CLI is maintained by Southwell Media and is the source of truth for i18n setup.
+For the full list of options and prompts, see the [create-velocity-astro README](https://github.com/southwellmedia/create-velocity-astro). That CLI is maintained by Southwell Media and is the source of truth for the Velocity i18n setup; Astro Rocket diverges from Velocity in several places (theme switcher, layouts, components), so the CLI's output won't drop in cleanly on top of an Astro Rocket clone.
 
 ---
 
