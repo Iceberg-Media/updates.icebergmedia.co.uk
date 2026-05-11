@@ -325,9 +325,84 @@
     );
   }
 
-  /* Hero gradient — dark mode only */
+  /* Hero gradient — dark mode */
   .dark .hero-dark-gradient {
     background: linear-gradient(to bottom, var(--color-brand-600) 0%, #000 100%);
+  }
+
+  /* Hero gradient — light mode: black → brand-500.
+     Inside the hero, foreground/background/secondary tokens get remapped to
+     their on-invert / surface-invert equivalents so child components read as
+     if on a dark surface (focus rings, buttons, borders, etc). */
+  .hero-dark-gradient {
+    position: relative;
+    isolation: isolate;
+  }
+  html:not(.dark) .hero-dark-gradient {
+    background: linear-gradient(to bottom, #000 0%, var(--color-brand-500) 100%);
+    --color-foreground: var(--on-invert);
+    --color-foreground-secondary: var(--on-invert-secondary);
+    --color-foreground-muted: var(--on-invert-muted);
+    --color-background: var(--surface-invert);
+    --color-secondary: var(--surface-invert-secondary);
+    --color-secondary-hover: var(--surface-invert-tertiary);
+    --color-ring: var(--on-invert);
+  }
+
+  /* H1 spans: first span uses remapped foreground (near-white), remaining
+     spans use pure #fff. Mirrors the dark-mode treatment. */
+  html:not(.dark) .hero-dark-gradient h1 > span:first-of-type {
+    color: var(--color-foreground);
+    -webkit-text-fill-color: currentColor;
+  }
+  html:not(.dark) .hero-dark-gradient h1 > span:not(:first-of-type) {
+    color: #fff;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  /* Primary CTA — near-white gradient pill. Targets .btn-primary, which is
+     the homepage primary CTA marker (added by the primary button variant). */
+  html:not(.dark) .hero-dark-gradient .btn-primary {
+    background-color: var(--color-foreground);
+    background-image: linear-gradient(
+      180deg,
+      var(--color-foreground) 0%,
+      color-mix(in oklch, var(--color-foreground) 55%, var(--color-foreground-secondary)) 100%
+    );
+    border: 1px solid var(--color-foreground-secondary);
+    color: var(--color-background);
+  }
+  html:not(.dark) .hero-dark-gradient .btn-primary:hover {
+    background-image: none;
+    background-color: color-mix(in oklch, var(--color-foreground) 90%, transparent);
+  }
+
+  /* Outline CTA border — bump from 25% to 60% (80% hover). */
+  html:not(.dark) .hero-dark-gradient .border-foreground\/25 {
+    border-color: color-mix(in oklch, var(--color-foreground) 60%, transparent);
+  }
+  html:not(.dark) .hero-dark-gradient .border-foreground\/25:hover {
+    border-color: color-mix(in oklch, var(--color-foreground) 80%, transparent);
+  }
+
+  /* Scroll-indicator chevrons. */
+  html:not(.dark) .hero-dark-gradient .scroll-indicator-chevron   { color: rgb(255 255 255 / 0.7); }
+  html:not(.dark) .hero-dark-gradient .scroll-indicator-chevron-2 { color: rgb(255 255 255 / 0.35); }
+
+  /* Brand badge in the hero — applied in BOTH light and dark mode.
+     Glass pill with a brand-400 pulse core and brand-300 soft halo. */
+  .hero-dark-gradient .bg-brand-500\/10 {
+    background-color: rgb(255 255 255 / 0.10);
+    border-color: rgb(255 255 255 / 0.35);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .hero-dark-gradient .bg-brand-500\/10 .bg-brand-500 {
+    background-color: var(--color-brand-400);
+  }
+  .hero-dark-gradient .bg-brand-500\/10 .bg-brand-500:not(.animate-ping) {
+    box-shadow: 0 0 14px 0 color-mix(in oklch, var(--color-brand-300) 40%, transparent);
   }
 
   /* Gradient border */
