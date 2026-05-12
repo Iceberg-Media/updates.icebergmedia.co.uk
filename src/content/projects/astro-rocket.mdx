@@ -1,6 +1,6 @@
 ---
 title: "Astro Rocket"
-description: "A production-ready Astro 6 starter for designers and developers — 12 live themes, 57+ components, a full SEO stack, polished animations, and a complete design system you can launch as-is."
+description: "A production-ready Astro 6 starter for designers and developers — 12 live themes, 57+ components, native i18n, a full SEO stack, polished animations, and a complete design system you can launch as-is."
 url: "https://astrorocket.dev"
 repo: "https://github.com/hansmartens68/Astro-Rocket"
 tags: ["Astro", "TypeScript", "Tailwind CSS", "Open Source"]
@@ -18,7 +18,7 @@ import LighthouseScoresGrid from '@/components/landing/LighthouseScoresGrid.astr
 
 Astro Rocket is a production-ready Astro 6 starter that ships as a **complete, styled website** — not a blank slate. Clone it, update the text, go live. Everything else is already done.
 
-It covers everything a serious portfolio or marketing site needs: a full design system, 57+ components, 12 live-switchable colour themes, a 3-state colour-mode system, a full blog with MDX, projects, content collections, the complete SEO stack, RSS, sitemap, structured data, i18n scaffolding, a contact form wired to Resend, a newsletter form, Pagefind search, cookie consent with Google Consent Mode v2, and a layered animation system — all wired together, all working on day one.
+It covers everything a serious portfolio or marketing site needs: a full design system, 57+ components, 12 live-switchable colour themes, a 3-state colour-mode system, a full blog with MDX, projects, content collections, the complete SEO stack, RSS, sitemap, structured data, **native opt-in i18n**, a contact form wired to Resend, a newsletter form, Pagefind search, cookie consent with Google Consent Mode v2, and a layered animation system — all wired together, all working on day one. Long-form blog posts get an auto-generated table of contents and Giscus-powered discussions; header and footer navigation are configured independently.
 
 It scores **100 on every Lighthouse category** out of the box. It's built for designers, freelancers, and developers who want a site that genuinely impresses from the moment it launches.
 
@@ -50,6 +50,20 @@ The picker lives in the header as a pill-shaped dropdown right next to the colou
 
 A small inline bootstrap script in `<head>` runs synchronously before body paint to apply the saved mode and resolve the `.dark` class, so there is never a flash of the wrong theme — even across navigations. The full implementation, the storage contract, and the no-flash bootstrap are written up in [System, Light, Dark — How Astro Rocket's Colour-Mode System Works](/blog/colour-mode-system).
 
+## Homepage Hero — One Treatment, Both Modes
+
+The homepage hero is built around a single vertical gradient — `brand-600` at the top fading to pure black at the bottom — that renders **identically in light and dark mode**. The choice is deliberate: the hero is the moment the brand has to land, and locking it to a fixed brand-to-black ramp means the headline reads with the same drama regardless of which mode the visitor's OS prefers.
+
+Foreground tokens inside the hero are remapped to a slightly dimmed, brand-tinted near-white — never pure `#fff` — so the H1, paragraph, primary CTA, focus rings, and the brand-pill badge all sit at the same perceived depth as the dark-mode version. The brand pill itself is a small piece of glass with a brand-400 border, a brand-500 inner tint, and a subtle outer glow, with a pulsing dot that mirrors the rhythm of the entrance animations.
+
+A desktop-only radial grid pattern fades in behind the headline with a soft brand-coloured glow at the centre — pure CSS, zero runtime cost, automatically re-tinted when the active theme changes. On mobile it's hidden entirely to keep small screens calm.
+
+## The Floating Header
+
+The header is a frosted-glass pill that floats over the hero on scroll and slides up out of view when you scroll down — quietly returning the moment you scroll back. In light mode it reads as a **dark-glass capsule at rest** over the brand-to-black hero gradient, then **flips to a clean white capsule** the moment the page scrolls past the hero. In dark mode it does the inverse: dark glass at rest, brighter capsule on scroll. The transition is a single 300ms property animation, and the menu items, theme pills, and hamburger ease their colour right along with it.
+
+On page load, the header drops in from above on its own spring entrance — `cubic-bezier(0.22, 1.6, 0.36, 1)` over 0.8 seconds, delayed 150ms so it lands just as the hero content is mid-rise. The `from` state mirrors the header's auto-hide position exactly, so the entrance and the scroll-hide behaviour use the same transform values and never conflict.
+
 ## 57+ Components, Eight Categories
 
 The [component library](/blog/component-library) is the core of the project. Every component is built for Astro, typed with TypeScript, styled with Tailwind CSS v4, dark-mode-aware, and theme-aware. Browse them all on the [components page](/components):
@@ -61,7 +75,7 @@ The [component library](/blog/component-library) is the core of the project. Eve
 - **Marketing** — Logo, CTA, NpmCopyButton, SocialProof, TerminalDemo
 - **Patterns** — ContactForm, NewsletterForm, SearchInput, StatCard, FormField, EmptyState, LetterGlitchBand
 - **Landing** — Hero, FeatureTabs, TechStack, Credibility, LighthouseScores
-- **SEO** — SEO, JsonLd, Breadcrumbs
+- **SEO** — SEO, JsonLd, Breadcrumbs, LanguageSwitcher
 
 Underneath, the design system uses a three-tier token architecture (reference → semantic → component) so a single `--brand-500` change cascades through every component without per-component overrides.
 
@@ -80,6 +94,7 @@ Most starters ship three meta tags and call it SEO. Astro Rocket ships the compl
 - **JSON-LD structured data** — `WebSite`, `Organization`, and `Person` schemas on the homepage; `BlogPosting` on every post; `Breadcrumbs` site-wide — prerequisites for rich results in Google Search
 - **Open Graph + Twitter Cards** — full social metadata on every page, with post cover images wired in automatically
 - **Canonical URLs** — constructed from the production domain, correct across staging and preview environments
+- **`hreflang` alternates** — emitted automatically from the SEO component for every locale on multilingual sites
 - **Auto-generated sitemap** — every page included at build time; submit once to Search Console
 - **Per-page robots control** — `noindex` / `nofollow` on any page via a prop
 - **Search Console verification** — Google and Bing codes via `.env`, no template edits
@@ -87,15 +102,30 @@ Most starters ship three meta tags and call it SEO. Astro Rocket ships the compl
 
 The full setup — what each piece does, how to configure it, and what rich results it unlocks — is in [SEO in Astro Rocket](/blog/seo-in-astro-rocket).
 
-## The Floating Header
+## Internationalization — Native, Opt-In
 
-The header is a frosted-glass pill that floats over the hero on scroll and slides up out of view when you scroll down — quietly returning the moment you scroll back. At rest above the fold it sits full-width with a subtle translucent backdrop; once the page scrolls, it shrinks into a centred floating capsule with a `backdrop-blur` background, never blocking content but always one swipe away.
+As of **v1.3.0**, internationalization is built into Astro Rocket itself — no upstream CLI, no project regeneration, no content restructure. Flip `enabled: true` in `src/config/i18n.config.ts` and the theme switches on:
 
-On page load, the header drops in from above on its own spring entrance — `cubic-bezier(0.22, 1.6, 0.36, 1)` over 0.8 seconds, delayed 150ms so it lands just as the hero content is mid-rise. The `from` state mirrors the header's auto-hide position exactly, so the entrance and the scroll-hide behaviour use the same transform values and never conflict.
+- **Locale-prefixed routes** wired through Astro's native `i18n` config — `/en/blog/...`, `/nl/blog/...`
+- **`LanguageSwitcher` dropdown** in the desktop header and the mobile menu — accessible, keyboard-navigable, pure HTML `<a hreflang lang>` links, ~1 KB of inline JS for open/close
+- **`hreflang` alternates** emitted automatically by the SEO component for every configured locale
+- **`t()` translation helper** backed by JSON dictionaries at `src/i18n/<locale>.json`, with `{name}` placeholder interpolation and graceful fallback to the default locale, then to the key itself, so partial translations are visible but never crash a render
+- **Per-locale content** — every collection schema carries a `locale` field, and blog posts live in `src/content/blog/<locale>/...`
+- **Optional browser-locale detection** via the `detectBrowserLocale` flag
 
-## Hero Grid Pattern
+**English** and **Dutch** ship out of the box. Adding a language is two files: a new entry in `src/config/i18n.config.ts` and a matching `src/i18n/<code>.json`. When i18n is disabled (the default), every i18n code path is gated out — bundle size, output HTML, and `hreflang` count are identical to a single-locale build.
 
-Behind the homepage hero, a desktop-only radial grid pattern fades in with a soft brand-coloured glow at the centre. The grid is pure CSS — `linear-gradient` repeats masked by a radial fade — so it costs nothing at runtime and updates automatically when the active theme changes. On mobile it's hidden entirely to keep the focus on the headline and reduce visual noise on small screens.
+## Blog Reading Experience
+
+Long-form posts ship with two optional reading aids that activate with a single config flag. Both are **off by default**, so existing sites are unchanged on upgrade.
+
+**Table of contents.** Auto-generated from the MDX headings of every post, with three layouts to choose from: an inline card at the top of the article, a sticky sidebar to the right on desktop, or `auto` — sidebar on `xl+` viewports and inline card on phones and tablets. The reading column stays at `max-w-4xl` in every mode, so reading width never changes when the sidebar appears or disappears. An `IntersectionObserver` scroll-spy highlights the active section as the reader moves through the post. Per-post `toc: false` in frontmatter hides the TOC on a single post. Full setup: [Table of Contents — Reading Anchors for Long Posts](/blog/table-of-contents).
+
+**Discussions via Giscus.** Comments at the bottom of articles powered by **Giscus** and GitHub Discussions — no database, no third-party account, no ads. The script is **lazy-loaded** with an `IntersectionObserver`, so readers who don't scroll to the comments section pay zero network cost; a reserved `min-height` on the placeholder prevents cumulative layout shift. Per-post `comments: false` in frontmatter hides comments on a single post. Full setup: [Comments on Blog Posts — Giscus, Lazy-Loaded](/blog/giscus-comments).
+
+## Independent Header & Footer Menus
+
+Header and footer navigation are configured separately, so a new Privacy or Imprint link can land in the footer without cluttering the main nav. `nav.config.ts` exports three arrays: `navItems` for the header, `footerNavItems` for the footer, and `legalLinks` for the small legal-style row some footer layouts render in their bottom strip. Defaults mirror the existing nav, so footers on existing sites are unchanged on upgrade. Full setup: [Independent Footer Menu — Different Links in Header and Footer](/blog/independent-footer-menu).
 
 ## Cursor Trail — Desktop Only
 
@@ -143,18 +173,6 @@ The closing call-to-action on the homepage, projects index, and about page uses 
 
 Both endpoints are real Astro API routes, type-checked, unit-tested with **Vitest**, and ready to deploy.
 
-## Blog Reading Experience
-
-Long-form posts ship with two optional reading aids that activate with a single config flag. Both are **off by default**, so existing sites are unchanged on upgrade.
-
-**Table of contents.** Auto-generated from the MDX headings of every post, with three layouts to choose from: an inline card at the top of the article, a sticky sidebar to the right on desktop, or `auto` — sidebar on `xl+` viewports and inline card on phones and tablets. The reading column stays at `max-w-4xl` in every mode, so reading width never changes when the sidebar appears or disappears. An `IntersectionObserver` scroll-spy highlights the active section as the reader moves through the post. Per-post `toc: false` in frontmatter hides the TOC on a single post. Full setup: [Table of Contents — Reading Anchors for Long Posts](/blog/table-of-contents).
-
-**Comments via Giscus.** Comments at the bottom of articles powered by **Giscus** and GitHub Discussions — no database, no third-party account, no ads. The script is **lazy-loaded** with an `IntersectionObserver`, so readers who don't scroll to the comments section pay zero network cost; a reserved `min-height` on the placeholder prevents cumulative layout shift. Per-post `comments: false` in frontmatter hides comments on a single post. Full setup: [Comments on Blog Posts — Giscus, Lazy-Loaded](/blog/giscus-comments).
-
-## Independent Header & Footer Menus
-
-Header and footer navigation are configured separately, so a new Privacy or Imprint link can land in the footer without cluttering the main nav. `nav.config.ts` exports three arrays: `navItems` for the header, `footerNavItems` for the footer, and `legalLinks` for the small legal-style row some footer layouts render in their bottom strip. Defaults mirror the existing nav, so footers on existing sites are unchanged. Full setup: [Independent Footer Menu — Different Links in Header and Footer](/blog/independent-footer-menu).
-
 ## Search, Privacy, and Analytics
 
 **Pagefind search.** Static-site search powered by [Pagefind](https://pagefind.app) — index built at the end of every production build, no server, no third-party dependency, no per-search cost.
@@ -165,11 +183,7 @@ Header and footer navigation are configured separately, so a new Privacy or Impr
 
 ## Content Collections — Type-Safe by Default
 
-Every piece of content lives in a typed Astro Content Collection: `blog`, `projects`, `pages`, `authors`, `faqs`, and `stack`. Schemas are validated with Zod at build time, so a missing field, a malformed date, or an invalid image path is a build error — not a runtime surprise.
-
-## Internationalization (i18n)
-
-The base theme is i18n-ready: every collection schema carries a locale enum (`en`, `es`, `fr`), and the directory structure is set up for locale-prefixed content. Full language routing and a `LanguageSwitcher` can be added via the upstream Velocity tooling without restructuring content.
+Every piece of content lives in a typed Astro Content Collection: `blog`, `projects`, `pages`, `authors`, `faqs`, and `stack`. Schemas are validated with Zod at build time, so a missing field, a malformed date, or an invalid image path is a build error — not a runtime surprise. Every collection carries a `locale` field, so multilingual content is a first-class citizen rather than a bolt-on.
 
 ## Deploy Anywhere
 
@@ -177,7 +191,7 @@ Astro Rocket ships with first-party configuration for **Vercel**, **Netlify**, a
 
 ## Zero JavaScript by Default
 
-Astro's island architecture means every page ships pure HTML unless a component explicitly needs JavaScript. Interactive islands — theme switcher, colour-mode picker, contact form, typing effect, scroll indicators, cursor trail, LetterGlitch — hydrate themselves. Everything else stays static.
+Astro's island architecture means every page ships pure HTML unless a component explicitly needs JavaScript. Interactive islands — theme switcher, colour-mode picker, contact form, typing effect, scroll indicators, cursor trail, LetterGlitch, LanguageSwitcher — hydrate themselves. Everything else stays static.
 
 ## Open Source
 
