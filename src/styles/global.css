@@ -330,16 +330,12 @@
     background: linear-gradient(to bottom, var(--color-brand-600) 0%, #000 100%);
   }
 
-  /* Hero gradient — light mode: black → brand-500.
-     Inside the hero, foreground/background/secondary tokens get remapped to
-     their on-invert / surface-invert equivalents so child components read as
-     if on a dark surface (focus rings, buttons, borders, etc). */
   .hero-dark-gradient {
     position: relative;
     isolation: isolate;
+    background: linear-gradient(to bottom, var(--color-brand-600) 0%, #000 100%);
   }
   html:not(.dark) .hero-dark-gradient {
-    background: linear-gradient(to bottom, #000 0%, var(--color-brand-500) 100%);
     --color-foreground: var(--on-invert);
     --color-foreground-secondary: var(--on-invert-secondary);
     --color-foreground-muted: var(--on-invert-muted);
