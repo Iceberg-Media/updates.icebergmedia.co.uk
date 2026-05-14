@@ -135,10 +135,10 @@ const siteConfig: SiteConfig = {
     country: 'the Netherlands',
   },
   socialLinks: [
-    'https://github.com/hansmartens68/Astro-Rocket',
+    'https://github.com/hansmartensdev',
     'https://x.com/hansmartens_dev',
     'https://www.linkedin.com',
-    'https://bsky.app/profile/hansmartens-online.bsky.social',
+    'https://bsky.app/profile/hansmartensdev.bsky.social',
   ],
   twitter: {
     site: 'https://x.com/hansmartens_dev',
