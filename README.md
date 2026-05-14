@@ -11,8 +11,8 @@
   <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind-4.0-38bdf8?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
   <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.7-3178c6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e" alt="License" /></a>
-  <a href="https://github.com/hansmartens68/astro-rocket"><img src="https://img.shields.io/github/stars/hansmartens68/astro-rocket?style=flat&label=%E2%AD%90%20Star%20on%20GitHub&color=f59e0b" alt="Star on GitHub" /></a>
-  <a href="https://github.com/hansmartens68/astro-rocket"><img src="https://visitor-badge.laobi.icu/badge?page_id=hansmartens68.astro-rocket" alt="Visitors" /></a>
+  <a href="https://github.com/hansmartensdev/astro-rocket"><img src="https://img.shields.io/github/stars/hansmartensdev/astro-rocket?style=flat&label=%E2%AD%90%20Star%20on%20GitHub&color=f59e0b" alt="Star on GitHub" /></a>
+  <a href="https://github.com/hansmartensdev/astro-rocket"><img src="https://visitor-badge.laobi.icu/badge?page_id=hansmartensdev.astro-rocket" alt="Visitors" /></a>
 </p>
 
 <p align="center">
@@ -172,7 +172,7 @@ The whole system is build-time. No client-side routing, no framework hydration f
 
 ```bash
 # Clone the repository
-git clone https://github.com/hansmartens68/astro-rocket.git my-project
+git clone https://github.com/hansmartensdev/astro-rocket.git my-project
 cd my-project
 
 # Install dependencies
@@ -797,7 +797,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Links
 
-- [Astro Rocket on GitHub](https://github.com/hansmartens68/astro-rocket)
+- [Astro Rocket on GitHub](https://github.com/hansmartensdev/astro-rocket)
 - [Velocity — the original theme](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com)
 - [Astro Documentation](https://docs.astro.build)
 - [Tailwind CSS v4](https://tailwindcss.com/docs)
