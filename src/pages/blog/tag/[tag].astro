@@ -41,7 +41,10 @@ const { tag, posts, allTags } = Astro.props;
       Tag
     </Badge>
 
-    <h1 slot="title">#{tag}</h1>
+    <h1
+      slot="title"
+      class="!text-4xl sm:!text-5xl md:!text-6xl lg:!text-7xl break-words [overflow-wrap:anywhere]"
+    >#{tag}</h1>
 
     <p slot="description">
       {posts.length} post{posts.length === 1 ? '' : 's'} tagged "{tag}".
