@@ -654,13 +654,10 @@ const buttonId = `${menuId}-button`;
 <script>
   // Header scroll behaviour + scroll-progress bar driven by a single rAF.
   // All layout reads are taken before any DOM writes. `docMaxScrollY` is
-  // cached and refreshed only on resize + load — we deliberately avoid
-  // a ResizeObserver here because it fires repeatedly during the page
-  // load period (image loads, reveal animations, font swap), and reading
-  // scrollHeight in those callbacks reintroduces forced reflow even when
-  // wrapped in rAF, because other scripts queue layout writes between
-  // the observer firing and the rAF. Tiny drift while the page settles
-  // is invisible for scroll-progress UIs.
+  // cached; the first read is deferred to a rAF so it runs AFTER first
+  // paint instead of forcing a synchronous layout before it. ResizeObserver
+  // handles subsequent changes (font swap, image loads, reveal animations)
+  // without re-introducing a critical-path reflow.
   const SCROLL_THRESHOLD = 60;
   const AUTO_HIDE_THRESHOLD = 150;
   const BAR_SCROLLED_CLASSES = ['bg-background/80', 'backdrop-blur-lg', 'border-b', 'border-border/50'];
@@ -673,21 +670,9 @@ const buttonId = `${menuId}-button`;
   function initDocMetrics() {
     if (docMetricsInited) return;
     docMetricsInited = true;
-    // Don't read scrollHeight at script-init — this script is processed
-    // by Astro and runs early enough that the document hasn't been
-    // fully parsed/laid out yet. Reading then forces a synchronous
-    // layout for the partial document, which Lighthouse flagged as a
-    // ~100ms forced-reflow source on mobile. Defer the first read to
-    // DOMContentLoaded and refresh on load + resize. Brief startup
-    // window where docMaxScrollY is 0 is invisible: the scroll watcher
-    // only consults it during the auto-hide return branch, which can't
-    // fire until the user has actually scrolled.
     window.addEventListener('resize', updateDocMaxScrollY, { passive: true });
-    window.addEventListener('load', updateDocMaxScrollY);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', updateDocMaxScrollY, { once: true });
-    } else {
-      updateDocMaxScrollY();
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(updateDocMaxScrollY).observe(document.documentElement);
     }
   }
 
@@ -778,7 +763,12 @@ const buttonId = `${menuId}-button`;
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+      // Defer the first read+write to the next frame so layout reads
+      // happen AFTER the browser has committed initial paint.
+      requestAnimationFrame(() => {
+        updateDocMaxScrollY();
+        onScroll();
+      });
     });
 
     // Edge case: a progress bar exists without a header scroll-watcher.
@@ -801,7 +791,10 @@ const buttonId = `${menuId}-button`;
         },
         { passive: true },
       );
-      updateProgress();
+      requestAnimationFrame(() => {
+        updateDocMaxScrollY();
+        updateProgress();
+      });
     }
   }
 

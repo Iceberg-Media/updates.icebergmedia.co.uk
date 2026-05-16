@@ -267,30 +267,19 @@ schemas.push(...extraSchemas);
         const CIRCUMFERENCE = 131.95;
 
         // Cache `scrollHeight - innerHeight` so the per-frame scroll handler
-        // never reads layout-dependent properties. We deliberately:
-        //   * Avoid a ResizeObserver — it fires during the page load period
-        //     (image loads, reveal animations, font swap) and reading
-        //     scrollHeight in those callbacks reintroduces forced reflow.
-        //   * Avoid reading scrollHeight at script-init — this script is
-        //     `is:inline` and runs during HTML parsing, before layout is
-        //     committed. Reading scrollHeight then forces the browser to
-        //     compute layout for the partial document — Lighthouse flagged
-        //     this as ~100ms of forced reflow on mobile.
-        // We start at 0 and read for the first time on DOMContentLoaded
-        // (parser done, initial layout cheap) and again on `load` (after
-        // every resource has settled). The brief window where the cache
-        // is 0 is invisible: the back-to-top button only shows after
-        // scrollY > 400, by which point DOMContentLoaded has fired.
+        // never reads layout-dependent properties. Reading scrollHeight on
+        // DOMContentLoaded forced a synchronous layout BEFORE first paint
+        // (Lighthouse flagged this script as ~551ms of forced reflow). The
+        // first read is now deferred to a rAF inside initBackToTop — that
+        // runs after the browser has committed initial paint, off the
+        // critical path. ResizeObserver picks up later changes.
         let docMaxScrollY = 0;
         function updateDocMaxScrollY() {
           docMaxScrollY = document.documentElement.scrollHeight - window.innerHeight;
         }
         window.addEventListener('resize', updateDocMaxScrollY, { passive: true });
-        window.addEventListener('load', updateDocMaxScrollY);
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', updateDocMaxScrollY, { once: true });
-        } else {
-          updateDocMaxScrollY();
+        if (typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(updateDocMaxScrollY).observe(document.documentElement);
         }
 
         function initBackToTop() {
@@ -362,8 +351,12 @@ schemas.push(...extraSchemas);
           }, { once: true });
 
           // Run the first frame on rAF so it picks up the initial scroll
-          // position after layout has settled.
-          requestAnimationFrame(updateFrame);
+          // position after layout has settled — and read scrollHeight here
+          // (after first paint) instead of forcing layout pre-paint.
+          requestAnimationFrame(function () {
+            updateDocMaxScrollY();
+            updateFrame();
+          });
         }
 
         document.addEventListener('astro:page-load', initBackToTop);
@@ -388,54 +381,70 @@ schemas.push(...extraSchemas);
 
           if (!els.length) return;
 
-          // Above-the-fold = elements whose top is at least 25% inside the
-          // initial viewport. Anything just barely poking above the fold
-          // would otherwise animate while the user can't see it.
-          const fold = window.innerHeight * 0.75;
-          const aboveFold = [];
-          const belowFold = [];
-          els.forEach(function (el) {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < fold && rect.bottom > 0) {
-              aboveFold.push(el);
-            } else {
-              belowFold.push(el);
-            }
-          });
-
-          aboveFold.forEach(function (el, i) {
-            setTimeout(function () {
-              el.classList.add('is-visible');
-            }, 250 + i * 80);
-          });
-
-          if (!belowFold.length) return;
-          // Negative bottom rootMargin: trigger only when the element is
-          // meaningfully on screen, so the user actually sees the animation
-          // play instead of finding it already finished.
           const eager = document.body.hasAttribute('data-eager-reveal');
-          const observer = new IntersectionObserver(function (entries) {
+          const belowFoldMargin = eager ? '0px 0px -5% 0px' : '0px 0px -10% 0px';
+
+          // Two scroll-triggered observers for below-fold elements. Tall
+          // elements (taller than ~85% of the viewport) use threshold 0 so
+          // they still fire; shorter elements use 0.15 so animations feel
+          // earned (the user actually sees them play).
+          const shortObs = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
+                shortObs.unobserve(entry.target);
               }
             });
-          }, { threshold: 0.15, rootMargin: eager ? '0px 0px -5% 0px' : '0px 0px -10% 0px' });
-          belowFold.forEach(function (el) { observer.observe(el); });
-        }
+          }, { threshold: 0.15, rootMargin: belowFoldMargin });
 
-        // Defer to the next frame so getBoundingClientRect reads happen
-        // after the browser has computed initial layout, turning a forced
-        // sync reflow into a cheap cached read.
-        function deferredInitReveal() {
-          requestAnimationFrame(initReveal);
+          const tallObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                tallObs.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0, rootMargin: belowFoldMargin });
+
+          // First-pass observer: hands us boundingClientRect and rootBounds
+          // for each element without forcing a synchronous layout read. The
+          // browser computes the geometry off the main thread, replacing
+          // the previous getBoundingClientRect() classifier loop that
+          // Lighthouse flagged as a ~76ms forced reflow.
+          // rootMargin -25% bottom defines "above-the-fold" as the top 75%
+          // of the viewport, matching the prior `rect.top < vh*0.75` rule.
+          let revealIndex = 0;
+          const firstPass = new IntersectionObserver(function (entries) {
+            // Preserve document order so the above-fold stagger is stable.
+            entries.sort(function (a, b) {
+              const pos = a.target.compareDocumentPosition(b.target);
+              if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+              if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+              return 0;
+            });
+
+            entries.forEach(function (entry) {
+              firstPass.unobserve(entry.target);
+              if (entry.isIntersecting) {
+                const i = revealIndex++;
+                setTimeout(function () {
+                  entry.target.classList.add('is-visible');
+                }, 250 + i * 80);
+              } else {
+                const rb = entry.rootBounds;
+                const tall = rb ? entry.boundingClientRect.height > rb.height * 0.85 : false;
+                (tall ? tallObs : shortObs).observe(entry.target);
+              }
+            });
+          }, { threshold: 0, rootMargin: '0px 0px -25% 0px' });
+
+          els.forEach(function (el) { firstPass.observe(el); });
         }
 
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', deferredInitReveal);
+          document.addEventListener('DOMContentLoaded', initReveal);
         } else {
-          deferredInitReveal();
+          initReveal();
         }
       })();
     </script>
