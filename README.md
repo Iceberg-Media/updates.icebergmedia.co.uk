@@ -15,14 +15,6 @@
   <a href="https://github.com/hansmartensdev/astro-rocket"><img src="https://visitor-badge.laobi.icu/badge?page_id=hansmartensdev.astro-rocket" alt="Visitors" /></a>
 </p>
 
-<p align="center">
-  <img src="public/readme-lighthouse.svg" alt="Lighthouse 100/100/100/100 — Performance, Accessibility, Best Practices, SEO" width="880" />
-</p>
-
-<p align="center">
-  <em>Perfect Lighthouse scores.</em>
-</p>
-
 ---
 
 ## Overview
