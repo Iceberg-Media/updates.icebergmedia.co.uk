@@ -47,8 +47,6 @@ Astro Rocket scores 100 on every Lighthouse category — Performance, Accessibil
 
 Lighthouse runs in a sandboxed Chromium environment with throttled CPU and network, so individual scores can vary a point or two from run to run depending on the host machine, network conditions, and which extensions or processes are competing for resources. The numbers above reflect the typical result on the live demo on both mobile and desktop, not a guaranteed ceiling.
 
-The result ships back into the theme as a reusable `LighthouseScores` component — four authentic Lighthouse-style circular gauges that animate from zero to 100 as the section enters the viewport, ready to drop into any landing page.
-
 The scores are a side-effect of decisions made throughout the build: Astro's static-first output keeps JavaScript off pages that don't need it, fonts are preloaded, CSS is inlined, layout reads are deferred to `requestAnimationFrame` to eliminate forced reflow, images are processed through Astro's built-in image pipeline, every interactive component meets WCAG contrast and keyboard requirements by default, and the SEO layer ships the full stack rather than just meta tags.
 
 ## 12 Themes. Switch in Seconds.
