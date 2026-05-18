@@ -27,12 +27,12 @@ const { variant = 'quote', title, class: className } = Astro.props;
 {variant === 'quote' ? (
   <figure
     class:list={[
-      'not-prose my-10 relative rounded-2xl border-l-4 border-brand-500 bg-background-secondary/60 px-6 py-6 md:px-8 md:py-8 shadow-sm',
+      'not-prose my-10 rounded-2xl border-l-4 border-brand-500 bg-background-secondary/60 px-6 py-6 md:px-8 md:py-8 shadow-sm',
       className,
     ]}
   >
     <svg
-      class="absolute -top-3 left-6 h-8 w-8 text-brand-500/80"
+      class="mb-3 h-7 w-7 text-brand-500/80"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
