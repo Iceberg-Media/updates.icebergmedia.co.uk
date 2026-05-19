@@ -331,7 +331,7 @@ const buttonId = `${menuId}-button`;
             id={buttonId}
             class={cn(
               'hdr-hamburger inline-flex items-center justify-center rounded-md p-2 lg:hidden',
-              'text-brand-600 dark:text-foreground',
+              'text-foreground',
               'transition-colors',
               'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
               isFloating ? 'hover:bg-secondary/40' : 'hover:bg-secondary'
@@ -1141,13 +1141,10 @@ const buttonId = `${menuId}-button`;
   .mobile-menu-social {
     border-color: var(--color-border-strong);
   }
-  html:not(.dark) .mobile-menu-social {
-    border-color: color-mix(in oklch, var(--color-brand-500) 30%, transparent);
-  }
-  .mobile-menu-social:hover {
-    color: var(--color-brand-600);
-    border-color: var(--color-brand-500);
-    background-color: color-mix(in oklch, var(--color-brand-500) 8%, transparent);
+  html:not(.dark) .mobile-menu-social:hover {
+    color: var(--color-foreground);
+    border-color: var(--color-border-strong);
+    background-color: color-mix(in oklch, var(--color-secondary) 60%, transparent);
   }
   html.dark .mobile-menu-social:hover {
     color: var(--color-brand-300);
