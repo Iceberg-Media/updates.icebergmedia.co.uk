@@ -62,7 +62,7 @@ const i18nConfig: I18nConfig = {
 
 Three things to know:
 
-- **`defaultLocale`** is the locale served at the site root. If you keep it at `'en'`, English visitors keep landing at `/`, `/about`, `/blog`. Set it to `'nl'` instead and Dutch becomes the root locale — English would move to `/en/...`. Most multilingual sites pick the language of their largest audience as the default.
+- **`defaultLocale`** is the locale served at the site root. If you keep it at `'en'`, English visitors keep landing at `/`, `/about`, `/blog`. Set it to `'nl'` instead and Dutch becomes the root locale — English would move to `/en/...`. Most multilingual sites pick the language of their largest audience as the default. One caveat: `defaultLocale` is a routing label, not a content switch. If you flip it to a different language, also rename the matching content folder under `src/content/blog/` (e.g. `en/` → `nl/`) so the root URL resolves to the right posts. The locale code in `i18n.config.ts` and the folder name must match.
 - **`locales`** is the master list. Order doesn't matter for routing, but it controls the order of items in the `LanguageSwitcher` dropdown.
 - **`localeNames`** are the display labels in the dropdown. Use the language's own name (`Nederlands`, not "Dutch") — that's standard practice and respectful to visitors switching from a language they can read.
 
@@ -115,6 +115,8 @@ src/content/blog/nl/hallo-wereld.mdx
 ```
 
 In the Dutch post's frontmatter, set `locale: nl`. The collection schema currently accepts `en`, `es`, and `fr`; add your locale to the enum if you need other codes. The base theme is ready for this — the field, folder convention, and per-post type-safety are all in place.
+
+The folder name has to match the locale code you're using in `i18n.config.ts`. If you set `defaultLocale: 'zh-CN'`, the root posts have to live in `src/content/blog/zh-CN/`, not `src/content/blog/en/` — the folder name is what the route resolves to, not the config value alone.
 
 ## Step 3 — translate the built-in UI strings
 
