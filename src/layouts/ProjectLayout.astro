@@ -23,14 +23,9 @@ import { getProjectOgPath } from '@/lib/og';
 interface Props {
   title: string;
   description: string;
-  year?: number;
-  client?: string;
-  role?: string;
-  services?: string[];
   meta?: string[];
   url?: string;
   repo?: string;
-  tags?: string[];
   image?: ImageMetadata;
   imageAlt?: string;
   gallery?: GallerySlide[];
@@ -45,14 +40,9 @@ interface Props {
 const {
   title,
   description,
-  year,
-  client,
-  role,
-  services = [],
   meta = [],
   url,
   repo,
-  tags = [],
   image,
   imageAlt,
   gallery = [],
@@ -106,11 +96,6 @@ const breadcrumbs = [
     <ProjectHero
       title={title}
       description={description}
-      tags={tags}
-      year={year}
-      client={client}
-      role={role}
-      services={services}
       meta={meta}
       url={url}
       repo={repo}
