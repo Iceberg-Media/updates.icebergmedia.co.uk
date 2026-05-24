@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -13,11 +12,6 @@ interface GallerySlide {
 interface Props {
   title: string;
   description: string;
-  tags?: string[];
-  year?: number;
-  client?: string;
-  role?: string;
-  services?: string[];
   meta?: string[];
   url?: string;
   repo?: string;
@@ -29,11 +23,6 @@ interface Props {
 const {
   title,
   description,
-  tags = [],
-  year,
-  client,
-  role,
-  services = [],
   meta = [],
   url,
   repo,
