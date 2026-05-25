@@ -1042,17 +1042,27 @@
    ------------------------------------------------------------------------- */
 
 /* Spring curve approximating Framer Motion's spring(stiffness:100, damping:15).
-   Pronounced overshoot gives elements a "settle" feel on entrance.
-   Initial opacity is 0.01 (not 0) so the LCP element registers as a paint
-   candidate; the value is imperceptible to humans but visible to the
-   browser's LCP observer. */
+   Pronounced overshoot gives elements a "settle" feel on entrance. */
 @keyframes hero-slide-up {
   from {
-    opacity: 0.01;
+    opacity: 0;
     transform: translateY(40px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transform-only variant for the hero heading. The heading is the LCP
+   element, so it must never fade in: an element below full opacity can be
+   deferred or skipped as an LCP paint candidate. It slides up like the rest
+   of the hero but stays fully opaque from the first painted frame. */
+@keyframes hero-slide-up-solid {
+  from {
+    transform: translateY(40px);
+  }
+  to {
     transform: translateY(0);
   }
 }
@@ -1073,6 +1083,14 @@
 .animate-hero-stagger > *:nth-child(4)   { animation-delay: 270ms; }
 .animate-hero-stagger > *:nth-child(5)   { animation-delay: 360ms; }
 .animate-hero-stagger > *:nth-child(n+6) { animation-delay: 450ms; }
+
+/* The hero heading opts into the transform-only keyframe so it paints opaque
+   on frame 1. This selector outranks the `> *` rule above, so it overrides
+   only animation-name — duration, easing, fill mode and the per-position
+   animation-delay are all inherited unchanged. */
+.animate-hero-stagger > .hero-lcp-title {
+  animation-name: hero-slide-up-solid;
+}
 
 /* Floating header drop-in: lands from above as the hero rises from below.
    The translate values mirror the auto-hide hidden state so the entrance
@@ -1187,6 +1205,7 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-slide-up,
   .animate-hero-stagger > *,
+  .animate-hero-stagger > .hero-lcp-title,
   .animate-header-drop {
     animation: none;
   }
