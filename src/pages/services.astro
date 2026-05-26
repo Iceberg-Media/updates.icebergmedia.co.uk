@@ -15,7 +15,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
   title="Services — Web Design, Development & Performance"
   description="Three core services for modern websites: thoughtful design, clean Astro development, and measurable performance & SEO."
 >
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+  <Hero layout="centered" size="sm" class="isolate services-hero" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
       <Icon name="sparkles" size="sm" />
       Services
@@ -30,6 +30,21 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
       wireframe to the final Lighthouse score, every project gets the
       same attention to detail.
     </p>
+
+    <Fragment slot="actions">
+      <Button size="lg" href="#design" variant="outline">
+        Web Design
+        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
+      </Button>
+      <Button size="lg" href="#development" variant="outline">
+        Development
+        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
+      </Button>
+      <Button size="lg" href="#performance" variant="outline">
+        Performance
+        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
+      </Button>
+    </Fragment>
   </Hero>
 
   <!-- Design -->
@@ -381,9 +396,85 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 </PageLayout>
 
 <style is:global>
+  /* Gentle "scroll down" bounce on the hero jump-button arrows — same motion
+     language as the homepage hero scroll indicator. */
+  .services-hero .hero-jump-arrow {
+    animation: hero-jump-arrow-bounce 1.8s ease-in-out infinite;
+  }
+  @keyframes hero-jump-arrow-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .services-hero .hero-jump-arrow { animation: none; }
+  }
+
   /* Page-local override: anchor links on /services should land the
      section's coloured edge flush against the fixed header. */
   html { scroll-padding-top: 4rem; }
   @media (max-height: 600px) { html { scroll-padding-top: 4rem; } }
   @media (min-width: 1024px) { html { scroll-padding-top: 4rem; } }
+
+  /* In-page anchor jumps (the hero section buttons) tag their destination —
+     and everything above it — with .reveal-instant so the content is already
+     in its final position when the smooth-scroll lands, instead of sliding in
+     mid-jump. Natural scrolling is untouched and still animates. */
+  .reveal-instant[data-reveal],
+  .reveal-instant [data-reveal],
+  .reveal-instant[data-reveal-children] > *,
+  .reveal-instant [data-reveal-children] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 </style>
+
+<script is:inline>
+  /* When a hero section button is clicked — or the page is opened directly on
+     one of those sections (e.g. /services#development) — the destination (and
+     everything the jump scrolls past) is snapped to its revealed state before
+     the scroll lands, so cards don't slide in mid-jump. Sections below the
+     target stay observed, so natural scrolling still animates normally. */
+  (function () {
+    function initServicesHeroJump() {
+      const hero = document.querySelector('.services-hero');
+      if (!hero) return;
+      const buttons = hero.querySelectorAll('a[href^="#"]');
+      if (!buttons.length) return;
+
+      function revealUpToAndIncluding(target) {
+        const reveals = document.querySelectorAll('[data-reveal], [data-reveal-children]');
+        Array.prototype.forEach.call(reveals, function (el) {
+          const targetFollowsEl =
+            el.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING;
+          if (el === target || target.contains(el) || targetFollowsEl) {
+            el.classList.add('reveal-instant', 'is-visible');
+          }
+        });
+      }
+
+      const targetIds = [];
+      Array.prototype.forEach.call(buttons, function (btn) {
+        const hash = btn.getAttribute('href');
+        const id = hash ? hash.slice(1) : '';
+        if (id) targetIds.push(id);
+        btn.addEventListener('click', function () {
+          const target = id && document.getElementById(id);
+          if (target) revealUpToAndIncluding(target);
+        });
+      });
+
+      const initialId = location.hash ? location.hash.slice(1) : '';
+      if (initialId && targetIds.indexOf(initialId) !== -1) {
+        const target = document.getElementById(initialId);
+        if (target) revealUpToAndIncluding(target);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initServicesHeroJump);
+    } else {
+      initServicesHeroJump();
+    }
+  })();
+</script>
