@@ -20,6 +20,8 @@ interface Props extends HTMLAttributes<'section'> {
   bottomFade?: boolean;
   /** Show an animated scroll indicator at the bottom (desktop only, hides on scroll) */
   showScrollIndicator?: boolean;
+  /** Stretch the section to fill at least the full viewport height (min-h-[100dvh]) */
+  fullHeight?: boolean;
 }
 
 const {
@@ -31,6 +33,7 @@ const {
   showGlow = false,
   bottomFade = false,
   showScrollIndicator = false,
+  fullHeight = false,
   class: className,
   ...attrs
 } = Astro.props;
@@ -46,7 +49,7 @@ const hasAsideSlot = Astro.slots.has('aside');
 const alignment = layout === 'centered' ? 'text-center items-center' : 'text-left items-start';
 
 // Compute classes
-const sectionClasses = cn(heroSectionVariants({ size }), className);
+const sectionClasses = cn(heroSectionVariants({ size }), fullHeight && 'min-h-[100dvh]', className);
 
 const contentClasses = cn(
   'z-10 flex flex-col',
