@@ -68,6 +68,9 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
 
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
@@ -1260,6 +1263,16 @@
 :root:not(.dark) .hdr-cta-brand:hover {
   background-color: var(--color-brand-800) !important;
   opacity: 1 !important;
+}
+
+/* Destructive button — fixed dark red in both modes so the white label clears
+   WCAG AA (white on oklch(53%) = 5.9:1). Decoupled from the --destructive token,
+   which is tuned lighter in dark mode to stay readable as inline error text. */
+.btn-destructive {
+  background-color: oklch(53% 0.2 25);
+}
+.btn-destructive:hover {
+  background-color: oklch(47% 0.18 25);
 }
 
 .hero-btn-learn {
