@@ -4,6 +4,8 @@ import type { ImageMetadata } from 'astro';
 import { formatDate } from '@/lib/utils';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import BlogImageSVG from '@/components/blog/BlogImageSVG.astro';
+import HeroGrid from '@/components/effects/HeroGrid.astro';
+import HeroBeam from '@/components/effects/HeroBeam.astro';
 
 interface Props {
   title: string;
@@ -35,7 +37,10 @@ const estimatedWords = description.split(' ').length * 15;
 const readingTime = Math.max(1, Math.ceil(estimatedWords / wordsPerMinute));
 ---
 
-<header class="relative overflow-hidden pt-[var(--space-page-top-sm)] pb-[var(--space-section)]">
+<header class="article-hero relative isolate overflow-hidden pt-[var(--space-page-top-sm)] pb-[var(--space-section)]">
+  <HeroGrid />
+  <HeroBeam />
+
   <div class="relative z-[1] mx-auto max-w-4xl px-6 animate-hero-stagger">
     <!-- Tags -->
     {tags.length > 0 && (
@@ -129,3 +134,37 @@ const readingTime = Math.max(1, Math.ceil(estimatedWords / wordsPerMinute));
     </div>
   )}
 </header>
+
+<style>
+  /* The hero grid/beam span the whole <header>, which on the blog post also
+     contains the large featured image below the intro — so the pattern runs
+     far too low. Cap both with a soft vertical fade measured from the header
+     top so they disappear just under the intro text: under the H1 on mobile,
+     under the lead paragraph on desktop. (The beam's top light sits above
+     this fade, so only the grid is trimmed.) */
+  .article-hero :global(.hero-grid),
+  .article-hero :global(.hero-beam) {
+    --grid-fade-start: 200px;
+    --grid-fade-end: 320px;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0,
+      #000 var(--grid-fade-start),
+      transparent var(--grid-fade-end)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0,
+      #000 var(--grid-fade-start),
+      transparent var(--grid-fade-end)
+    );
+  }
+
+  @media (min-width: 1024px) {
+    .article-hero :global(.hero-grid),
+    .article-hero :global(.hero-beam) {
+      --grid-fade-start: 280px;
+      --grid-fade-end: 430px;
+    }
+  }
+</style>

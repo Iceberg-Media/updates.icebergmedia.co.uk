@@ -2,6 +2,8 @@
 import type { HTMLAttributes } from 'astro/types';
 import { cn } from '@/lib/cn';
 import { heroSectionVariants } from './hero.variants';
+import HeroGrid from '@/components/effects/HeroGrid.astro';
+import HeroBeam from '@/components/effects/HeroBeam.astro';
 
 interface Props extends HTMLAttributes<'section'> {
   /** Layout mode: centered single column or split two-column */
@@ -14,6 +16,8 @@ interface Props extends HTMLAttributes<'section'> {
   showGlow?: boolean;
   /** Show decorative gradient blob */
   showBlob?: boolean;
+  /** Render the light-mode architectural grid + dark-mode halo behind the hero */
+  showHeroHalo?: boolean;
   /** Blob position (only applies when showBlob is true) */
   blobPosition?: 'left' | 'right' | 'center';
   /** Fade the bottom of the section into the next section's background */
@@ -31,6 +35,7 @@ const {
   showBlob = false,
   blobPosition: _blobPosition = 'center',
   showGlow = false,
+  showHeroHalo = false,
   bottomFade = false,
   showScrollIndicator = false,
   fullHeight = false,
@@ -57,12 +62,15 @@ const contentClasses = cn(
 );
 
 const gridClasses = cn(
-  'mx-auto grid max-w-6xl grid-cols-1 items-center gap-[var(--space-section-gap)] px-6',
+  'relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-[var(--space-section-gap)] px-6',
   layout === 'split' && 'lg:grid-cols-2 lg:gap-[var(--space-section-gap)]'
 );
 ---
 
 <section class={sectionClasses} {...attrs}>
+  {showHeroHalo && <HeroGrid />}
+  {showHeroHalo && <HeroBeam />}
+
   {showGrid && (
     <div
       class="bg-grid-pattern pointer-events-none absolute inset-x-0 -inset-y-[20%] opacity-30 hidden md:dark:block"
