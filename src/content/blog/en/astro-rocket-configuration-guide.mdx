@@ -73,19 +73,19 @@ When `true`, a translucent brand-colour tint is applied over blog cover images. 
 Astro Rocket uses a 3-state colour-mode system — **System / Light / Dark** — instead of a binary toggle. Defaults are declared on the `<html>` element in `src/layouts/BaseLayout.astro`:
 
 ```html
-<html lang="en" class="scroll-smooth dark" data-theme="violet" data-theme-mode="system">
+<html lang="en" class="scroll-smooth dark" data-theme="blue" data-theme-mode="system">
 ```
 
 Three pieces of state cooperate:
 
 - `class="dark"` is the SSR fallback for visitors with JavaScript disabled — Tailwind's dark variant keys off it.
 - `data-theme-mode="system"` mirrors the user's saved choice and drives the icon shown in the header pill.
-- `data-theme="violet"` is the default colour palette.
+- `data-theme="blue"` is the default colour palette.
 
 For visitors with JavaScript enabled, the inline bootstrap script in `<head>` runs before body paint and reconciles all three values from storage:
 
 - `localStorage.theme` ∈ `'system' | 'light' | 'dark'` — the user's saved colour mode (default `'system'`)
-- `sessionStorage['color-theme']` — the active colour palette (default `'violet'`, resets per tab session)
+- `sessionStorage['color-theme']` — the active colour palette (default `'blue'`, resets per tab session)
 
 Under `'system'`, the bootstrap also subscribes to `window.matchMedia('(prefers-color-scheme: dark)')` once and re-applies on every OS flip. The full design — including the no-flash bootstrap, view-transition handling, and the header pill — is written up in [System, Light, Dark — How Astro Rocket's Colour-Mode System Works](/blog/colour-mode-system).
 
@@ -165,7 +165,7 @@ Astro Rocket ships with **12 colour themes**. All 12 are shown as coloured swatc
 The default theme is set with `data-theme` on the `<html>` element in `src/layouts/BaseLayout.astro`:
 
 ```html
-data-theme="violet"
+data-theme="indigo"
 ```
 
 Available values — all 12 themes:
@@ -180,8 +180,8 @@ Available values — all 12 themes:
 | `cyan` | 200° | Fresh, vibrant tech — more energetic than teal |
 | `sky` | 222° | Clean and airy — between teal and blue, great for services |
 | `blue` | 255° | Studio aesthetic (Linear/Raycast feel), authoritative |
-| `indigo` | 264° | Enterprise, productivity tools, serious B2B |
-| `violet` | 277° | Creative and premium — sweet spot between indigo and purple — the default |
+| `indigo` | 264° | Enterprise, productivity tools, serious B2B — the default |
+| `violet` | 277° | Creative and premium — sweet spot between indigo and purple |
 | `purple` | 303° | Expressive, personality-forward, vivid |
 | `magenta` | 330° | Creative agencies, bold personal brands — maximum vivid |
 
@@ -542,7 +542,7 @@ Remove any URL you don't use. The footer won't render an empty social section. I
 | Twitter card handles | `src/config/site.config.ts` | `twitter.site`, `twitter.creator` |
 | Search console verification | `.env` or `site.config.ts` | `verification.google/bing` |
 | Navigation items | `src/config/nav.config.ts` | `navItems` array |
-| Default colour theme | `src/layouts/BaseLayout.astro` | `data-theme="violet"` |
+| Default colour theme | `src/layouts/BaseLayout.astro` | `data-theme="indigo"` |
 | Default dark/light mode | `src/layouts/BaseLayout.astro` | `class="dark"` on `<html>` |
 | JSON-LD schema switches | `src/pages/index.astro` | `includePersonSchema`, `includeOrgSchema` |
 | noindex / nofollow | any layout | `noindex={true}`, `nofollow={true}` |
