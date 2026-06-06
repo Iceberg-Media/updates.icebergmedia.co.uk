@@ -7,6 +7,7 @@ import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
+import StackMarquee from '@/components/landing/StackMarquee.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
 
@@ -354,6 +355,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </div>
   </section>
 
+ <!-- Tech stack marquee — its own band: the tertiary background sets it apart as a standalone section, so the primary/secondary zebra of the sections above (Blog) and below (CTA) stays intact. Hidden on phones (portrait + landscape) via .stack-marquee-section; on phones the band drops out and the Blog→CTA zebra still alternates. -->
+  <section class="stack-marquee-section relative z-10 py-[var(--space-section-md)] bg-background-tertiary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6" data-reveal>
+      <StackMarquee />
+    </div>
+  </section>
+
  <!-- CTA -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <!-- Mobile: flat section, no card -->
@@ -439,6 +447,23 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   @media (min-width: 768px) {
     .hero-dark-gradient .hero-title-slot + div {
       max-width: 48rem;
+    }
+  }
+
+  /* Hide the tech-stack marquee band on mobile phones — both portrait and
+     landscape — while keeping it on tablets and desktops. Portrait phones are
+     caught by width; landscape phones are wider than the md breakpoint, so
+     they're caught by their short height plus a coarse (touch) pointer, which
+     excludes tablets (taller) and small laptop windows (fine pointer). The
+     whole section drops out, so on phones the Blog → CTA zebra still alternates. */
+  @media (max-width: 767px) {
+    .stack-marquee-section {
+      display: none;
+    }
+  }
+  @media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+    .stack-marquee-section {
+      display: none;
     }
   }
 </style>
