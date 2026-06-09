@@ -102,6 +102,14 @@ export interface SiteConfig {
     /** Logo alt text for accessibility */
     logo: {
       alt: string;
+      /**
+       * Optional path to a custom logo image in public/ (e.g. '/logo.svg').
+       * When set, it replaces the generated letter-monogram badge in the
+       * header, footer, and anywhere <Logo> is rendered — no layout edits
+       * needed. Leave unset to keep the monogram. Per-author byline avatars
+       * (which pass an explicit letter) are unaffected.
+       */
+      image?: string;
       /** Path to logo image for structured data (e.g. '/logo.png'). Add a PNG to public/ and set this. */
       imageUrl?: string;
     };
@@ -180,6 +188,7 @@ const siteConfig: SiteConfig = {
   branding: {
     logo: {
       alt: 'Astro Rocket',
+      // image: '/logo.svg', // Optional: set to a file in public/ to use a custom logo image instead of the letter monogram.
       imageUrl: '/favicon.svg',
     },
     favicon: {
