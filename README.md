@@ -68,7 +68,7 @@ The following changes were made to the free Velocity theme to create Astro Rocke
 | **Scroll Progress Bar** | A thin 2px brand-coloured bar on the header edge that fills as you scroll. Enabled on the homepage (above the floating header), blog index, and post pages (below the solid header). Controlled via `showScrollProgress` and `scrollProgressPosition` props on the Header component. |
 | **Design Tokens** | Three-tier token architecture (reference → semantic → component) |
 | **57 Components** | 33 UI, 7 patterns, 1 hero, 4 layout, 4 blog, 7 landing, 3 SEO — all accessible with TypeScript |
-| **Auto Logo & Favicon** | First letter of your site name on brand color — generated automatically from `site.config.ts`, no design tools needed |
+| **Auto Logo & Favicon** | First letter of your site name on brand color — generated automatically from `site.config.ts`, no design tools needed. Prefer your own logo? Set `branding.logo.image` to a file in `public/`. |
 | **Icon System** | Unified `Icon` component (Astro + React) — 350+ [Lucide](https://lucide.dev) UI icons and 3000+ [Simple Icons](https://simpleicons.org) brand icons via Iconify |
 | **Typing Effect** | Animated typing effect in the hero section |
 | **Page Animations** | Smooth page transitions via Astro View Transitions, scroll-triggered counter and score animations, scroll-reactive header, card hover effects, and a full suite of UI micro-animations — all with reduced-motion support |
@@ -274,6 +274,21 @@ const siteConfig = {
   },
 };
 ```
+
+### Custom Logo
+
+By default the logo is an auto-generated monogram — the first letter of `name` on the active brand color, no logo file required. To use your own logo image instead, drop a file in `public/` and set `branding.logo.image`:
+
+```typescript
+branding: {
+  logo: {
+    alt: 'Your Brand',
+    image: '/logo.svg', // any file in public/ — replaces the monogram everywhere
+  },
+},
+```
+
+That single field swaps the monogram for your image in the header, footer, and anywhere `<Logo>` is rendered — **no layout edits needed**. Leave `image` unset to keep the monogram. Square marks and wide wordmarks both render correctly, and blog author avatars keep their initials.
 
 ### Environment Variables
 
@@ -497,7 +512,7 @@ Astro Rocket includes 57 components across 7 categories. All UI components use [
 
 | Component | Description |
 |-----------|-------------|
-| Logo | Auto-generated monogram badge — renders the first letter of `siteConfig.name` on the active brand color. Five sizes: `sm`, `md`, `lg`, `xl`, `2xl`. No logo file required. |
+| Logo | Auto-generated monogram badge — renders the first letter of `siteConfig.name` on the active brand color. Five sizes: `sm`, `md`, `lg`, `xl`, `2xl`. No logo file required — or set `branding.logo.image` in `site.config.ts` to use a custom image instead. |
 | CTA | Call-to-action sections with slot-based composition |
 | NpmCopyButton | NPM install command with copy-to-clipboard |
 | SocialProof | Testimonial and trust indicator cards |
