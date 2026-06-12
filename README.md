@@ -82,6 +82,8 @@ The following changes were made to the free Velocity theme to create Astro Rocke
 | **Durable Internal Links** | Link between posts by a stable canonical id with `<PostLink uid="…">` instead of a slug, so renaming a post never breaks inbound links. Ids resolve to the correct locale-aware URL at build time, and a broken reference **fails the build** rather than shipping a 404. Add an optional `uid` to a post's frontmatter to make it linkable |
 | **Build-Time Content Validation** | The build fails with a clear error if two pieces of content resolve to the same URL within a locale (duplicate slugs across posts and pages), or if two posts claim the same canonical id — catching silent content mistakes before they ship |
 | **Independent Footer Menu** | Header and footer navigation configured separately in `nav.config.ts` (`navItems`, `footerNavItems`, `legalLinks`) — add a Privacy or Imprint link to the footer without cluttering the main nav |
+| **Static Search (Pagefind)** | Site-wide search in the header — a ⌘K / Ctrl+K modal powered by a [Pagefind](https://pagefind.app) index generated at build time. Zero JS until the modal opens; works on every deploy target. Hide it with `showSearch={false}` on the Header |
+| **Project Galleries** | Multiple images per project: a `gallery` array in frontmatter swaps the hero image for a swipeable carousel, and the `<ProjectGallery>` MDX component renders an in-body carousel with a click-to-zoom lightbox. See [Project Galleries](#project-galleries) |
 | **React Islands** | Optional client-side interactivity where needed |
 
 ### Internationalization (i18n)
@@ -602,6 +604,43 @@ Your content here...
 
 To link from one post to another, use `<PostLink uid="target-post-id">link text</PostLink>` in your MDX instead of a hard-coded `/blog/...` URL. The id resolves to the right URL at build time, and a broken reference fails the build — so renaming a post never leaves a dead internal link. Give a post an optional `uid` (above) to make it a link target. The [configuration guide](/blog/astro-rocket-configuration-guide) post has the full walkthrough.
 
+### Project Galleries
+
+Projects live in `src/content/projects/` as one MDX file per project, and there are two ways to show more than one image.
+
+**1. Hero carousel (frontmatter).** Add a `gallery` array and the project hero swaps the single `image` for a swipeable carousel (touch swipe, prev/next arrows, dot indicators, keyboard navigation). The first slide is the lead image:
+
+```yaml
+---
+title: "My Product"
+description: "..."
+gallery:
+  - src: "../../assets/projects/shot-1.jpg"
+    alt: "Dashboard view"
+  - src: "../../assets/projects/shot-2.jpg"
+    alt: "Settings page"
+---
+```
+
+Keep the single `image` field set as well — project cards on the index and homepage still use it.
+
+**2. In-body carousel with lightbox (MDX).** For an e-commerce-style gallery inside the project body, import the `ProjectGallery` component. Clicking a slide opens a full-screen lightbox, and each image takes an optional caption:
+
+```mdx
+import ProjectGallery from '@/components/projects/ProjectGallery.astro';
+import shot1 from '@/assets/projects/shot-1.jpg';
+import shot2 from '@/assets/projects/shot-2.jpg';
+
+<ProjectGallery
+  images={[
+    { src: shot1, alt: 'Dashboard', caption: 'The main dashboard' },
+    { src: shot2, alt: 'Settings' },
+  ]}
+/>
+```
+
+Both carousels are dependency-free (native scroll-snap plus a small vanilla script) and lazy-load every slide after the first, so they don't cost you the Lighthouse score. `src/content/projects/ecommerce-store.mdx` demonstrates both in one file.
+
 ### Querying Content
 
 ```astro
@@ -646,6 +685,34 @@ import SEO from '@/components/seo/SEO.astro';
 ### OG Image
 
 A static default OG image (`public/og-default.svg`) serves as the social preview for all pages. The path is set via `ogImage` in `src/config/site.config.ts`. To use a custom image for a specific page, pass it as the `image` prop to the layout component.
+
+---
+
+## Search
+
+Site-wide static search is powered by [Pagefind](https://pagefind.app) and surfaced as a search button in the header that opens a command-palette style modal (also bound to <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd>).
+
+**How it works**
+
+- The index is generated automatically at the end of every `astro build` by the `pagefind()` hook in `astro.config.mjs`. It indexes the real output directory on every deploy target (Vercel, Netlify, Cloudflare) — no extra build command needed.
+- The header and footer carry `data-pagefind-ignore`, so navigation chrome never pollutes results.
+- The modal lazy-loads the Pagefind bundle on first open, so search adds **zero JavaScript** to the initial page load and doesn't touch the Lighthouse score.
+
+**Trying it locally**
+
+The index only exists after a production build, so search has no results under `astro dev` (the modal tells you this instead of failing):
+
+```bash
+pnpm build && pnpm preview
+```
+
+**Turning it off**
+
+The search button shows by default. Hide it per header instance:
+
+```astro
+<Header showSearch={false} />
+```
 
 ---
 
