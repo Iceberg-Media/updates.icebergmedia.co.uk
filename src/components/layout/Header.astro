@@ -28,6 +28,7 @@ import { headerVariants, headerInnerVariants } from './header.variants';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
+import SearchModal from '@/components/layout/SearchModal.astro';
 import ThemeModeDropdown from '@/components/layout/ThemeModeDropdown.astro';
 import ThemeSelector from '@/components/layout/ThemeSelector.astro';
 import ThemeSelectorDropdown from '@/components/layout/ThemeSelectorDropdown.astro';
@@ -60,6 +61,7 @@ interface Props extends HTMLAttributes<'header'> {
   showCta?: boolean;
   cta?: { label?: string; href?: string; icon?: string; trailingIcon?: string };
   actions?: HeaderAction[];
+  showSearch?: boolean;
   showThemeToggle?: boolean;
   showThemeSelector?: boolean;
   showMobileMenu?: boolean;
@@ -91,6 +93,7 @@ const {
   showCta = false,
   cta = { label: 'Start a project', href: '/contact' },
   actions = [],
+  showSearch = true,
   showThemeToggle = true,
   showThemeSelector = true,
   showMobileMenu = true,
@@ -196,6 +199,7 @@ const buttonId = `${menuId}-button`;
 
 <header
   class={headerClasses}
+  data-pagefind-ignore
   data-menu-id={menuId}
   data-button-id={buttonId}
   data-header-shape={shape}
@@ -263,6 +267,12 @@ const buttonId = `${menuId}-button`;
           <slot name="actions" />
         ) : (
           <>
+            {showSearch && (
+              <div class="flex">
+                <SearchModal class={isFloating ? 'hdr-invert-text' : undefined} />
+              </div>
+            )}
+
             {showThemeToggle && (
               <div class="flex">
                 <ThemeModeDropdown class={isFloating ? 'hdr-invert-text' : undefined} />

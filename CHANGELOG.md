@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **Header search powered by Pagefind** — a search button in the header (next to the colour-mode pill, on by default, `showSearch={false}` to hide) opens a ⌘K / Ctrl+K command-palette modal (`src/components/layout/SearchModal.astro`). The static index is generated automatically at the end of every `astro build` by a new `pagefind()` hook in `astro.config.mjs`, which indexes the actual output directory on every deploy target (Vercel, Netlify, Cloudflare). The Pagefind bundle is lazy-loaded on first open, so initial page loads ship zero extra JavaScript; under `astro dev` (where no index exists) the modal explains how to build one instead of failing. Header and Footer now carry `data-pagefind-ignore` so navigation chrome stays out of results. The `pagefind` and `@pagefind/default-ui` packages were already dependencies — this wires the long-advertised feature up for real. (#395)
+- **Project gallery documentation + living example** — the multi-image project features were undocumented: the README now covers both the `gallery: [{ src, alt }]` frontmatter array (hero carousel, added in 1.4.0) and the in-body `<ProjectGallery>` MDX component with its click-to-zoom lightbox. `src/content/projects/ecommerce-store.mdx` demonstrates both in one file, with three placeholder storefront wireframes in `src/assets/projects/`. (#396)
+
+### Changed
+
+- **Removed `@pagefind/default-ui` dependency** — the search modal is a theme-native UI on the Pagefind JS API, so the prebuilt widget package is no longer needed.
+
+---
+
 ## [1.6.0] — 2026-06-07
 
 ### Added
