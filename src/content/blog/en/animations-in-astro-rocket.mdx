@@ -1,6 +1,6 @@
 ---
 title: "Animations in Astro Rocket — How the Premium Motion Design Works"
-description: "A deep dive into every animation layer in Astro Rocket: the spring-curve hero entrance, staggered cascades, scroll-reveal, and how it all stays smooth without a JS animation library."
+description: "A deep dive into every animation layer in Astro Rocket: the clean ease-out hero entrance, the staggered scroll-reveal cascade, and how it all stays smooth without a JS animation library."
 publishedAt: 2026-04-17
 author: "Hans Martens"
 tags: ["astro-rocket", "animation", "css", "ux", "performance"]
@@ -11,37 +11,45 @@ svgSlug: "animations-in-astro-rocket"
 imageAlt: "Layered motion lines and a rocket icon representing the animation system in Astro Rocket"
 ---
 
-Motion is one of those things that is easy to get wrong and invisible when it is right. Too fast and the page feels cheap. Too slow and it feels heavy. The wrong easing curve and something technically correct still feels off — like a door that swings open and then stops dead instead of settling.
+Motion is one of those things that is easy to get wrong and invisible when it is right. Too fast and the page feels cheap. Too slow and it feels heavy. The wrong easing curve and something technically correct still feels off — like a drawer that flies open and then stops dead instead of gliding to a close.
 
 [Astro Rocket](/projects/astro-rocket) ships a complete, layered animation system built entirely on CSS and a few dozen lines of JavaScript. No Framer Motion, no GSAP, no animation library of any kind. Every curve, every delay, every stagger is written by hand and tuned to feel like premium software.
 
 This post walks through every layer of that system: what plays, when it plays, and exactly how it is built.
 
-## The spring curve
+## One easing curve, everywhere
 
-Every entrance animation in Astro Rocket uses one easing curve:
+Almost every entrance in Astro Rocket rides a single easing curve:
 
 ```css
-cubic-bezier(0.22, 1.6, 0.36, 1)
+cubic-bezier(0.16, 1, 0.3, 1)
 ```
 
-The second control point sits above `1.0` on the Y axis, which is what makes it a spring rather than a standard ease-out. The element overshoots its final position slightly, then snaps back — a behaviour that approximates Framer Motion's `spring(stiffness: 100, damping: 15)` without any runtime dependency.
+It is a clean, strong ease-out — **not** a spring. Both control points sit high on the Y axis, so the element starts fast and decelerates to a smooth, complete stop. There is no overshoot and no bounce. That restraint is deliberate: a hero heading that springs past its mark and snaps back draws attention to the animation; one that glides to a stop draws attention to the content. Premium motion is calm.
 
-Standard ease-out stops at exactly its destination. The spring overshoots by a few pixels and settles. That extra movement is what makes an entrance feel like something arrived rather than something was placed.
+The same curve drives the hero entrance, the header drop-in, and the scroll-reveal transitions. Consistency in the timing function is what makes the whole page feel like one designed system rather than a pile of separate effects.
 
-The same curve drives both the hero entrance animations and the scroll-reveal transitions. The only difference is duration: hero elements take 1 second; scroll-reveal elements use 0.9 seconds for the transform and 0.8 seconds for the fade.
+There is exactly one variant. Two-column split sections opt into a slightly softer transform curve with `data-reveal-ease="smooth"`:
 
-The `opacity` transition uses a different curve — `cubic-bezier(0.16, 1, 0.3, 1)` — which is a smooth ease-out without overshoot. Opacity should not spring: an element that overshoots to `opacity: 1.1` is invisible (capped at 1), so the overshoot would be wasted motion. The spring is for the spatial movement only.
+```css
+[data-reveal][data-reveal-ease="smooth"] {
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+```
+
+Notice the two durations. The opacity settles in `0.8s`, but the transform keeps travelling for `1.1s` — so an element finishes fading in and then keeps gliding the last few pixels into place. That small overlap is the difference between "appeared" and "arrived."
 
 ## Hero entrance
 
-When a page loads, the hero content does not snap into place. Each element — badge, title, description, action buttons — slides up from 40 px below and fades in, one after another.
+When a page loads, the hero content does not snap into place. Each element — badge, title, description, action buttons — slides up from 80&nbsp;px below and fades in, one after another.
 
 ```css
 @keyframes hero-slide-up {
   from {
-    opacity: 0;
-    transform: translateY(40px);
+    opacity: 0.01;
+    transform: translateY(80px);
   }
   to {
     opacity: 1;
@@ -50,11 +58,13 @@ When a page loads, the hero content does not snap into place. Each element — b
 }
 ```
 
+The `from` opacity is `0.01`, not `0`. A truly invisible element can be skipped by the browser as a paint candidate, which can confuse Largest Contentful Paint timing; starting a hair above zero keeps every faded element on the books while staying invisible to the eye.
+
 The stagger is handled by a single parent class:
 
 ```css
 .animate-hero-stagger > * {
-  animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
+  animation: hero-slide-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .animate-hero-stagger > *:nth-child(1) { animation-delay: 0ms;   }
 .animate-hero-stagger > *:nth-child(2) { animation-delay: 90ms;  }
@@ -64,15 +74,30 @@ The stagger is handled by a single parent class:
 .animate-hero-stagger > *:nth-child(n+6) { animation-delay: 450ms; }
 ```
 
-Add `animate-hero-stagger` to any container and its direct children cascade in automatically. No JavaScript, no component wrappers, no props. The cascade reads naturally: badge, then title, then description, then buttons — each 90ms behind the last.
+Add `animate-hero-stagger` to any container and its direct children cascade in automatically — no JavaScript, no wrappers, no props. Each child enters 90&nbsp;ms behind the last: badge, then title, then description, then buttons. The `both` fill mode is what holds each element in its hidden start state until its delay fires, so nothing flashes at its resting position before the cascade reaches it.
 
-The `both` fill mode matters here. Without it, each element would be visible at its resting position between when the page renders and when its animation starts. With `both`, the element stays at `opacity: 0, translateY(40px)` until its delay fires, then plays in cleanly.
+### The LCP title never fades
 
-The hero screenshot or feature image that follows the content column uses `.animate-hero-slide-up` directly — the same keyframe, the same spring, no stagger needed since it enters as a single unit.
+The hero heading is usually the Largest Contentful Paint element, and an element painted below full opacity can be deferred or skipped as an LCP candidate. So the title opts out of the fade and rides a transform-only keyframe instead:
+
+```css
+@media (prefers-reduced-motion: no-preference) {
+  .animate-hero-stagger > .hero-title-slot {
+    animation-name: hero-rise;
+  }
+}
+
+@keyframes hero-rise {
+  from { transform: translateY(80px); }
+  to   { transform: translateY(0); }
+}
+```
+
+This overrides only the `animation-name`. The title keeps the stagger's duration, delay, easing, and fill mode — it still slides up in lockstep with everything else — but it is painted at full opacity from the very first frame. Wrapping the override in `prefers-reduced-motion: no-preference` means reduced-motion users fall straight through to the "no animation" rule further down.
 
 ## The header drop-in
 
-The header plays its own entrance alongside the hero, but from the opposite direction.
+The floating header plays its own entrance alongside the hero, but from the opposite direction.
 
 ```css
 @keyframes header-drop-in {
@@ -87,53 +112,70 @@ The header plays its own entrance alongside the hero, but from the opposite dire
 }
 
 .animate-header-drop {
-  animation: header-drop-in 0.8s cubic-bezier(0.22, 1.6, 0.36, 1) 150ms both;
+  animation: header-drop-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
 }
 ```
 
-As the hero content rises from below, the header lands from above. The 150ms delay means the hero starts moving first, and the header arrives just behind it — a counterpoint that reads as intentional choreography rather than two unrelated things animating at the same time.
-
-The `from` state uses `translate: -50% calc(-100% - 1.5rem)`. The `-50%` is needed because the floating header is horizontally centred with `left: 50%` — the hidden state mirrors this. The `calc(-100% - 1.5rem)` pushes it fully above the viewport, with the extra `1.5rem` matching the gap between the header and the top of the page so there is no visible peek before the animation starts.
+As the hero content rises from below, the header lands from above. The `150ms` delay lets the hero start moving first, so the header arrives just behind it — a counterpoint that reads as choreography rather than two unrelated things firing at once. The `-50%` X translate mirrors the header's centred resting position (`left: 50%`), and `calc(-100% - 1.5rem)` parks it just above the viewport so there is no peek before it drops.
 
 ## Scroll reveal
 
-Everything below the hero that should animate into view uses the scroll-reveal system. It has three modes depending on what you need to reveal.
+Everything below the hero that should animate into view uses the scroll-reveal system. The base is a single attribute:
 
-### Single elements — `[data-reveal]`
+```css
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(96px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
 
-Add `data-reveal` to any element and it starts invisible and transitions to visible when it crosses into the viewport.
-
-```html
-<div data-reveal>
-  This section fades and slides in as you scroll to it.
-</div>
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
 ```
 
-The default direction is up (the element starts 56px below its resting position). Three alternatives exist:
+Add `data-reveal` to any element and it starts invisible, 96&nbsp;px low, and transitions to its resting position when a `.is-visible` class is added (more on what adds it below). The default direction is up; four alternatives change only the starting transform:
 
 | Attribute | Starting position |
 |---|---|
-| `data-reveal` | `translateY(56px) scale(0.94)` |
-| `data-reveal="down"` | `translateY(-56px) scale(0.94)` |
-| `data-reveal="left"` | `translateX(56px) scale(0.94)` |
-| `data-reveal="right"` | `translateX(-56px) scale(0.94)` |
+| `data-reveal` | `translateY(96px)` |
+| `data-reveal="down"` | `translateY(-96px)` |
+| `data-reveal="left"` | `translateX(96px)` |
+| `data-reveal="right"` | `translateX(-96px)` |
 | `data-reveal="scale"` | `scale(0.88)` |
 
-The slight scale (0.94 down to the fully visible 1.0) adds depth to the entrance — the element does not just slide in, it also grows slightly into place.
-
-Delay can be stacked with `data-reveal-delay`:
+Side-by-side elements can be offset from each other with `data-reveal-delay`:
 
 ```html
-<div data-reveal data-reveal-delay="1">First</div>
-<div data-reveal data-reveal-delay="2">Second</div>
-<div data-reveal data-reveal-delay="3">Third</div>
+<div data-reveal>First</div>
+<div data-reveal data-reveal-delay="1">Second</div>
+<div data-reveal data-reveal-delay="2">Third</div>
 ```
 
-Delays are 100ms, 200ms, and 300ms respectively — useful for side-by-side elements where you want each one to read before the next appears.
+The delays are `100ms`, `200ms`, `300ms`, and `400ms` for `1` through `4` — useful when you want each element in a row to read a beat before the next.
+
+### One motion axis on small screens
+
+Two-column split sections stack into a single column below the `lg` breakpoint. A horizontal reveal there would slide content sideways while the hero above it rises — two motion axes at once, which feels uncoordinated on a phone. So horizontal reveals collapse to the default vertical rise on small screens:
+
+```css
+@media (max-width: 1023.98px) {
+  [data-reveal="left"],
+  [data-reveal="right"] {
+    transform: translateY(96px);
+  }
+}
+```
+
+Desktop keeps its side-by-side left/right entrances; everything narrower shares one upward axis with the hero.
 
 ### Card grids — `[data-reveal-children]`
 
-When you have a grid of cards, `data-reveal-children` cascades each direct child in sequence. The stagger and travel distance are tunable per grid:
+When you have a grid of cards, `data-reveal-children` cascades each direct child in sequence as soon as the container intersects. The stagger and travel distance are tunable per grid:
 
 ```html
 <div data-reveal-children style="--reveal-stagger: 80ms; --reveal-distance: 40px">
@@ -143,11 +185,11 @@ When you have a grid of cards, `data-reveal-children` cascades each direct child
 </div>
 ```
 
-The defaults are `--reveal-stagger: 100ms` and `--reveal-distance: 48px`. Override them inline or in a component's scoped styles. The grid triggers as a whole when the container intersects — all children then cascade from child 1 to child 12 (capped at 12 steps; anything beyond uses the same delay as child 12).
+The defaults are `--reveal-stagger: 100ms` and `--reveal-distance: 80px`. Children cascade from the first up to the twelfth; anything beyond the twelfth shares the twelfth's delay so a very long grid never trails off into a multi-second wait.
 
 ### Article bodies — `[data-reveal-content]`
 
-Long-form content — blog posts, project pages — uses a third mode. Add `data-reveal-content` to the prose container and each direct child gets its own observer. As the reader scrolls, paragraphs, headings, code blocks, and images reveal themselves one at a time.
+Long-form content — blog posts, project pages — uses a third mode. Add `data-reveal-content` to the prose container and every direct child gets its own observer, so paragraphs, headings, code blocks, and images each rise as the reader scrolls to them:
 
 ```astro
 <div class="prose" data-reveal-content>
@@ -155,56 +197,101 @@ Long-form content — blog posts, project pages — uses a third mode. Add `data
 </div>
 ```
 
-The travel distance here is 40px (shorter than the 56px used for sections) and the duration is slightly faster — 0.7s for opacity, 0.9s for transform. Long-form content should feel light and progressive, not heavy. Shorter distances and faster fades keep the reading experience uninterrupted.
+The travel here is shorter (`56px`) and the timing a touch quicker (`0.7s` opacity, `0.9s` transform). Reading should feel light and progressive, not like wading through a heavy entrance on every paragraph.
 
-### The JavaScript observer
+### Revealing on load — `data-reveal-eager`
 
-All three modes are driven by a single `IntersectionObserver` registered in `BaseLayout.astro`:
+Most reveals wait for the scroll. But on a listing page, a centred hero can push the first card *below* the fold on mobile — which would leave it sitting invisible until the reader scrolls, even though it is "the first thing." `data-reveal-eager` fixes that: a flagged element reveals on load, 250&nbsp;ms in, with the normal animation.
 
-```js
-const observer = new IntersectionObserver(function (entries) {
-  entries.forEach(function (entry) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+The subtle part is its row-mates. On a multi-column grid, the eager card's neighbours would otherwise ride the scroll observers on a different clock, so a side-by-side pair would enter visibly out of sync. The script groups each eager element with its same-row `[data-reveal]` siblings — detected by a shared `offsetTop` — and reveals the whole row in one tick. On a stacked single-column layout nothing shares a row, so mobile keeps its clean top-to-bottom order untouched.
+
+### Anchor jumps — `.reveal-instant`
+
+In-page anchor links are a special case: if you click a button that jumps to `#development`, you do not want that section sliding in *mid-jump*. The destination (and everything the jump scrolls past) is tagged `.reveal-instant`, which snaps those elements straight to their final state:
+
+```css
+.reveal-instant[data-reveal],
+.reveal-instant [data-reveal],
+.reveal-instant[data-reveal-children] > *,
+.reveal-instant [data-reveal-children] > * {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
 ```
 
-The `threshold: 0.15` means the element must be 15% visible before triggering. The negative `rootMargin` shrinks the detection zone slightly from the bottom, so elements trigger when the user has clearly scrolled them into view rather than at the first pixel.
+Natural scrolling is untouched and still animates — only the jumped-to content is pre-revealed.
 
-Above-the-fold elements — those whose top is already in the viewport on page load — skip the observer entirely. Instead they fire sequentially via `setTimeout`, staggered 80ms apart, starting 250ms after the script runs. This gives the hero entrance animation time to complete before the fold content begins to reveal.
+## The card cascade
 
-Elements that have already animated in (`is-visible`) are never re-observed. Once revealed, they stay revealed. The observer unobserves each target immediately after it triggers, keeping memory clean on long pages.
+Blog cards and project cards carry an explicit, index-based stagger, so the cascade is written into the markup rather than left to where each card happens to land on screen. The `BlogCard` component takes two props for it:
+
+```astro
+<BlogCard
+  title={post.data.title}
+  revealDelay={index % 3}
+  eager={index === 0}
+/>
+```
+
+`revealDelay` maps the map index onto `data-reveal-delay`. Listing pages pass a per-row modulo — `index % 3` on a three-column grid — so every row rises left to right; the homepage passes the index directly for its short featured row. `eager` marks the first card so it leads in on load. Project cards do the same inline with `data-reveal-delay={i % 2}` on their two-column grid. Either way the timing is baked into the markup, so a grid cascades cleanly the moment it scrolls into view instead of popping in card by card on the scroll observer's clock.
+
+## The JavaScript observer
+
+All of this is CSS. The only thing JavaScript does is decide *when* to add `.is-visible`. A single script in `BaseLayout.astro` wires it up with three `IntersectionObserver`s working together.
+
+First, a **first-pass** observer sorts elements into "already on screen" and "still below the fold" — using the rootBounds the observer hands back, so it never forces a synchronous layout read:
+
+```js
+const firstPass = new IntersectionObserver(function (entries) {
+  entries.sort(/* document order */);
+  entries.forEach(function (entry) {
+    firstPass.unobserve(entry.target);
+    if (entry.isIntersecting) {
+      const i = revealIndex++;
+      setTimeout(function () {
+        entry.target.classList.add('is-visible');
+      }, 250 + i * 80);
+    } else {
+      // hand off to a scroll-triggered observer
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px -25% 0px' });
+```
+
+Above-the-fold elements — those in the top 75% of the viewport on load — fire in document order, staggered 80&nbsp;ms apart starting 250&nbsp;ms in, so the fold reveals as one coordinated wave just after the hero entrance.
+
+Everything below the fold is handed to one of two scroll-triggered observers. Short elements use `threshold: 0.15`, so they are clearly on screen before they play; unusually tall elements (taller than ~85% of the viewport) drop to `threshold: 0`, so they still fire even though they can never be 15% visible. Both trigger a little deeper into the viewport on normal pages and a little earlier on eager listing pages:
+
+```js
+const belowFoldMargin = eager ? '0px 0px -5% 0px' : '0px 0px -15% 0px';
+```
+
+Eager elements skip the observers entirely — they and their grouped row-mates are revealed on a `250ms` timer. And once an element has revealed, it is unobserved immediately and never watched again. Reveals are one-way; scrolling back up does not replay them, and long pages stay cheap.
 
 ## Scroll-based features
 
-Two features update in real time as the user scrolls, both throttled with `requestAnimationFrame`:
+Two features update in real time as you scroll, both throttled with `requestAnimationFrame` and registered with `{ passive: true }` so they never block the main thread:
 
-**[Scroll progress bar](/blog/scroll-progress-bar)** — a 2px brand-coloured line that runs along the header edge (top or bottom, configurable) and fills from left to right as you scroll. Enabled on the homepage, the blog index, and individual posts.
+**[Scroll progress bar](/blog/scroll-progress-bar)** — a 2&nbsp;px brand-coloured line on the header edge that fills left to right as you scroll.
 
-**[Scroll progress ring](/blog/scroll-progress-ring)** — a circular SVG arc that draws clockwise around the back-to-top button as the page is scrolled. The arc radius and circumference are fixed (`r="21"`, circumference ≈ 131.95), and the fill is driven by a single `stroke-dashoffset` value calculated from `window.scrollY / scrollHeight`.
+**[Scroll progress ring](/blog/scroll-progress-ring)** — a circular SVG arc that draws clockwise around the back-to-top button, driven by a single `stroke-dashoffset` calculated from scroll position.
 
-Both use `var(--color-brand-500)` for their colour and update automatically whenever the visitor switches themes. The scroll listener is `{ passive: true }` on both — it never blocks the main thread.
+Both use `var(--color-brand-500)`, so they re-colour instantly whenever the visitor switches themes.
 
 ## The typing effect
 
-The [hero typing effect](/blog/hero-typing-effect) on the About page cycles through words with a character-by-character animation. It is built as a `setTimeout` loop — one character added or removed per tick — with three non-obvious fixes:
-
-1. The element width is locked to the widest word before the first character types, using an off-screen measuring span that inherits the same computed font. This prevents layout shift as words of different lengths cycle through.
-2. The animation listens on `astro:page-load` so it restarts correctly after client-side navigation.
-3. `overflow: hidden` was removed because it clips descenders at large heading sizes.
+The [hero typing effect](/blog/hero-typing-effect) on the About page cycles through words one character at a time. It is a `setTimeout` loop with three non-obvious fixes: the element width is locked to the widest word up front (via an off-screen measuring span) so nothing reflows as words of different lengths cycle; it restarts on `astro:page-load` so it survives client navigation; and `overflow: hidden` was removed because it clipped descenders at large heading sizes.
 
 ## Why no view transitions
 
-Astro ships a `ClientRouter` that intercepts navigation and crossfades between pages without a full browser reload. Astro Rocket intentionally does not use it.
+Astro ships a `ClientRouter` that crossfades between pages without a full reload. Astro Rocket intentionally does not use it.
 
-The reason is a compositing conflict: CSS keyframe animations that use `fill-mode: both` start their element in the animation's initial state (opacity 0, translated 40px). When a page transition swaps the DOM mid-navigation, the hero elements are introduced already in that hidden state. The incoming animation fires correctly, but on mobile and some desktop configurations there was a visible frame or two where the old page had faded out and the new page's hero had not yet started its entrance — a dark or blank flash that made the transition feel broken rather than seamless. A normal page load avoids this entirely: the browser renders the new page and the CSS starts from frame zero with no swap artifacts.
+The reason is a compositing conflict. Keyframe animations with `fill-mode: both` hold their element in the animation's *initial* state — opacity near zero, translated down — until the animation runs. When a view transition swaps the DOM mid-navigation, the incoming hero is introduced already in that hidden state, and on mobile there was a visible frame or two where the old page had faded out and the new hero had not yet started — a blank flash that made the transition feel broken. A normal page load avoids it entirely: the browser paints the new page and the CSS runs from frame zero, every time.
 
 ## Reduced motion
 
-Every animation respects `prefers-reduced-motion`:
+Every entrance respects `prefers-reduced-motion`:
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -224,16 +311,16 @@ Every animation respects `prefers-reduced-motion`:
 }
 ```
 
-When the user has enabled reduced motion in their OS settings, all entrance animations are replaced with immediate renders. Elements appear at full opacity in their resting position. The scroll behaviour, theme switching, and interactive components continue to work — only the decorative motion is removed.
+When reduced motion is requested, every entrance is replaced with an immediate render — elements appear at full opacity in their resting position. Scrolling, theme switching, and interactive components all keep working; only the decorative motion is removed.
 
 ## Why it works without a library
 
-Three things make this system hold together at the quality level of a paid animation toolkit:
+Three things hold this together at the quality of a paid animation toolkit:
 
-**One spring curve used everywhere.** `cubic-bezier(0.22, 1.6, 0.36, 1)` appears in the hero keyframes, the header drop-in, the scroll-reveal transitions, and the article-body reveals. The visual language is consistent because the timing function is consistent.
+**One easing curve used everywhere.** `cubic-bezier(0.16, 1, 0.3, 1)` appears in the hero keyframes, the header drop-in, the scroll-reveal transitions, and the article-body reveals. The motion language is consistent because the timing function is consistent.
 
-**CSS does the work.** The JavaScript only adds and removes the `.is-visible` class. All the visual behaviour — starting position, transition duration, easing, delay — lives in the stylesheet. This means the animations are composited on the GPU, never block the main thread, and cost nothing when not triggered.
+**CSS does the work.** JavaScript only toggles a class. Starting position, duration, easing, delay — all of it lives in the stylesheet, so the animations composite on the GPU, never block the main thread, and cost nothing until they are triggered.
 
-**Cascade precedence is explicit.** The animation rules live outside every Tailwind `@layer`, making them unlayered CSS. Unlayered rules win over any `@layer`-scoped utility — so no Tailwind class can accidentally override a `transition` or `animation` property that the system depends on.
+**Cascade precedence is explicit.** The animation rules live outside every Tailwind `@layer`, which makes them unlayered CSS — and unlayered rules win over any `@layer`-scoped utility. No Tailwind class can accidentally override a `transition` or `animation` the system depends on.
 
-The full system is in `src/styles/global.css` and the observer script in `src/layouts/BaseLayout.astro`. See the [Astro Rocket project page](/projects/astro-rocket) for the full picture of what ships in the starter.
+The full system lives in `src/styles/global.css`, and the observer script in `src/layouts/BaseLayout.astro`. See the [Astro Rocket project page](/projects/astro-rocket) for the full picture of what ships in the starter.
