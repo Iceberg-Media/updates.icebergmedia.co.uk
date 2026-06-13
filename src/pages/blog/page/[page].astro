@@ -82,7 +82,7 @@ const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
       </div>
 
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {pagePosts.map((post) => (
+        {pagePosts.map((post, index) => (
           <BlogCard
             title={post.data.title}
             description={post.data.description}
@@ -92,6 +92,8 @@ const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
             author={post.data.author}
             image={post.data.image}
             svgSlug={post.data.svgSlug}
+            revealDelay={index % 3}
+            eager={index === 0}
           />
         ))}
       </div>
