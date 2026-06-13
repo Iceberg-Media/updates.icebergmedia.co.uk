@@ -359,9 +359,9 @@ const locale = getLocaleFromPath(Astro.url.pathname);
           const belowFoldMargin = eager ? '0px 0px -5% 0px' : '0px 0px -15% 0px';
 
           // Two scroll-triggered observers for below-fold elements. Tall
-          // elements (taller than ~85% of the viewport) use threshold 0 so
-          // they still fire; shorter elements use 0.15 so animations feel
-          // earned (the user actually sees them play).
+          // elements (taller than ~85% of the viewport — long code blocks,
+          // large embeds) use threshold 0 so they still fire; shorter
+          // elements use 0.15 so animations feel earned.
           const shortObs = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
@@ -382,11 +382,13 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 
           // First-pass observer: hands us boundingClientRect and rootBounds
           // for each element without forcing a synchronous layout read. The
-          // browser computes the geometry off the main thread, replacing
-          // the previous getBoundingClientRect() classifier loop that
-          // Lighthouse flagged as a ~76ms forced reflow.
-          // rootMargin -25% bottom defines "above-the-fold" as the top 75%
-          // of the viewport, matching the prior `rect.top < vh*0.75` rule.
+          // browser computes the geometry off the main thread, so this
+          // replaces the previous getBoundingClientRect() loop that caused
+          // Lighthouse to flag a 76ms forced reflow.
+          //
+          // rootMargin -25% on the bottom defines "above-the-fold" as the
+          // top 75% of the viewport, matching the prior `rect.top < vh*0.75`
+          // condition.
           let revealIndex = 0;
           const firstPass = new IntersectionObserver(function (entries) {
             // Preserve document order so the above-fold stagger is stable.
