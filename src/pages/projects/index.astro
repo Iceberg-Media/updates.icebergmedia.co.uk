@@ -10,13 +10,10 @@ import Card from '@/components/ui/data-display/Card/Card.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
-import ProjectTagList from '@/components/projects/ProjectTagList.astro';
 import { getCollection } from 'astro:content';
-import { collectTopProjectTags, PROJECT_TAG_CLOUD_LIMIT } from '@/lib/projects';
 
 const items = await getCollection('projects', ({ data }) => !data.draft);
 const projects = items.sort((a, b) => a.data.order - b.data.order);
-const topTags = collectTopProjectTags(projects, PROJECT_TAG_CLOUD_LIMIT);
 ---
 
 <PageLayout
@@ -37,12 +34,6 @@ const topTags = collectTopProjectTags(projects, PROJECT_TAG_CLOUD_LIMIT);
       Work I'm most proud of.
     </p>
   </Hero>
-
-  {topTags.length > 0 && (
-    <div class="mx-auto max-w-6xl px-6 -mt-2 flex justify-center" data-reveal>
-      <ProjectTagList tags={topTags} class="justify-center" />
-    </div>
-  )}
 
   <!-- All projects -->
   {projects.length > 0 && (
