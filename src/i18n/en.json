@@ -78,7 +78,7 @@
     "toggleTheme": "Toggle theme"
   },
   "footer": {
-    "copyright": "© {year} {name}. All rights reserved.",
+    "copyright": "© {year} {siteName}. All rights reserved.",
     "builtWith": "Built with Astro Rocket"
   }
 }

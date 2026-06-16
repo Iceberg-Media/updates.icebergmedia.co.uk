@@ -27,6 +27,7 @@ import { footerVariants, footerColumnGridVariants } from './footer.variants';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import siteConfig from '@/config/site.config';
+import { t, getLocaleFromPath, defaultLocale } from '@/i18n';
 
 export interface NavItem {
   label: string;
@@ -67,7 +68,11 @@ interface Props extends HTMLAttributes<'footer'> {
   showSocial?: boolean;
   /** Show copyright */
   showCopyright?: boolean;
-  /** Custom copyright text (supports {year} and {siteName} placeholders) */
+  /**
+   * Custom copyright text (supports {year} and {siteName} placeholders).
+   * When omitted, the default locale shows the designer credit and other
+   * locales fall back to the localized `footer.copyright` string.
+   */
   copyright?: string;
   /** Legal links (Privacy, Terms, etc.) */
   legalLinks?: LegalLink[];
@@ -88,7 +93,7 @@ const {
   socialLinks = [],
   showSocial = true,
   showCopyright = true,
-  copyright = '© {year} {siteName}. Designed by <a href="https://hansmartens.dev" class="underline hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">Hans Martens</a>.',
+  copyright,
   legalLinks,
   hideLogo = false,
   tagline,
@@ -118,9 +123,20 @@ const allNavItems: NavItem[] = navItems;
 // Resolved legal links: prop wins, otherwise fall back to nav.config.ts
 const resolvedLegalLinks: LegalLink[] = legalLinks ?? getLegalLinks();
 
+// Copyright resolution:
+// - An explicit `copyright` prop always wins.
+// - Otherwise the default locale keeps the full designer credit, while
+//   translated locales use the localized `footer.copyright` string (which
+//   omits the credit). Both support {year} and {siteName} placeholders.
+const defaultCopyright =
+  '© {year} {siteName}. Designed by <a href="https://hansmartens.dev" class="underline hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">Hans Martens</a>.';
+const locale = getLocaleFromPath(Astro.url.pathname);
+const copyrightTemplate =
+  copyright ?? (locale === defaultLocale ? defaultCopyright : t('footer.copyright', locale));
+
 // Process copyright text
 const currentYear = new Date().getFullYear();
-const processedCopyright = copyright
+const processedCopyright = copyrightTemplate
   .replace('{year}', String(currentYear))
   .replace('{siteName}', siteConfig.name);
 

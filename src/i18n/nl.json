@@ -78,7 +78,7 @@
     "toggleTheme": "Wissel thema"
   },
   "footer": {
-    "copyright": "© {year} {name}. Alle rechten voorbehouden.",
+    "copyright": "© {year} {siteName}. Alle rechten voorbehouden.",
     "builtWith": "Gebouwd met Astro Rocket"
   }
 }
