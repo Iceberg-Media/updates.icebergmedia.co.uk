@@ -30,6 +30,9 @@
     "tableOfContents": "Inhoudsopgave",
     "shareThisPost": "Deel dit bericht"
   },
+  "comments": {
+    "title": "Reacties"
+  },
   "projects": {
     "title": "Projecten",
     "description": "Dingen die ik heb gebouwd",
@@ -75,7 +78,7 @@
     "toggleTheme": "Wissel thema"
   },
   "footer": {
-    "copyright": "© {year} {name}. Alle rechten voorbehouden.",
+    "copyright": "© {year} {siteName}. Alle rechten voorbehouden.",
     "builtWith": "Gebouwd met Astro Rocket"
   }
 }

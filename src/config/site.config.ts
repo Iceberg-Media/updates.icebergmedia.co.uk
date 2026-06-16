@@ -96,7 +96,18 @@ export interface SiteConfig {
         reactionsEnabled?: boolean;
         emitMetadata?: boolean;
         inputPosition?: 'top' | 'bottom';
+        /**
+         * Giscus theme. Leave empty (the default) to follow the site's own
+         * light/dark mode — resolved on the client and kept in sync as the
+         * visitor toggles. Set a specific Giscus theme name (e.g.
+         * 'dark_dimmed', 'preferred_color_scheme') to override.
+         */
         theme?: string;
+        /**
+         * Giscus language. Leave empty (the default) to follow the site's
+         * current locale. Set a specific Giscus lang code (e.g. 'en', 'nl')
+         * to override.
+         */
         lang?: string;
       };
     };
@@ -196,8 +207,9 @@ const siteConfig: SiteConfig = {
         reactionsEnabled: true,
         emitMetadata: false,
         inputPosition: 'bottom',
-        theme: 'preferred_color_scheme',
-        lang: 'en',
+        // Empty → follow the site's light/dark mode and current locale.
+        theme: '',
+        lang: '',
       },
     },
   },

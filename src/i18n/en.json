@@ -30,6 +30,9 @@
     "tableOfContents": "Table of contents",
     "shareThisPost": "Share this post"
   },
+  "comments": {
+    "title": "Comments"
+  },
   "projects": {
     "title": "Projects",
     "description": "Things I've built",
@@ -75,7 +78,7 @@
     "toggleTheme": "Toggle theme"
   },
   "footer": {
-    "copyright": "© {year} {name}. All rights reserved.",
+    "copyright": "© {year} {siteName}. All rights reserved.",
     "builtWith": "Built with Astro Rocket"
   }
 }
