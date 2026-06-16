@@ -30,6 +30,9 @@
     "tableOfContents": "Inhoudsopgave",
     "shareThisPost": "Deel dit bericht"
   },
+  "comments": {
+    "title": "Reacties"
+  },
   "projects": {
     "title": "Projecten",
     "description": "Dingen die ik heb gebouwd",

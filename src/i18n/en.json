@@ -30,6 +30,9 @@
     "tableOfContents": "Table of contents",
     "shareThisPost": "Share this post"
   },
+  "comments": {
+    "title": "Comments"
+  },
   "projects": {
     "title": "Projects",
     "description": "Things I've built",
