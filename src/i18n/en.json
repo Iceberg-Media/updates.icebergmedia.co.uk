@@ -28,7 +28,11 @@
     "draft": "Draft",
     "noPostsFound": "No posts found.",
     "tableOfContents": "Table of contents",
-    "shareThisPost": "Share this post"
+    "shareThisPost": "Share this post",
+    "relatedPosts": "Related Posts",
+    "share": "Share:",
+    "shareOn": "Share on {platform}",
+    "copyLink": "Copy link"
   },
   "comments": {
     "title": "Comments"
@@ -42,6 +46,7 @@
   },
   "pagination": {
     "page": "Page {current} of {total}",
+    "label": "Pagination",
     "previousPage": "Previous page",
     "nextPage": "Next page"
   },
@@ -79,6 +84,7 @@
   },
   "footer": {
     "copyright": "© {year} {siteName}. All rights reserved.",
-    "builtWith": "Built with Astro Rocket"
+    "builtWith": "Built with Astro Rocket",
+    "followOn": "Follow us on {platform}"
   }
 }

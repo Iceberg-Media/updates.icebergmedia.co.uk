@@ -28,7 +28,11 @@
     "draft": "Concept",
     "noPostsFound": "Geen berichten gevonden.",
     "tableOfContents": "Inhoudsopgave",
-    "shareThisPost": "Deel dit bericht"
+    "shareThisPost": "Deel dit bericht",
+    "relatedPosts": "Gerelateerde berichten",
+    "share": "Delen:",
+    "shareOn": "Deel op {platform}",
+    "copyLink": "Link kopiëren"
   },
   "comments": {
     "title": "Reacties"
@@ -42,6 +46,7 @@
   },
   "pagination": {
     "page": "Pagina {current} van {total}",
+    "label": "Paginering",
     "previousPage": "Vorige pagina",
     "nextPage": "Volgende pagina"
   },
@@ -79,6 +84,7 @@
   },
   "footer": {
     "copyright": "© {year} {siteName}. Alle rechten voorbehouden.",
-    "builtWith": "Gebouwd met Astro Rocket"
+    "builtWith": "Gebouwd met Astro Rocket",
+    "followOn": "Volg ons op {platform}"
   }
 }

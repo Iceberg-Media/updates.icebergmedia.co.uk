@@ -215,7 +215,7 @@ function getSocialIcon(platform: string): string {
                   class="transition-colors text-foreground-muted hover:text-foreground"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label || `Follow us on ${social.platform}`}
+                  aria-label={social.label || t('footer.followOn', locale, { platform: social.platform })}
                 >
                   <Icon name={getSocialIcon(social.platform)} size="md" />
                 </a>
@@ -262,7 +262,7 @@ function getSocialIcon(platform: string): string {
                       class="transition-colors text-foreground-muted hover:text-foreground"
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={social.label || `Follow us on ${social.platform}`}
+                      aria-label={social.label || t('footer.followOn', locale, { platform: social.platform })}
                     >
                       <Icon name={getSocialIcon(social.platform)} size="md" />
                     </a>
@@ -383,7 +383,7 @@ function getSocialIcon(platform: string): string {
                 class="transition-colors text-foreground-muted hover:text-foreground"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={social.label || `Follow us on ${social.platform}`}
+                aria-label={social.label || t('footer.followOn', locale, { platform: social.platform })}
               >
                 <Icon name={getSocialIcon(social.platform)} size="md" />
               </a>
