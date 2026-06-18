@@ -27,10 +27,10 @@ const posts = (await getCollection('blog', ({ data }) => data.locale === default
   .slice(0, 4);
 
 // Hero marquee — a focused subset of the tech stack, in this order, pulled from
-// the same `stack` collection so icons and links stay single-sourced. Six logos
+// the same `stack` collection so icons and links stay single-sourced. Seven logos
 // are wide enough to fill the constrained hero width and loop seamlessly on their
 // own; the Tech-stack section further down still shows the full stack.
-const heroStackOrder = ['Astro', 'Tailwind CSS', 'TypeScript', 'React', 'GitHub', 'Vercel'];
+const heroStackOrder = ['Astro', 'Tailwind CSS', 'TypeScript', 'React', 'GitHub', 'Vercel', 'Claude'];
 const heroStackItems = (await getCollection('stack'))
   .filter((e) => heroStackOrder.includes(e.data.name))
   .sort((a, b) => heroStackOrder.indexOf(a.data.name) - heroStackOrder.indexOf(b.data.name))
