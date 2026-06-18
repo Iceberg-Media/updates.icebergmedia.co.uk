@@ -58,11 +58,12 @@
   "newsletter": {
     "heading": "Abonneer op de nieuwsbrief",
     "description": "Ontvang de nieuwste berichten in je inbox.",
-    "emailPlaceholder": "jouw@email.nl",
+    "emailPlaceholder": "Voer je e-mailadres in",
     "subscribe": "Abonneren",
     "subscribing": "Bezig met abonneren…",
-    "success": "Bedankt! Controleer je inbox om te bevestigen.",
-    "error": "Er ging iets mis. Probeer het opnieuw."
+    "success": "Bedankt voor je aanmelding!",
+    "genericError": "Er ging iets mis",
+    "error": "Aanmelding mislukt. Probeer het opnieuw."
   },
   "contact": {
     "heading": "Neem contact op",
@@ -72,8 +73,9 @@
     "message": "Bericht",
     "send": "Verstuur bericht",
     "sending": "Bezig met verzenden…",
-    "success": "Bedankt! Je bericht is verstuurd.",
-    "error": "Er ging iets mis. Probeer het opnieuw."
+    "success": "Bericht succesvol verzonden!",
+    "genericError": "Er ging iets mis",
+    "error": "Verzenden mislukt. Probeer het opnieuw."
   },
   "theme": {
     "selectTheme": "Selecteer thema",

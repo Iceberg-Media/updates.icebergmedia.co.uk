@@ -58,11 +58,12 @@
   "newsletter": {
     "heading": "Subscribe to the newsletter",
     "description": "Get the latest posts in your inbox.",
-    "emailPlaceholder": "your@email.com",
+    "emailPlaceholder": "Enter your email",
     "subscribe": "Subscribe",
     "subscribing": "Subscribing…",
-    "success": "Thanks! Please check your inbox to confirm.",
-    "error": "Something went wrong. Please try again."
+    "success": "Thanks for subscribing!",
+    "genericError": "Something went wrong",
+    "error": "Subscription failed. Please try again."
   },
   "contact": {
     "heading": "Get in touch",
@@ -72,8 +73,9 @@
     "message": "Message",
     "send": "Send message",
     "sending": "Sending…",
-    "success": "Thanks! Your message has been sent.",
-    "error": "Something went wrong. Please try again."
+    "success": "Message sent successfully!",
+    "genericError": "Something went wrong",
+    "error": "Failed to send message. Please try again."
   },
   "theme": {
     "selectTheme": "Select theme",
