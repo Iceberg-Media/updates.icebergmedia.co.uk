@@ -4,6 +4,7 @@ import Textarea from '@/components/ui/form/Textarea/Textarea.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { cn } from '@/lib/cn';
+import { t, getLocaleFromPath } from '@/i18n';
 
 interface Props {
   action?: string;
@@ -11,9 +12,11 @@ interface Props {
   class?: string;
 }
 
+const locale = getLocaleFromPath(Astro.url.pathname);
+
 const {
   action = '/api/contact',
-  successMessage = 'Message sent successfully!',
+  successMessage = t('contact.success', locale),
   class: className,
 } = Astro.props;
 ---
@@ -24,18 +27,21 @@ const {
   method="POST"
   class={cn('space-y-6', className)}
   data-success-message={successMessage}
+  data-sending={t('contact.sending', locale)}
+  data-generic-error={t('contact.genericError', locale)}
+  data-error-message={t('contact.error', locale)}
 >
   <!-- Name + Email side by side on sm+ -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <Input
-      label="Name"
+      label={t('contact.name', locale)}
       name="name"
       type="text"
       required
       autocomplete="name"
     />
     <Input
-      label="Email"
+      label={t('contact.email', locale)}
       name="email"
       type="email"
       required
@@ -44,13 +50,13 @@ const {
   </div>
 
   <Input
-    label="Subject"
+    label={t('contact.subject', locale)}
     name="subject"
     type="text"
   />
 
   <Textarea
-    label="Message"
+    label={t('contact.message', locale)}
     name="message"
     required
     rows={5}
@@ -65,7 +71,7 @@ const {
 
   <div class="flex justify-center">
     <Button type="submit" id="submit-button" class="gap-2 cta-btn-brand">
-      Send message
+      {t('contact.send', locale)}
       <Icon name="arrow-right" size="sm" />
     </Button>
   </div>
@@ -86,7 +92,7 @@ const {
       e.preventDefault();
 
       button.disabled = true;
-      button.textContent = 'Sending…';
+      button.textContent = form.dataset.sending || 'Sending…';
       message.classList.add('hidden');
 
       try {
@@ -105,12 +111,12 @@ const {
         } else {
           const errors = data.errors
             ? Object.values(data.errors).flat().join(', ')
-            : 'Something went wrong';
+            : (form.dataset.genericError || 'Something went wrong');
           message.textContent = errors as string;
           message.className = 'text-sm text-destructive';
         }
       } catch {
-        message.textContent = 'Failed to send message. Please try again.';
+        message.textContent = form.dataset.errorMessage || 'Failed to send message. Please try again.';
         message.className = 'text-sm text-destructive';
       } finally {
         button.disabled = false;
