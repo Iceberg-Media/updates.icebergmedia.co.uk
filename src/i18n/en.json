@@ -53,7 +53,18 @@
   "errors": {
     "pageNotFound": "Page not found",
     "pageNotFoundMessage": "The page you're looking for doesn't exist or has moved.",
-    "goHome": "Go to homepage"
+    "goHome": "Go to homepage",
+    "badge": "404 — page not found",
+    "titleLead": "Page not",
+    "titleHighlight": "found.",
+    "description": "This page has moved, been removed, or never existed in the first place. Let's get you back on track.",
+    "backHome": "Back to home",
+    "browseBlog": "Browse the blog",
+    "tryInstead": "Try one of these instead",
+    "projectsDesc": "Selected work and case studies.",
+    "blogDesc": "Notes on design, code, and the craft.",
+    "contactTitle": "Contact",
+    "contactDesc": "Start a conversation about your project."
   },
   "newsletter": {
     "heading": "Subscribe to the newsletter",

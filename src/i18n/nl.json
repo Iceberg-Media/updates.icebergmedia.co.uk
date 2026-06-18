@@ -53,7 +53,18 @@
   "errors": {
     "pageNotFound": "Pagina niet gevonden",
     "pageNotFoundMessage": "De pagina die je zoekt bestaat niet of is verplaatst.",
-    "goHome": "Naar de homepagina"
+    "goHome": "Naar de homepagina",
+    "badge": "404 — pagina niet gevonden",
+    "titleLead": "Pagina niet",
+    "titleHighlight": "gevonden.",
+    "description": "Deze pagina is verplaatst, verwijderd of heeft nooit bestaan. Laten we je weer op weg helpen.",
+    "backHome": "Terug naar home",
+    "browseBlog": "Bekijk de blog",
+    "tryInstead": "Probeer een van deze",
+    "projectsDesc": "Geselecteerd werk en casestudy's.",
+    "blogDesc": "Aantekeningen over ontwerp, code en het vak.",
+    "contactTitle": "Contact",
+    "contactDesc": "Begin een gesprek over je project."
   },
   "newsletter": {
     "heading": "Abonneer op de nieuwsbrief",
