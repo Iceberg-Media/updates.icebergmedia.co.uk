@@ -1,7 +1,11 @@
+import { defaultLocale } from '@/i18n';
+
 /**
- * Format a date for display
+ * Format a date for display. Defaults to the site's default locale so dates
+ * read correctly per language (e.g. "24 juni 2026" on a Dutch page, "2026年6月24日"
+ * on a Chinese one); callers that know the active locale should pass it.
  */
-export function formatDate(date: Date, locale = 'en-US'): string {
+export function formatDate(date: Date, locale: string = defaultLocale): string {
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
