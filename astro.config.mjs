@@ -8,17 +8,36 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
 import netlify from '@astrojs/netlify';
+import cloudflare from '@astrojs/cloudflare';
 import i18nConfig from './src/config/i18n.config.ts';
 
-const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
+/**
+ * Deploy-target adapter selection. Vercel is the default; set
+ * `DEPLOY_TARGET=netlify` or `DEPLOY_TARGET=cloudflare` to build for those
+ * platforms instead. All three keep `output: 'static'`, so every page is
+ * prerendered and only the `prerender = false` API routes (the contact form
+ * and newsletter) ship as the platform's serverless/edge function — on
+ * Cloudflare Pages, as a Pages Function.
+ */
+const deployTarget = process.env.DEPLOY_TARGET;
+function resolveAdapter() {
+  switch (deployTarget) {
+    case 'netlify':
+      return netlify();
+    case 'cloudflare':
+      return cloudflare();
+    default:
+      return vercel();
+  }
+}
 
 /**
  * Pagefind static search index, generated after every `astro build`.
  *
  * Runs in the `astro:build:done` hook so it indexes the *actual* output
- * directory — the Vercel adapter writes to `.vercel/output/static`, Netlify
- * and plain static builds to `dist/` — without the build command needing to
- * know which. The index is served from `/pagefind/` and loaded lazily by
+ * directory — the Vercel adapter writes to `.vercel/output/static`, Netlify,
+ * Cloudflare, and plain static builds to `dist/` — without the build command
+ * needing to know which. The index is served from `/pagefind/` and loaded lazily by
  * `src/components/layout/SearchModal.astro`; `astro dev` has no index, and
  * the search modal explains that instead of erroring.
  */
@@ -60,7 +79,7 @@ const astroI18nOptions = i18nEnabled
 
 export default defineConfig({
   output: 'static',
-  adapter: isNetlify ? netlify() : vercel(),
+  adapter: resolveAdapter(),
   site: process.env.SITE_URL || 'https://example.com',
   ...(astroI18nOptions ? { i18n: astroI18nOptions } : {}),
 

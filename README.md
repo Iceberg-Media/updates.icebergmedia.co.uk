@@ -827,19 +827,20 @@ vercel
 netlify deploy --prod
 ```
 
-### Cloudflare Pages
+### Cloudflare
+
+Astro's Cloudflare adapter (`@astrojs/cloudflare`) targets **Cloudflare Workers** (the platform behind today's "Workers & Pages"): the prerendered pages are served as static assets and the `/api/*` routes — the contact form and newsletter — run as the Worker. Build with the Cloudflare target, then deploy with Wrangler:
 
 ```bash
-wrangler pages deploy dist
+DEPLOY_TARGET=cloudflare pnpm build
+npx wrangler deploy
 ```
 
-### Static Export
+The build generates the Worker and static-asset config automatically; the bundled `wrangler.toml` adds the `nodejs_compat` flag the API routes need. Prefer the dashboard? In **Workers & Pages → Create → Connect to Git**, set the build command to `DEPLOY_TARGET=cloudflare pnpm build`. Either way, add your secrets — `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `NEWSLETTER_API_KEY` — plus `SITE_URL` as environment variables so the contact form and newsletter work.
 
-Build outputs to `dist/` for any static host:
+### Static export (no serverless)
 
-```bash
-pnpm build
-```
+`pnpm build` uses the default Vercel adapter and writes the static site to `dist/client/`. You can host that folder on any static host — but the `/api/*` routes (contact form, newsletter) need a serverless/edge runtime, so on a purely static host you'd wire those forms up to an external service instead.
 
 ---
 
