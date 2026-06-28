@@ -418,6 +418,7 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
             author={post.data.author}
             image={post.data.image}
             svgSlug={post.data.svgSlug}
+            body={post.body}
             revealDelay={index}
             class={index === 3 ? 'hidden sm:block lg:hidden' : undefined}
           />
