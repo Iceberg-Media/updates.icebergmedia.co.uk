@@ -46,6 +46,8 @@ interface Props {
   toc?: boolean;
   /** Per-post override: hide comments on this post */
   comments?: boolean;
+  /** Raw post body, forwarded to ArticleHero for the reading-time estimate. */
+  body?: string;
 }
 
 const {
@@ -64,6 +66,7 @@ const {
   headings = [],
   toc: tocOverride,
   comments: commentsOverride,
+  body,
 } = Astro.props;
 
 // Resolve opt-in features (site config + per-post overrides).
@@ -164,6 +167,7 @@ const languageAlternates = Object.fromEntries(
     image={image}
     imageAlt={imageAlt}
     svgSlug={svgSlug}
+    body={body}
   />
 
   <article class="pt-8 pb-[var(--space-section-md)]">
