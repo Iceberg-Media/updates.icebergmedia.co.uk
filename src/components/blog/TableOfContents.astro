@@ -10,6 +10,7 @@
  * - Heading IDs are added automatically by Astro's MDX integration
  */
 import type { MarkdownHeading } from 'astro';
+import { t, getLocaleFromPath } from '@/i18n';
 
 interface Props {
   headings: MarkdownHeading[];
@@ -27,9 +28,14 @@ const {
   headings,
   maxDepth = 3,
   minHeadings = 3,
-  title = 'On this page',
+  title,
   sticky = false,
 } = Astro.props;
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+// Default the heading to the localized "On this page"; an explicit `title`
+// prop still overrides it.
+const tocTitle = title ?? t('blog.onThisPage', locale);
 
 const items = headings.filter((h) => h.depth >= 2 && h.depth <= maxDepth);
 const shouldRender = items.length >= minHeadings;
@@ -50,7 +56,7 @@ const headingId = `toc-heading-${Math.random().toString(36).slice(2, 9)}`;
       id={headingId}
       class="text-xs font-semibold uppercase tracking-wider text-foreground-muted mb-3"
     >
-      {title}
+      {tocTitle}
     </p>
     <ul class="space-y-1.5 text-sm border-l border-border">
       {items.map((h) => (

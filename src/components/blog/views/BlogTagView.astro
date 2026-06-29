@@ -15,7 +15,7 @@ import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
-import { defaultLocale } from '@/i18n';
+import { t, defaultLocale } from '@/i18n';
 import { getBlogBaseUrl, getPostUrl } from '@/lib/blog';
 
 interface Props {
@@ -32,17 +32,18 @@ interface Props {
 const { locale = defaultLocale, tag, posts, visibleTags } = Astro.props;
 
 const blogHref = getBlogBaseUrl(locale);
+const countKey = posts.length === 1 ? 'blog.tagCountOne' : 'blog.tagCountOther';
 ---
 
 <PageLayout
-  title={`#${tag} — Blog`}
-  description={`Posts tagged "${tag}".`}
+  title={t('blog.tagMetaTitle', locale, { tag })}
+  description={t('blog.tagMetaDescription', locale, { tag })}
   eagerReveal
 >
   <Hero layout="centered" size="sm">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="tag" size="sm" />
-      Tag
+      {t('blog.tagBadge', locale)}
     </Badge>
 
     <h1
@@ -51,7 +52,7 @@ const blogHref = getBlogBaseUrl(locale);
     >#{tag}</h1>
 
     <p slot="description">
-      {posts.length} post{posts.length === 1 ? '' : 's'} tagged "{tag}".
+      {t(countKey, locale, { count: posts.length, tag })}
     </p>
   </Hero>
 
@@ -63,7 +64,7 @@ const blogHref = getBlogBaseUrl(locale);
           class="group inline-flex items-center gap-2 rounded-lg border border-border-strong bg-transparent px-4 py-2 text-sm font-medium text-foreground-muted hover:border-brand-500 hover:text-brand-500 transition-colors"
         >
           <Icon name="arrow-left" size="sm" />
-          All posts
+          {t('blog.allPosts', locale)}
         </a>
 
         {visibleTags.length > 0 && (
@@ -94,11 +95,11 @@ const blogHref = getBlogBaseUrl(locale);
           <div class="bg-background mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
             <Icon name="file-text" size="lg" class="text-foreground-muted" />
           </div>
-          <p class="text-foreground-muted text-lg">No posts found for this tag.</p>
+          <p class="text-foreground-muted text-lg">{t('blog.tagEmpty', locale)}</p>
           <div class="mt-6">
             <Button href={blogHref} variant="outline" size="sm">
               <Icon name="arrow-left" size="sm" />
-              Back to all posts
+              {t('blog.tagBackToAll', locale)}
             </Button>
           </div>
         </div>

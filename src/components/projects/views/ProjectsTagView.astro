@@ -15,7 +15,7 @@ import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
-import { defaultLocale } from '@/i18n';
+import { t, defaultLocale } from '@/i18n';
 import { getProjectsBaseUrl } from '@/lib/projects';
 
 interface Props {
@@ -32,18 +32,19 @@ interface Props {
 const { locale = defaultLocale, tag, projects, visibleTags } = Astro.props;
 
 const projectsHref = getProjectsBaseUrl(locale);
+const countKey = projects.length === 1 ? 'projects.tagCountOne' : 'projects.tagCountOther';
 ---
 
 <PageLayout
-  title={`#${tag} — Projects`}
-  description={`Projects tagged "${tag}".`}
+  title={t('projects.tagMetaTitle', locale, { tag })}
+  description={t('projects.tagMetaDescription', locale, { tag })}
   eagerReveal
   footerBackground="secondary"
 >
   <Hero layout="centered" size="sm">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="tag" size="sm" />
-      Tag
+      {t('projects.tagBadge', locale)}
     </Badge>
 
     <h1
@@ -52,7 +53,7 @@ const projectsHref = getProjectsBaseUrl(locale);
     >#{tag}</h1>
 
     <p slot="description">
-      {projects.length} project{projects.length === 1 ? '' : 's'} tagged "{tag}".
+      {t(countKey, locale, { count: projects.length, tag })}
     </p>
   </Hero>
 
@@ -64,7 +65,7 @@ const projectsHref = getProjectsBaseUrl(locale);
           class="group inline-flex items-center gap-2 rounded-lg border border-border-strong bg-transparent px-4 py-2 text-sm font-medium text-foreground-muted hover:border-brand-500 hover:text-brand-500 transition-colors"
         >
           <Icon name="arrow-left" size="sm" />
-          All projects
+          {t('projects.allProjects', locale)}
         </a>
 
         {visibleTags.length > 0 && (
@@ -83,11 +84,11 @@ const projectsHref = getProjectsBaseUrl(locale);
           <div class="bg-background mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
             <Icon name="layers" size="lg" class="text-foreground-muted" />
           </div>
-          <p class="text-foreground-muted text-lg">No projects found for this tag.</p>
+          <p class="text-foreground-muted text-lg">{t('projects.tagEmpty', locale)}</p>
           <div class="mt-6">
             <Button href={projectsHref} variant="outline" size="sm">
               <Icon name="arrow-left" size="sm" />
-              Back to all projects
+              {t('projects.tagBackToAll', locale)}
             </Button>
           </div>
         </div>
