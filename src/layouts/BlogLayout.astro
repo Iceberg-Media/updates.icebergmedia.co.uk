@@ -17,7 +17,7 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { resolveSocialLinks } from '@/lib/utils';
 import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
 import { getBlogOgPath } from '@/lib/og';
-import { getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
+import { t, getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
 import { getPostSlug, getBlogBaseUrl } from '@/lib/blog';
 import { getPostTranslations } from '@/lib/post-links';
 
@@ -95,8 +95,8 @@ const sidebarOnLeft = (tocConfig?.sidebarPosition ?? 'right') === 'left';
 const ogImage = image?.src || (slug ? getBlogOgPath(getPostSlug(slug, locale)) : siteConfig.ogImage);
 
 const breadcrumbs = [
-  { label: 'Home', href: localizedPath('/', locale) },
-  { label: 'Blog', href: getBlogBaseUrl(locale) },
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('blog.title', locale), href: getBlogBaseUrl(locale) },
   { label: title },
 ];
 
@@ -217,9 +217,9 @@ const languageAlternates = Object.fromEntries(
 
       <!-- Article Footer -->
       <footer class="border-border mt-12 border-t pt-8 flex justify-center" data-reveal>
-        <Button href="/blog" variant="secondary" size="sm">
+        <Button href={getBlogBaseUrl(locale)} variant="secondary" size="sm">
           <Icon name="arrow-left" size="sm" />
-          Back to Blog
+          {t('blog.backToBlog', locale)}
         </Button>
       </footer>
       </div>
@@ -251,8 +251,8 @@ const languageAlternates = Object.fromEntries(
   <!-- Follow Along -->
   <!-- Mobile: standard CTA, no LetterGlitch -->
   <CTA variant="default" size="md" maxWidth="lg" glow={false} data-reveal class="glitch:hidden bg-background-secondary">
-    <h2 slot="heading" class="!text-4xl">Follow along</h2>
-    <p slot="description" class="!text-lg text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+    <h2 slot="heading" class="!text-4xl">{t('blog.followAlong', locale)}</h2>
+    <p slot="description" class="!text-lg text-balance">{t('blog.followAlongLead', locale)}</p>
 
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a
@@ -260,7 +260,7 @@ const languageAlternates = Object.fromEntries(
         class="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-500 hover:text-brand-500"
       >
         <Icon name="rss" size="sm" />
-        RSS Feed
+        {t('blog.rssFeed', locale)}
       </a>
       {socialLinks.map((link) => (
         <a
@@ -278,7 +278,7 @@ const languageAlternates = Object.fromEntries(
         class="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-500 hover:text-brand-500"
       >
         <Icon name="mail" size="sm" />
-        Email
+        {t('blog.emailLabel', locale)}
       </a>
     </div>
   </CTA>
@@ -286,8 +286,8 @@ const languageAlternates = Object.fromEntries(
   <!-- Desktop: contained LetterGlitch band with glass card -->
   <section class="hidden glitch:block relative z-10 py-[var(--space-section-md)] bg-background-secondary">
     <LetterGlitchBand maxWidth="7xl">
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">Follow along</h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">{t('blog.followAlong', locale)}</h2>
+      <p class="text-lg text-foreground-muted mb-8 text-balance">{t('blog.followAlongLead', locale)}</p>
 
       <div class="flex flex-wrap items-center justify-center gap-3">
         <a
@@ -295,7 +295,7 @@ const languageAlternates = Object.fromEntries(
           class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-400 hover:bg-brand-500/20 hover:text-foreground"
         >
           <Icon name="rss" size="sm" />
-          RSS Feed
+          {t('blog.rssFeed', locale)}
         </a>
         {socialLinks.map((link) => (
           <a
@@ -313,7 +313,7 @@ const languageAlternates = Object.fromEntries(
           class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-400 hover:bg-brand-500/20 hover:text-foreground"
         >
           <Icon name="mail" size="sm" />
-          Email
+          {t('blog.emailLabel', locale)}
         </a>
       </div>
     </LetterGlitchBand>

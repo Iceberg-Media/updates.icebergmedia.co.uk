@@ -15,7 +15,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import siteConfig from '@/config/site.config';
 import { getProjectOgPath } from '@/lib/og';
-import { getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
+import { t, getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
 import {
   getProjectSlug,
   getProjectUrl,
@@ -77,10 +77,13 @@ const inlineActive = showToc && tocLayout === 'inline';
 const sidebarOnLeft = (tocConfig?.sidebarPosition ?? 'right') === 'left';
 
 const breadcrumbs = [
-  { label: 'Home', href: localizedPath('/', locale) },
-  { label: 'Projects', href: getProjectsBaseUrl(locale) },
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('projects.title', locale), href: getProjectsBaseUrl(locale) },
   { label: title },
 ];
+
+const projectsHref = getProjectsBaseUrl(locale);
+const contactUrl = localizedPath('/contact', locale);
 
 // Resolve this project's real per-locale URLs so the hreflang tags and the
 // LanguageSwitcher point at the matching translation. Projects share one slug
@@ -163,9 +166,9 @@ const languageAlternates = Object.fromEntries(
           </div>
 
           <footer class="border-border mt-12 border-t pt-8 flex justify-center" data-reveal>
-            <Button href="/projects" variant="secondary" size="sm">
+            <Button href={projectsHref} variant="secondary" size="sm">
               <Icon name="arrow-left" size="sm" />
-              Back to Projects
+              {t('projects.backToProjects', locale)}
             </Button>
           </footer>
         </div>
@@ -186,7 +189,7 @@ const languageAlternates = Object.fromEntries(
     {related.length > 0 && (
       <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border" data-reveal>
         <div class="mx-auto max-w-7xl px-6">
-          <h2 class="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">More projects</h2>
+          <h2 class="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">{t('projects.moreProjects', locale)}</h2>
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((project) => (
               <Card
@@ -232,20 +235,20 @@ const languageAlternates = Object.fromEntries(
     <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
       <!-- Mobile: flat section, no glitch band -->
       <div class="glitch:hidden mx-auto max-w-2xl px-6 text-center" data-reveal>
-        <Badge variant="brand" pill class="mb-6">Let's talk</Badge>
+        <Badge variant="brand" pill class="mb-6">{t('projects.ctaBadge', locale)}</Badge>
         <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-          Have a project in mind?
+          {t('projects.closingHeading', locale)}
         </h2>
         <p class="text-lg text-foreground-muted mb-8 text-balance">
-          Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it.
+          {t('projects.closingLead', locale)}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" href="/contact" class="cta-btn-brand">
-            Start a project
+          <Button size="lg" href={contactUrl} class="cta-btn-brand">
+            {t('projects.ctaPrimary', locale)}
             <Icon name="arrow-right" size="sm" />
           </Button>
-          <Button size="lg" variant="outline" href="/projects">
-            All projects
+          <Button size="lg" variant="outline" href={projectsHref}>
+            {t('projects.allProjects', locale)}
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
@@ -254,18 +257,18 @@ const languageAlternates = Object.fromEntries(
       <!-- Desktop: LetterGlitch band with glass card -->
       <LetterGlitchBand maxWidth="7xl">
         <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-          Have a project in mind?
+          {t('projects.closingHeading', locale)}
         </h2>
         <p class="text-lg text-foreground-muted mb-8 text-balance">
-          Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it.
+          {t('projects.closingLead', locale)}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" href="/contact" class="hero-btn-brand">
-            Start a project
+          <Button size="lg" href={contactUrl} class="hero-btn-brand">
+            {t('projects.ctaPrimary', locale)}
             <Icon name="arrow-right" size="sm" />
           </Button>
-          <Button size="lg" variant="outline" href="/projects">
-            All projects
+          <Button size="lg" variant="outline" href={projectsHref}>
+            {t('projects.allProjects', locale)}
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
