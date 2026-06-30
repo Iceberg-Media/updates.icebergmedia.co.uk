@@ -5,6 +5,13 @@
     "closeMenu": "Close menu",
     "selectLanguage": "Select language",
     "currentLanguage": "Current language",
+    "mainNav": "Main navigation",
+    "mobileNav": "Mobile navigation",
+    "toggleMenu": "Toggle menu",
+    "sectionNavigate": "Navigate",
+    "sectionTheme": "Theme",
+    "sectionLanguage": "Language",
+    "sectionConnect": "Connect",
     "items": {
       "services": "Services",
       "projects": "Projects",
@@ -147,11 +154,24 @@
     "error": "Failed to send message. Please try again."
   },
   "theme": {
-    "selectTheme": "Select theme",
-    "lightMode": "Light mode",
-    "darkMode": "Dark mode",
-    "systemMode": "System",
-    "toggleTheme": "Toggle theme"
+    "selectColourTheme": "Select colour theme",
+    "colourTheme": "Colour theme",
+    "colourMode": "Colour mode",
+    "modeTrigger": "Theme: {mode}. Click to change.",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "currentlyLight": "Currently light",
+    "currentlyDark": "Currently dark",
+    "swatchLabel": "{name} theme"
+  },
+  "search": {
+    "placeholder": "Search posts, projects, and pages…",
+    "inputLabel": "Search query",
+    "resultsLabel": "Search results",
+    "hint": "Start typing to search the site.",
+    "noResults": "No results for “{query}”",
+    "unavailable": "The search index is generated at build time and isn’t available in <code class=\"rounded bg-secondary px-1.5 py-0.5 text-xs\">astro dev</code>.<br />Run <code class=\"rounded bg-secondary px-1.5 py-0.5 text-xs\">pnpm build &amp;&amp; pnpm preview</code> to try it locally."
   },
   "footer": {
     "copyright": "© {year} {siteName}. All rights reserved.",

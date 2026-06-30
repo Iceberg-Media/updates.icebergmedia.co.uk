@@ -5,6 +5,13 @@
     "closeMenu": "Menu sluiten",
     "selectLanguage": "Selecteer taal",
     "currentLanguage": "Huidige taal",
+    "mainNav": "Hoofdnavigatie",
+    "mobileNav": "Mobiele navigatie",
+    "toggleMenu": "Menu wisselen",
+    "sectionNavigate": "Navigatie",
+    "sectionTheme": "Thema",
+    "sectionLanguage": "Taal",
+    "sectionConnect": "Volgen",
     "items": {
       "services": "Diensten",
       "projects": "Projecten",
@@ -147,11 +154,24 @@
     "error": "Verzenden mislukt. Probeer het opnieuw."
   },
   "theme": {
-    "selectTheme": "Selecteer thema",
-    "lightMode": "Lichte modus",
-    "darkMode": "Donkere modus",
-    "systemMode": "Systeem",
-    "toggleTheme": "Wissel thema"
+    "selectColourTheme": "Selecteer kleurthema",
+    "colourTheme": "Kleurthema",
+    "colourMode": "Kleurmodus",
+    "modeTrigger": "Thema: {mode}. Klik om te wijzigen.",
+    "system": "Systeem",
+    "light": "Licht",
+    "dark": "Donker",
+    "currentlyLight": "Momenteel licht",
+    "currentlyDark": "Momenteel donker",
+    "swatchLabel": "{name}-thema"
+  },
+  "search": {
+    "placeholder": "Zoek berichten, projecten en pagina's…",
+    "inputLabel": "Zoekopdracht",
+    "resultsLabel": "Zoekresultaten",
+    "hint": "Begin met typen om de site te doorzoeken.",
+    "noResults": "Geen resultaten voor “{query}”",
+    "unavailable": "De zoekindex wordt tijdens de build gegenereerd en is niet beschikbaar in <code class=\"rounded bg-secondary px-1.5 py-0.5 text-xs\">astro dev</code>.<br />Voer <code class=\"rounded bg-secondary px-1.5 py-0.5 text-xs\">pnpm build &amp;&amp; pnpm preview</code> uit om het lokaal te proberen."
   },
   "footer": {
     "copyright": "© {year} {siteName}. Alle rechten voorbehouden.",
