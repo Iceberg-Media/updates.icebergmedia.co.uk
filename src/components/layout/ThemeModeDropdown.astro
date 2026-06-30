@@ -13,12 +13,24 @@
  * instances (header pill + mobile-menu pill) and view-transition re-mounts.
  */
 import { cn } from '@/lib/cn';
+import { t, getLocaleFromPath } from '@/i18n';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const locale = getLocaleFromPath(Astro.url.pathname);
+
+// Localized mode names; the trigger aria-label embeds the lowercased name
+// (e.g. "Theme: system. Click to change."). The client script re-derives the
+// same labels on mode change from the data-* attributes below.
+const modeNames = {
+  system: t('theme.system', locale),
+  light: t('theme.light', locale),
+  dark: t('theme.dark', locale),
+};
+const triggerLabel = t('theme.modeTrigger', locale, { mode: modeNames.system.toLowerCase() });
 ---
 
 <div class={cn('relative ttg-wrapper', className)}>
@@ -35,7 +47,11 @@ const { class: className } = Astro.props;
     )}
     aria-haspopup="menu"
     aria-expanded="false"
-    aria-label="Theme: system. Click to change."
+    aria-label={triggerLabel}
+    data-i18n-template={t('theme.modeTrigger', locale)}
+    data-i18n-system={modeNames.system}
+    data-i18n-light={modeNames.light}
+    data-i18n-dark={modeNames.dark}
   >
     <!-- Monitor — shown when data-theme-mode="system" (also pre-bootstrap fallback) -->
     <svg class="ttg-icon ttg-icon-system h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -60,7 +76,7 @@ const { class: className } = Astro.props;
       'p-1.5 hidden'
     )}
     role="menu"
-    aria-label="Colour mode"
+    aria-label={t('theme.colourMode', locale)}
   >
     <button type="button" class="ttg-row" role="menuitemradio" aria-checked="false" data-mode="system">
       <span class="ttg-row-icon">
@@ -70,8 +86,12 @@ const { class: className } = Astro.props;
         </svg>
       </span>
       <span class="ttg-row-label">
-        <span class="ttg-row-title">System</span>
-        <span class="ttg-system-sub">Currently light</span>
+        <span class="ttg-row-title">{t('theme.system', locale)}</span>
+        <span
+          class="ttg-system-sub"
+          data-sub-light={t('theme.currentlyLight', locale)}
+          data-sub-dark={t('theme.currentlyDark', locale)}
+        >{t('theme.currentlyLight', locale)}</span>
       </span>
       <svg class="ttg-check h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M20 6L9 17l-5-5"/>
@@ -85,7 +105,7 @@ const { class: className } = Astro.props;
         </svg>
       </span>
       <span class="ttg-row-label">
-        <span class="ttg-row-title">Light</span>
+        <span class="ttg-row-title">{t('theme.light', locale)}</span>
       </span>
       <svg class="ttg-check h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M20 6L9 17l-5-5"/>
@@ -99,7 +119,7 @@ const { class: className } = Astro.props;
         </svg>
       </span>
       <span class="ttg-row-label">
-        <span class="ttg-row-title">Dark</span>
+        <span class="ttg-row-title">{t('theme.dark', locale)}</span>
       </span>
       <svg class="ttg-check h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M20 6L9 17l-5-5"/>
@@ -222,14 +242,19 @@ const { class: className } = Astro.props;
 
   function syncAllTriggerLabels(mode: Mode): void {
     document.querySelectorAll<HTMLButtonElement>('.ttg-trigger').forEach((btn) => {
-      btn.setAttribute('aria-label', `Theme: ${mode}. Click to change.`);
+      const template = btn.dataset.i18nTemplate ?? 'Theme: {mode}. Click to change.';
+      const cap = mode.charAt(0).toUpperCase() + mode.slice(1);
+      const name = btn.dataset['i18n' + cap] ?? mode;
+      btn.setAttribute('aria-label', template.replace('{mode}', name.toLowerCase()));
     });
   }
 
   function syncSystemSubLine(): void {
-    const text = osIsDark() ? 'Currently dark' : 'Currently light';
+    const dark = osIsDark();
     document.querySelectorAll<HTMLElement>('.ttg-system-sub').forEach((el) => {
-      el.textContent = text;
+      el.textContent = dark
+        ? (el.dataset.subDark ?? 'Currently dark')
+        : (el.dataset.subLight ?? 'Currently light');
     });
   }
 

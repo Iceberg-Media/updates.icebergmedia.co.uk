@@ -34,7 +34,7 @@ import ThemeSelector from '@/components/layout/ThemeSelector.astro';
 import ThemeSelectorDropdown from '@/components/layout/ThemeSelectorDropdown.astro';
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
 import siteConfig from '@/config/site.config';
-import { isEnabled as i18nIsEnabled, getLocaleFromPath } from '@/i18n';
+import { isEnabled as i18nIsEnabled, getLocaleFromPath, t } from '@/i18n';
 
 export interface NavItem {
   label: string;
@@ -244,11 +244,11 @@ const buttonId = `${menuId}-button`;
     {
       layout !== 'minimal' &&
         (hasNavSlot ? (
-          <nav class="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+          <nav class="hidden items-center gap-1 lg:flex" aria-label={t('nav.mainNav', locale)}>
             <slot name="nav" />
           </nav>
         ) : (
-          <nav class="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+          <nav class="hidden items-center gap-1 lg:flex" aria-label={t('nav.mainNav', locale)}>
             {navItems.map(({ label, href }) => (
               <a
                 href={href.startsWith('#') && !isLandingPage ? `/${href}` : href}
@@ -375,7 +375,7 @@ const buttonId = `${menuId}-button`;
             )}
             aria-expanded="false"
             aria-controls={menuId}
-            aria-label="Toggle menu"
+            aria-label={t('nav.toggleMenu', locale)}
           >
             <span class="menu-icon">
               <Icon name="menu" size="md" />
@@ -422,7 +422,7 @@ const buttonId = `${menuId}-button`;
               : 'border-border bg-background border-t'
           )}
           role="navigation"
-          aria-label="Mobile navigation"
+          aria-label={t('nav.mobileNav', locale)}
         >
           <slot name="mobile-menu" />
         </div>
@@ -436,14 +436,14 @@ const buttonId = `${menuId}-button`;
               : 'border-border bg-background border-t'
           )}
           role="navigation"
-          aria-label="Mobile navigation"
+          aria-label={t('nav.mobileNav', locale)}
         >
           <div class={cn(
             'mobile-menu-body py-3',
             isFloating ? 'px-3' : cn('mx-auto px-4', maxWidthClass)
           )}>
             <section class="mobile-menu-section">
-              <p class="mobile-menu-label">Navigate</p>
+              <p class="mobile-menu-label">{t('nav.sectionNavigate', locale)}</p>
               <ul class="space-y-0.5">
                 {navItems.map(({ label, href }, idx) => {
                   const active = isActive(href);
@@ -475,12 +475,12 @@ const buttonId = `${menuId}-button`;
 
             {showThemeSelector && (
               <section class="mobile-menu-section">
-                <p class="mobile-menu-label">Theme</p>
+                <p class="mobile-menu-label">{t('nav.sectionTheme', locale)}</p>
                 <div
                   class="mobile-menu-stagger flex items-center justify-between rounded-xl px-3 py-2.5"
                   style={`--stagger-index: ${navItems.length}`}
                 >
-                  <span class="text-sm text-foreground-muted">Colour theme</span>
+                  <span class="text-sm text-foreground-muted">{t('theme.colourTheme', locale)}</span>
                   <ThemeSelector />
                 </div>
               </section>
@@ -488,12 +488,12 @@ const buttonId = `${menuId}-button`;
 
             {showLanguageSwitcher && (
               <section class="mobile-menu-section">
-                <p class="mobile-menu-label">Language</p>
+                <p class="mobile-menu-label">{t('nav.sectionLanguage', locale)}</p>
                 <div
                   class="mobile-menu-stagger flex items-center justify-between rounded-xl px-3 py-2.5"
                   style={`--stagger-index: ${navItems.length + (showThemeSelector ? 1 : 0)}`}
                 >
-                  <span class="text-sm text-foreground-muted">Language</span>
+                  <span class="text-sm text-foreground-muted">{t('nav.sectionLanguage', locale)}</span>
                   <LanguageSwitcher alternates={languageAlternates} />
                 </div>
               </section>
@@ -501,7 +501,7 @@ const buttonId = `${menuId}-button`;
 
             {mobileSocialLinks.length > 0 && (
               <section class="mobile-menu-section">
-                <p class="mobile-menu-label">Connect</p>
+                <p class="mobile-menu-label">{t('nav.sectionConnect', locale)}</p>
                 <div class="flex flex-wrap items-center gap-2 px-2 pt-1 pb-2">
                   {mobileSocialLinks.map((url, sIdx) => {
                     const { icon, label } = getSocialIconData(url);

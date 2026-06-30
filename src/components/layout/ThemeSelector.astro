@@ -7,11 +7,14 @@
  * Usage in Header:  <ThemeSelector />
  * Pass `class` to tint the label colour for floating / inverted headers.
  */
+import { t, getLocaleFromPath } from '@/i18n';
+
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const locale = getLocaleFromPath(Astro.url.pathname);
 
 // All 12 themes in Tailwind color order
 const themes = [
@@ -33,7 +36,7 @@ const themes = [
 <div
   class:list={['theme-selector flex flex-wrap items-center gap-1', className]}
   role="group"
-  aria-label="Select colour theme"
+  aria-label={t('theme.selectColourTheme', locale)}
 >
   {themes.map((theme) => (
     <button
@@ -42,7 +45,7 @@ const themes = [
       data-theme-id={theme.id}
       style={`background-color:${theme.color};--swatch:${theme.color}`}
       title={theme.name}
-      aria-label={`${theme.name} theme`}
+      aria-label={t('theme.swatchLabel', locale, { name: theme.name })}
     />
   ))}
 </div>

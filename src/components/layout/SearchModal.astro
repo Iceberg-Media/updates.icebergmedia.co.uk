@@ -13,12 +13,14 @@
  * - Keyboard: Cmd/Ctrl+K opens, Escape closes, ↑/↓ move through results.
  */
 import { cn } from '@/lib/cn';
+import { t, getLocaleFromPath } from '@/i18n';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const locale = getLocaleFromPath(Astro.url.pathname);
 
 const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
 ---
@@ -38,7 +40,7 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
     )}
     aria-haspopup="dialog"
     aria-controls={modalId}
-    aria-label="Search"
+    aria-label={t('common.search', locale)}
   >
     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <circle cx="11" cy="11" r="7" />
@@ -52,7 +54,7 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
     class="search-modal fixed inset-0 z-[100] hidden"
     role="dialog"
     aria-modal="true"
-    aria-label="Search"
+    aria-label={t('common.search', locale)}
     data-pagefind-ignore
   >
     <div class="search-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" data-search-close></div>
@@ -67,12 +69,12 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
         <input
           type="search"
           class="search-input w-full bg-transparent py-4 text-base text-foreground placeholder:text-foreground-subtle focus:outline-none"
-          placeholder="Search posts, projects, and pages…"
+          placeholder={t('search.placeholder', locale)}
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          aria-label="Search query"
+          aria-label={t('search.inputLabel', locale)}
         />
         <button
           type="button"
@@ -84,9 +86,16 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
       </div>
 
       <!-- Results -->
-      <div class="search-results max-h-[55vh] overflow-y-auto overscroll-contain p-2" role="listbox" aria-label="Search results">
+      <div
+        class="search-results max-h-[55vh] overflow-y-auto overscroll-contain p-2"
+        role="listbox"
+        aria-label={t('search.resultsLabel', locale)}
+        data-i18n-hint={t('search.hint', locale)}
+        data-i18n-empty={t('search.noResults', locale)}
+        data-i18n-unavailable={t('search.unavailable', locale)}
+      >
         <p class="search-hint px-3 py-8 text-center text-sm text-foreground-muted">
-          Start typing to search the site.
+          {t('search.hint', locale)}
         </p>
       </div>
     </div>
@@ -187,7 +196,8 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
         const pf = await loadPagefind();
         if (!pf) {
           renderMessage(
-            'The search index is generated at build time and isn’t available in <code class="rounded bg-secondary px-1.5 py-0.5 text-xs">astro dev</code>.<br />Run <code class="rounded bg-secondary px-1.5 py-0.5 text-xs">pnpm build &amp;&amp; pnpm preview</code> to try it locally.'
+            results.dataset.i18nUnavailable ??
+              'The search index is generated at build time and isn’t available in <code class="rounded bg-secondary px-1.5 py-0.5 text-xs">astro dev</code>.<br />Run <code class="rounded bg-secondary px-1.5 py-0.5 text-xs">pnpm build &amp;&amp; pnpm preview</code> to try it locally.'
           );
           return;
         }
@@ -197,7 +207,8 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
         if (input.value.trim() !== query) return;
 
         if (search.results.length === 0) {
-          renderMessage(`No results for “${escapeHtml(query)}”`);
+          const tmpl = results.dataset.i18nEmpty ?? 'No results for “{query}”';
+          renderMessage(tmpl.replace('{query}', escapeHtml(query)));
           return;
         }
 
@@ -225,7 +236,7 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
         if (debounce) window.clearTimeout(debounce);
         const query = input.value.trim();
         if (!query) {
-          renderMessage('Start typing to search the site.');
+          renderMessage(results.dataset.i18nHint ?? 'Start typing to search the site.');
           return;
         }
         debounce = window.setTimeout(() => renderResults(query), 150);
