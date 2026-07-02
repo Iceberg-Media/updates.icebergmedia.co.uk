@@ -34,31 +34,11 @@ It ships with a full blog, a complete component library, a built-in SEO layer, d
 
 **[Live demo → astrorocket.dev](https://astrorocket.dev)** · **[Built by Hans Martens → hansmartens.dev](https://hansmartens.dev)**
 
-> **Astro Rocket is a fork of [Velocity](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com).** Velocity is the foundation — a powerful Astro boilerplate with a comprehensive design system and component library. Full credit to the Southwell Media team for that work. Astro Rocket builds on it with a different goal: a complete, ready-to-launch website where you only change the text to make it your own.
+> **Origins & credits.** Astro Rocket was originally forked from [Velocity](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com). Velocity provided the solid base — a well-engineered Astro boilerplate with a thoughtful design system and component library — and full credit for that foundation goes to the Southwell Media team. Since then, Astro Rocket has evolved into a theme in its own right, with far more to offer than the original: live colour-theme switching, built-in i18n, static search, project galleries with video, blog comments, durable internal links, and much more — see [What Astro Rocket has to offer](#what-astro-rocket-has-to-offer) below.
 
 ---
 
-## What changed from Velocity
-
-The following changes were made to the free Velocity theme to create Astro Rocket:
-
-| Change | Velocity | Astro Rocket |
-|--------|----------|--------------|
-| **Theme switching** | Edit a CSS import file and rebuild | 12 colour swatches in the header — click one and the logo badge, blog images, and every brand color update live on screen. No file edits, no rebuilds. Selector can be removed from the header once you've chosen a color. |
-| **Colour themes** | 1 default theme | 12 Tailwind-based themes — all 12 shown as swatches in the header selector (Orange, Amber, Lime, Emerald, Teal, Cyan, Sky, Blue, Indigo, Violet, Purple, Magenta) |
-| **Logo badge** | Requires a custom logo file | Auto-generated monogram badge — first letter of your site name on brand color, live-updates with active theme |
-| **Favicon** | Static file to replace manually | Auto-generated SVG favicon — first letter + brand color, pre-rendered at build time from `site.config.ts`, no design tools needed |
-| **Blog image gradients** | Plain image containers | Every blog cover and card uses a brand-color gradient background that updates live when the active theme changes |
-| **Icon system** | Basic SVG `Icon` component | Unified `Icon` component powered by Iconify — 350+ Lucide UI icons + 3000+ Simple Icons brand icons |
-| **Typing effect** | Not included | Hero section includes an animated typing effect |
-| **Colour mode** | Binary `localStorage` toggle | 3-state picker — System / Light / Dark in `localStorage`, with `prefers-color-scheme` live tracking under 'System' (see [Colour Mode](#colour-mode)) |
-| **Target audience** | Developers & agencies | Web designers, developers, bloggers, and portfolio sites |
-| **Ready to launch** | Boilerplate starting point | Fully styled pages — replace the text and your site is live |
-| **Maintained by** | Southwell Media | Hans Martens |
-
----
-
-## Key Features
+## What Astro Rocket has to offer
 
 | Feature | Description |
 |---------|-------------|
@@ -365,7 +345,7 @@ Astro Rocket uses a three-tier design token system with OKLCH colors for percept
 
 ### Switching Themes
 
-Astro Rocket ships with 12 colour themes, all based on Tailwind's color palette. All 12 are shown as colour swatches in the header dropdown (`ThemeSelectorDropdown`) on desktop and in the mobile menu (`ThemeSelector`). Clicking a swatch applies the theme instantly — the logo badge, blog image gradients, and every brand color on the page update live. No file edits, no rebuilds. This is the key difference from Velocity, where switching theme requires editing a CSS import file and rebuilding.
+Astro Rocket ships with 12 colour themes, all based on Tailwind's color palette. All 12 are shown as colour swatches in the header dropdown (`ThemeSelectorDropdown`) on desktop and in the mobile menu (`ThemeSelector`). Clicking a swatch applies the theme instantly — the logo badge, blog image gradients, and every brand color on the page update live. No file edits, no rebuilds. This is a key difference from the original Velocity theme, where switching theme requires editing a CSS import file and rebuilding.
 
 The 12 themes in order: Orange, Amber, Lime, Emerald, Teal, Cyan, Sky, Blue (default), Indigo, Violet, Purple, and Magenta. The `themes` array in `src/components/layout/ThemeSelector.astro` controls which swatches are shown and in what order. You can also **remove the selector from the header entirely** once you've settled on a color — just remove `showThemeSelector` from the layout file.
 
@@ -946,11 +926,11 @@ MIT License — see [LICENSE](LICENSE) for details.
 ## Links
 
 - [Astro Rocket on GitHub](https://github.com/hansmartensdev/astro-rocket)
-- [Velocity — the original theme](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com)
+- [Velocity](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com) — the theme Astro Rocket was originally forked from
 - [Astro Documentation](https://docs.astro.build)
 - [Tailwind CSS v4](https://tailwindcss.com/docs)
 
 ---
 
 **Astro Rocket** is designed and maintained by [Hans Martens](https://hansmartens.dev).
-Built on [Velocity](https://github.com/southwellmedia/velocity) — the original theme by [Southwell Media](https://southwellmedia.com).
+Originally forked from [Velocity](https://github.com/southwellmedia/velocity) by [Southwell Media](https://southwellmedia.com) — credit to them for the solid base it grew from.
