@@ -257,7 +257,6 @@
         "heading": "Built in the open",
         "description": "Astro Rocket is free, open source, and MIT licensed. Browse the source, open issues, submit PRs, or just clone it and build something great.",
         "button": "View on GitHub",
-        "showcaseButton": "See what others built",
         "cards": [
           { "title": "Made by Hans Martens", "text": "Astro Rocket was designed and built by <a href=\"https://hansmartens.dev\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">Hans Martens</a> — a web designer and developer who uses it as the foundation for client projects." },
           { "title": "MIT License", "text": "Free to use in personal and commercial projects. No attribution required, though a star on GitHub is always appreciated." },
@@ -438,28 +437,6 @@
         "description": "I design and build new websites from scratch — every project, start to finish, by me. Tell me what you have in mind.",
         "primary": "Start a project",
         "secondary": "More about me"
-      }
-    },
-    "showcase": {
-      "meta": {
-        "title": "Showcase — Built with Astro Rocket",
-        "description": "Real sites built and shipped with the Astro Rocket theme — explore live production deployments from the community."
-      },
-      "hero": {
-        "badge": "Showcase",
-        "titleLead": "Built with",
-        "titleHighlight": "Astro Rocket.",
-        "description": "Real sites, live in production. Every entry below was built with the Astro Rocket theme and shipped by someone in the community."
-      },
-      "visitLabel": "Visit site",
-      "byLabel": "by",
-      "screenshotPending": "Screenshot coming soon",
-      "submit": {
-        "badge": "Your site here",
-        "heading": "Built something with Astro Rocket?",
-        "description": "I'd love to feature it. Open a showcase submission on GitHub with your live URL and a line about the project — that's all it takes to join the list.",
-        "primary": "Submit your site",
-        "secondary": "View on GitHub"
       }
     }
   }
