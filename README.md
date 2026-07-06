@@ -188,6 +188,18 @@ The whole system is build-time. No client-side routing, no framework hydration f
 
 ---
 
+## Showcase
+
+Real sites built and shipped with Astro Rocket — see the **[live showcase](https://astrorocket.dev/showcase)** for the full gallery.
+
+| Site | Author | Notes |
+|------|--------|-------|
+| [LinkPress](https://linkpress.app/) | Mithun A. Sridharan | Deployed on Cloudflare |
+
+Built something with Astro Rocket? [Submit your site](https://github.com/hansmartensdev/Astro-Rocket/issues/new?template=showcase_submission.yml) — a live URL and a line about the project is all it takes.
+
+---
+
 ## Quick Start
 
 ### Prerequisites
