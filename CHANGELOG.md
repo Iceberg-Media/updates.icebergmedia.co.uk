@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **Showcase page (`/showcase`)** — a new gallery of real sites built with Astro Rocket and running in production, opening with [LinkPress](https://linkpress.app/) by Mithun A. Sridharan. Entries live in a new `src/config/showcase.config.ts` (name, URL, author, description, optional screenshot), so listing a site is a config edit — the page itself (`ShowcaseView`) renders the grid plus a "Submit your site" CTA. Localized the theme's way: default route `src/pages/showcase.astro`, locale-prefixed `src/pages/[locale]/showcase.astro` (emits nothing when i18n is off), and `pages.showcase.*` copy in `en.json` and `nl.json`. The page is intentionally **not** in the default nav — theme users who don't want it can simply delete the two route files, the view, and the config.
+- **Showcase submission issue form** — `.github/ISSUE_TEMPLATE/showcase_submission.yml`, a structured GitHub issue form (live URL, project description, credit line, and opt-in checkboxes for screenshot/testimonial use) that feeds the showcase. Linked from the showcase page's CTA and a new **Showcase** section in the README.
+
 ## [2.0.0] — 2026-06-22
 
 ### Changed
