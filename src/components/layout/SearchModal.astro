@@ -116,6 +116,8 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
 </style>
 
 <script>
+  import { trapFocus } from '@/lib/focus-trap';
+
   interface PagefindResultData {
     url: string;
     excerpt: string;
@@ -132,6 +134,10 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
 
   let pagefind: Pagefind | null = null;
   let pagefindFailed = false;
+
+  // Per-modal open/close controllers so the global Cmd/Ctrl+K hotkey drives
+  // the same code path as the trigger button (focus trap + focus return).
+  const controllers = new WeakMap<HTMLElement, { open: () => void; close: () => void }>();
 
   async function loadPagefind(): Promise<Pagefind | null> {
     if (pagefind || pagefindFailed) return pagefind;
@@ -175,18 +181,28 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
       const results = modal.querySelector<HTMLElement>('.search-results');
       if (!input || !results) return;
 
+      let releaseTrap: (() => void) | null = null;
+
       const open = () => {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         input.focus();
         input.select();
+        // Fence Tab inside the dialog while it's open — otherwise focus
+        // walks out behind the backdrop into the page underneath.
+        releaseTrap?.();
+        releaseTrap = trapFocus(modal);
       };
 
       const close = () => {
+        releaseTrap?.();
+        releaseTrap = null;
         modal.classList.add('hidden');
         document.body.style.overflow = '';
         trigger.focus();
       };
+
+      controllers.set(modal, { open, close });
 
       const renderMessage = (html: string) => {
         results.innerHTML = `<p class="px-3 py-8 text-center text-sm text-foreground-muted">${html}</p>`;
@@ -283,16 +299,13 @@ const modalId = `search-modal-${Math.random().toString(36).slice(2, 9)}`;
         if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'k') return;
         const modal = document.querySelector<HTMLElement>('.search-modal');
         if (!modal) return;
+        const controller = controllers.get(modal);
+        if (!controller) return;
         e.preventDefault();
         if (modal.classList.contains('hidden')) {
-          modal.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-          const input = modal.querySelector<HTMLInputElement>('.search-input');
-          input?.focus();
-          input?.select();
+          controller.open();
         } else {
-          modal.classList.add('hidden');
-          document.body.style.overflow = '';
+          controller.close();
         }
       });
     }

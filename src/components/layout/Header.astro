@@ -552,6 +552,8 @@ const buttonId = `${menuId}-button`;
 }
 
 <script>
+  import { trapFocus } from '@/lib/focus-trap';
+
   function initMobileMenu() {
     const menuHeaders = document.querySelectorAll<HTMLElement>('header[data-menu-id]');
     menuHeaders.forEach((header) => {
@@ -571,6 +573,7 @@ const buttonId = `${menuId}-button`;
 
       let isOpen = false;
       let isAnimating = false;
+      let releaseTrap: (() => void) | null = null;
 
       function open() {
         if (isOpen || isAnimating) return;
@@ -601,12 +604,24 @@ const buttonId = `${menuId}-button`;
           backdrop.classList.add('animate-backdrop');
         }
 
+        // Fence Tab inside the header (toggle + menu + header controls)
+        // while the drawer is open — the page behind is blurred and blocked
+        // for pointer users, so keyboard focus shouldn't reach it either.
+        releaseTrap?.();
+        releaseTrap = trapFocus(header);
+
         isAnimating = false;
       }
 
       function close() {
         if (!isOpen || isAnimating) return;
         isAnimating = true;
+
+        releaseTrap?.();
+        releaseTrap = null;
+        // Return focus to the toggle so Escape / backdrop close doesn't
+        // strand keyboard focus inside the now-hidden menu.
+        button!.focus();
 
         button!.setAttribute('aria-expanded', 'false');
         menuIcon!.classList.remove('hidden');

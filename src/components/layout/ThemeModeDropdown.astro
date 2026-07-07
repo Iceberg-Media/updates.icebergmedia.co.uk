@@ -304,7 +304,25 @@ const triggerLabel = t('theme.modeTrigger', locale, { mode: modeNames.system.toL
           panel.classList.remove('hidden');
           trigger.setAttribute('aria-expanded', 'true');
           trigger.querySelector('.ttg-chevron')?.classList.add('rotate-180');
+          // WAI-ARIA menu pattern: focus the first item when the menu opens.
+          rows[0]?.focus();
         }
+      });
+
+      // role="menu" commits to the ARIA menu keyboard pattern: ArrowUp/
+      // ArrowDown move through the items (wrapping), Home/End jump to the
+      // first/last item.
+      panel.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Home' && e.key !== 'End') return;
+        const items = Array.from(rows);
+        if (!items.length) return;
+        e.preventDefault();
+        if (e.key === 'Home') { items[0].focus(); return; }
+        if (e.key === 'End') { items[items.length - 1].focus(); return; }
+        const index = items.indexOf(document.activeElement as HTMLButtonElement);
+        const delta = e.key === 'ArrowDown' ? 1 : -1;
+        const next = index === -1 ? 0 : (index + delta + items.length) % items.length;
+        items[next].focus();
       });
 
       rows.forEach((row) => {
@@ -316,6 +334,8 @@ const triggerLabel = t('theme.modeTrigger', locale, { mode: modeNames.system.toL
           syncAllRows(next);
           syncAllTriggerLabels(next);
           closeAllModePanels();
+          // Selecting an item closes the menu — return focus to its trigger.
+          trigger.focus();
         });
       });
     });
@@ -332,7 +352,14 @@ const triggerLabel = t('theme.modeTrigger', locale, { mode: modeNames.system.toL
       });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAllModePanels();
+        if (e.key !== 'Escape') return;
+        // Return focus to the trigger of the panel that was open, so Escape
+        // doesn't strand keyboard focus inside a hidden menu.
+        const openPanel = document.querySelector<HTMLElement>('.ttg-panel:not(.hidden)');
+        closeAllModePanels();
+        if (openPanel) {
+          openPanel.closest('.ttg-wrapper')?.querySelector<HTMLButtonElement>('.ttg-trigger')?.focus();
+        }
       });
 
       // Live-update the "Currently dark/light" sub-line when the OS flips.
