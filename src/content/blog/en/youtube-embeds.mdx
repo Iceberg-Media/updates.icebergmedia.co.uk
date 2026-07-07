@@ -23,10 +23,10 @@ Import the component at the top of your `.mdx` file, then place it where the vid
 ```mdx
 import YouTube from '@/components/patterns/YouTube.astro';
 
-<YouTube id="dQw4w9WgXcQ" title="Never Gonna Give You Up" />
+<YouTube id="QONgJurkigk" title="NASA" />
 ```
 
-- **`id`** — the video's YouTube id: the part after `watch?v=` in the video's URL. For `https://www.youtube.com/watch?v=dQw4w9WgXcQ`, the id is `dQw4w9WgXcQ`.
+- **`id`** — the video's YouTube id: the part after `watch?v=` in the video's URL. For `https://www.youtube.com/watch?v=QONgJurkigk`, the id is `QONgJurkigk`.
 - **`title`** — the video's title. Required, because it's what screen readers announce for the play button and it becomes the player's accessible name once loaded.
 - **`class`** — optional, for extra styling.
 
@@ -36,7 +36,7 @@ That's everything. The component works in every `.mdx` blog post and page, in an
 
 Here is the component in this post — press play:
 
-<YouTube id="dQw4w9WgXcQ" title="Rick Astley — Never Gonna Give You Up" />
+<YouTube id="QONgJurkigk" title="NASA" />
 
 Before you clicked, that box was only a thumbnail image and a button. You can verify it in your browser's developer tools: the page made **no request to YouTube at all**. The player, its megabyte of JavaScript, and its cookies only arrive when the reader asks for them.
 
