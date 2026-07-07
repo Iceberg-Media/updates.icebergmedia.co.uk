@@ -38,18 +38,6 @@ It ships with a full blog, a complete component library, a built-in SEO layer, d
 
 ---
 
-## Showcase
-
-Real sites built and shipped with Astro Rocket:
-
-| Site | Author | Notes |
-|------|--------|-------|
-| [LinkPress](https://linkpress.app/) | Mithun A. Sridharan | Deployed on Cloudflare |
-
-Built something with Astro Rocket? [Submit your site](https://github.com/hansmartensdev/Astro-Rocket/issues/new?template=showcase_submission.yml) — a live URL and a line about the project is all it takes.
-
----
-
 ## What Astro Rocket has to offer
 
 | Feature | Description |
