@@ -6,6 +6,7 @@ author: "Hans Martens"
 tags: ["astro-rocket", "features", "projects", "performance"]
 featured: false
 locale: en
+uid: "video-slides"
 image: "../../../assets/blog/project-gallery-video-slides.svg"
 svgSlug: "project-gallery-video-slides"
 imageAlt: "A play button icon above the words 'video slides', on a brand-coloured background"
@@ -69,7 +70,7 @@ This is the part I actually care about, and it comes down to four decisions:
 3. **No autoplay.** Autoplaying video means downloading video on page load, which is the whole thing we're avoiding. The visitor decides.
 4. **Swiping away pauses.** A small addition to the carousel script pauses any video that's no longer the active slide, so audio never keeps playing off-screen.
 
-And one deliberate non-feature: **no YouTube or Vimeo embeds**. A third-party iframe drags in hundreds of kilobytes of player script, cookies, and consent obligations — that's a different trade-off than this theme makes. Self-hosted files keep the page yours.
+And one deliberate non-feature: **no YouTube or Vimeo embeds in galleries**. A third-party iframe drags in hundreds of kilobytes of player script, cookies, and consent obligations — that's a different trade-off than this theme makes. Self-hosted files keep the page yours. (Articles are a different story with a matching answer: the <PostLink uid="youtube-embeds">click-to-play YouTube embed</PostLink> loads nothing from YouTube until the reader presses play.)
 
 ## Keeping the file small
 
