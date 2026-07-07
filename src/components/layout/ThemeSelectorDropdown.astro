@@ -206,9 +206,13 @@ const themes = [
       }
     });
 
-    // Close on Escape
+    // Close on Escape — and return focus to the trigger if the panel was
+    // open, so keyboard focus isn't stranded inside the hidden panel.
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeDropdown();
+      if (e.key !== 'Escape') return;
+      const wasOpen = !panel.classList.contains('hidden');
+      closeDropdown();
+      if (wasOpen) trigger.focus();
     });
   }
 
