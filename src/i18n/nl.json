@@ -404,8 +404,7 @@
         "badge": "Start een project",
         "titleLead": "Vertel me over je",
         "titleHighlight": "nieuwe project",
-        "description": "Ik hoor graag van je. Stuur een bericht via het formulier, of gebruik een van de andere kanalen hieronder.",
-        "descriptionMobile": "Ik hoor graag van je. Stuur\u00a0me een bericht via een van de kanalen hieronder."
+        "description": "Ik hoor graag van je. Stuur een bericht via het formulier hieronder, of gebruik een van de andere kanalen hieronder."
       },
       "formTitle": "Projectdetails",
       "channelsTitle": "Andere kanalen",

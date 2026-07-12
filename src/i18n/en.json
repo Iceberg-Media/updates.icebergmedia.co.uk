@@ -404,8 +404,7 @@
         "badge": "Start a project",
         "titleLead": "Tell me about your",
         "titleHighlight": "new project",
-        "description": "I'd love to hear from you. Send a message with the\u00a0form, or reach out on one of the other channels below.",
-        "descriptionMobile": "I'd love to hear from you. Message\u00a0me on one of the channels below."
+        "description": "I'd love to hear from you. Send a message with the form below, or reach out on one of the other channels below."
       },
       "formTitle": "Project details",
       "channelsTitle": "Other channels",
