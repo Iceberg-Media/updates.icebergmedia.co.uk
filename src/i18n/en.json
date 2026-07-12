@@ -424,7 +424,8 @@
         "titleLine1": "Astro Rocket —",
         "titleLine2": "Web Designer",
         "titleLine3": "& Developer",
-        "description": "A free, lightning-fast Astro 7 starter theme to build anything on: 57+ designed components, 12 colour themes, dark mode, and built-in i18n on board.",
+        "description": "A free, lightning-fast Astro 7 starter theme to build anything on: 57+ designed components, 12 colour themes, and dark mode.",
+        "descriptionMobile": "A free, lightning-fast Astro 7 starter theme to build anything on: 57+ designed components and dark mode.",
         "github": "Get it on GitHub",
         "getStarted": "Get started"
       },

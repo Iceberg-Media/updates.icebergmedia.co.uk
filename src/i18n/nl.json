@@ -424,7 +424,8 @@
         "titleLine1": "Astro Rocket —",
         "titleLine2": "Webdesigner",
         "titleLine3": "& Ontwikkelaar",
-        "description": "Een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen: 57+ ontworpen componenten, 12 kleurthema's, donkere modus en ingebouwde i18n aan boord.",
+        "description": "Een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen: 57+ ontworpen componenten, 12 kleurthema's en donkere modus.",
+        "descriptionMobile": "Een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen: 57+ ontworpen componenten en donkere modus.",
         "github": "Bekijk op GitHub",
         "getStarted": "Aan de slag"
       },
