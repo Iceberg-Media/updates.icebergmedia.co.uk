@@ -59,7 +59,6 @@ const cta = tData<{ badge: string; heading: string; description: string; primary
 )!;
 
 const contactUrl = localizedPath('/contact', locale);
-const projectsUrl = localizedPath('/projects', locale);
 const aboutUrl = localizedPath('/about', locale);
 ---
 <PageLayout
@@ -116,10 +115,6 @@ const aboutUrl = localizedPath('/about', locale);
               {paragraph}
             </p>
           ))}
-          <Button variant="brand-outline" href={contactUrl} class="self-start sm:self-center glitch:self-start mt-2 sm:hidden glitch:inline-flex">
-            {design.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-eager data-reveal-ease="smooth">
@@ -141,12 +136,6 @@ const aboutUrl = localizedPath('/about', locale);
               ))}
             </ul>
           </Card>
-        </div>
-        <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
-          <Button variant="brand-outline" href={contactUrl}>
-            {design.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
       </div>
     </div>
@@ -172,10 +161,6 @@ const aboutUrl = localizedPath('/about', locale);
               {paragraph}
             </p>
           ))}
-          <Button variant="brand-outline" href={projectsUrl} class="self-start sm:self-center glitch:self-start mt-2 sm:hidden glitch:inline-flex">
-            {development.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:order-1 glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
@@ -197,12 +182,6 @@ const aboutUrl = localizedPath('/about', locale);
               ))}
             </ul>
           </Card>
-        </div>
-        <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
-          <Button variant="brand-outline" href={projectsUrl}>
-            {development.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
       </div>
     </div>
@@ -228,10 +207,6 @@ const aboutUrl = localizedPath('/about', locale);
               {paragraph}
             </p>
           ))}
-          <Button variant="brand-outline" href={contactUrl} class="self-start sm:self-center glitch:self-start mt-2 sm:hidden glitch:inline-flex">
-            {performance.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
@@ -253,12 +228,6 @@ const aboutUrl = localizedPath('/about', locale);
               ))}
             </ul>
           </Card>
-        </div>
-        <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
-          <Button variant="brand-outline" href={contactUrl}>
-            {performance.ctaLabel}
-            <Icon name="arrow-right" size="sm" />
-          </Button>
         </div>
       </div>
     </div>
