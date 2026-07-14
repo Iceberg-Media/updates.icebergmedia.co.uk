@@ -349,6 +349,10 @@
           {
             "lead": "Een heldere typografische hiërarchie",
             "text": "leesbaar van paginatitel tot bijschrift."
+          },
+          {
+            "lead": "Beweging met beleid",
+            "text": "interacties die begeleiden, nooit afleiden, met respect voor reduced-motion-instellingen."
           }
         ],
         "ctaLabel": "Bespreek een ontwerpproject"
@@ -374,6 +378,10 @@
             "text": "preview-builds voor elke wijziging, op Netlify, Vercel of Cloudflare."
           },
           {
+            "lead": "Formulieren die gewoon werken",
+            "text": "beveiligd, AVG-proof en rechtstreeks in je inbox of CRM."
+          },
+          {
             "lead": "Een nette overdracht",
             "text": "de code, de sleutels en een README die echt uitlegt hoe het zit."
           }
@@ -391,6 +399,10 @@
           {
             "lead": "Groene Core Web Vitals",
             "text": "LCP, INP en CLS binnen de drempels van Google."
+          },
+          {
+            "lead": "Een snelle image-pipeline",
+            "text": "moderne formaten, responsive maten en standaard lazy loading."
           },
           {
             "lead": "Technische SEO, aangesloten",

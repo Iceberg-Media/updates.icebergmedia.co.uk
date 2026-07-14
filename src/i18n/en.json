@@ -349,6 +349,10 @@
           {
             "lead": "A clear typographic hierarchy",
             "text": "readable from page title down to caption."
+          },
+          {
+            "lead": "Motion with a purpose",
+            "text": "interactions that guide, never distract, and respect reduced-motion settings."
           }
         ],
         "ctaLabel": "Discuss a design project"
@@ -374,6 +378,10 @@
             "text": "preview builds for every change, on Netlify, Vercel, or Cloudflare."
           },
           {
+            "lead": "Forms that just work",
+            "text": "protected, GDPR-aware, and delivered straight to your inbox or CRM."
+          },
+          {
             "lead": "A clean handover",
             "text": "the code, the keys, and a README that actually explains things."
           }
@@ -391,6 +399,10 @@
           {
             "lead": "Green Core Web Vitals",
             "text": "LCP, INP, and CLS held to Google's thresholds."
+          },
+          {
+            "lead": "A fast image pipeline",
+            "text": "modern formats, responsive sizes, and lazy loading by default."
           },
           {
             "lead": "Technical SEO, wired up",
