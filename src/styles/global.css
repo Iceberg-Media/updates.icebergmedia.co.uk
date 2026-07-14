@@ -1382,3 +1382,19 @@
 html:not(.dark) .bg-background-secondary .bg-background-tertiary {
   background-color: var(--color-background);
 }
+
+/* Media frames (blog hero images, project screenshots): saturated or dark
+   artwork can't take the theme's grey-wash shadow tiers — the same physics
+   as the LetterGlitch band. Light mode gets a heavy drop shadow with a soft
+   halo; dark mode gets a brand glow, since a dark shadow can never show on
+   a dark page. */
+.media-shadow {
+  box-shadow:
+    0 24px 48px -12px rgb(0 0 0 / 0.45),
+    0 0 24px -4px rgb(0 0 0 / 0.2);
+}
+html.dark .media-shadow {
+  box-shadow:
+    0 0 40px -6px color-mix(in oklab, var(--color-brand-500) 30%, transparent),
+    0 20px 40px -12px rgb(0 0 0 / 0.6);
+}

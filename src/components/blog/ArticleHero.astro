@@ -114,13 +114,13 @@ const readingTime = getReadingTime(body ?? description);
     <div class="relative z-[1] mx-auto max-w-5xl px-6 mt-[var(--space-section)] animate-hero-slide-up [animation-delay:450ms]">
       {svgSlug ? (
         <div
-          class="relative overflow-hidden rounded-xl border border-border shadow-lg"
+          class="relative overflow-hidden rounded-xl media-shadow"
           style="color: var(--brand-500);"
         >
           <BlogImageSVG slug={svgSlug} title={imageAlt || title} />
         </div>
       ) : image ? (
-        <div class="relative overflow-hidden rounded-xl border border-border shadow-lg">
+        <div class="relative overflow-hidden rounded-xl media-shadow">
           <Image
             src={image}
             alt={imageAlt || title}
