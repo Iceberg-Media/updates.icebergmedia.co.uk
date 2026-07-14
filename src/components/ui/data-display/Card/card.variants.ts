@@ -5,11 +5,11 @@ export const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-card border border-brand-500/30 hover:border-brand-500/70',
+        default: 'bg-card border border-brand-500/40 shadow-md hover:border-brand-500/80',
         solid: 'bg-secondary border border-transparent',
-        outline: 'bg-transparent border-2 border-brand-500/30 hover:border-brand-500/70',
+        outline: 'bg-transparent border-2 border-brand-500/40 shadow-md hover:border-brand-500/80',
         ghost: 'bg-transparent border border-transparent',
-        elevated: 'bg-card border border-brand-500/30 shadow-lg hover:border-brand-500/70',
+        elevated: 'bg-card border border-brand-500/40 shadow-lg hover:border-brand-500/80',
       },
       padding: {
         none: '',
@@ -21,6 +21,15 @@ export const cardVariants = cva(
         true: 'hover:border-brand-500 hover:shadow-md hover:-translate-y-0.5',
       },
     },
+    compoundVariants: [
+      // Tier-up rule: elevated cards already sit at shadow-lg at rest,
+      // so hover should step UP to shadow-xl, not down to shadow-md.
+      {
+        variant: 'elevated',
+        hover: true,
+        class: 'hover:shadow-xl',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       padding: 'md',
