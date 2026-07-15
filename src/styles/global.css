@@ -1398,3 +1398,11 @@ html.dark .media-shadow {
     0 0 40px -6px color-mix(in oklab, var(--color-brand-500) 30%, transparent),
     0 20px 40px -12px rgb(0 0 0 / 0.6);
 }
+
+/* Clickable affordance (#551): every enabled control gets the hand cursor,
+   including buttons that browsers default to an arrow cursor. */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+summary {
+  cursor: pointer;
+}
