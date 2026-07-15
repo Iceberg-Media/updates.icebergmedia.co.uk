@@ -994,35 +994,37 @@ const buttonId = `${menuId}-button`;
     color: oklch(91% 0.008 250);
   }
 
+  /* #551: the floating capsule's controls carry the brand foreground too.
+     The capsule is dark glass in both modes, so brand-400 does the work. */
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .ttg-wrapper > .ttg-trigger,
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .theme-dropdown-wrapper > button,
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .search-wrapper > .search-trigger {
-    border-color: oklch(58% 0.008 250 / 0.6);
-    color: oklch(68% 0.01 250);
+    border-color: color-mix(in oklch, var(--color-brand-400) 45%, transparent);
+    color: var(--color-brand-400);
     box-shadow: none;
   }
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .ttg-wrapper > .ttg-trigger:hover,
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .theme-dropdown-wrapper > button:hover,
   html:not(.dark) [data-header-shape="floating"]:not([data-scrolled]) .search-wrapper > .search-trigger:hover {
-    border-color: oklch(58% 0.008 250 / 0.85);
-    background-color: rgb(255 255 255 / 0.06);
-    color: oklch(91% 0.008 250);
+    border-color: color-mix(in oklch, var(--color-brand-400) 85%, transparent);
+    background-color: color-mix(in oklch, var(--color-brand-400) 15%, transparent);
+    color: var(--color-brand-300);
   }
 
   html:not(.dark) [data-header-shape="floating"][data-header-color-scheme="default"]:not([data-scrolled]) .hdr-hamburger,
   html:not(.dark) [data-header-shape="floating"][data-header-color-scheme="default"]:not([data-scrolled]) .hdr-hamburger svg {
-    color: oklch(68% 0.01 250);
+    color: var(--color-brand-400);
   }
   html:not(.dark) [data-header-shape="floating"][data-header-color-scheme="default"]:not([data-scrolled]) .hdr-hamburger:hover,
   html:not(.dark) [data-header-shape="floating"][data-header-color-scheme="default"]:not([data-scrolled]) .hdr-hamburger:hover svg {
-    background-color: rgb(255 255 255 / 0.06);
-    color: oklch(91% 0.008 250);
+    background-color: color-mix(in oklch, var(--color-brand-400) 15%, transparent);
+    color: var(--color-brand-300);
   }
 
-  .dark [data-header-shape="floating"] .theme-dropdown-wrapper button,
-  .dark [data-header-shape="floating"] .ttg-wrapper .ttg-trigger,
-  .dark [data-header-shape="floating"] .search-wrapper .search-trigger {
-    border-color: var(--color-foreground-subtle);
+  .dark [data-header-shape="floating"]:not([data-scrolled]) .theme-dropdown-wrapper button,
+  .dark [data-header-shape="floating"]:not([data-scrolled]) .ttg-wrapper .ttg-trigger,
+  .dark [data-header-shape="floating"]:not([data-scrolled]) .search-wrapper .search-trigger {
+    border-color: color-mix(in oklch, var(--color-brand-400) 45%, transparent);
   }
 
   [data-header-shape="floating"][data-header-color-scheme="invert"][data-scrolled] .hdr-logo-text {
