@@ -1465,3 +1465,16 @@ input[type='radio'],
 input[type='range'] {
   accent-color: var(--color-brand-500);
 }
+
+/* #551: in dark mode the project hero's live-site button and the mobile
+   menu's CTA keep their light primary fill, but the text and icon go brand
+   for consistency. brand-700 at rest and brand-800 on the darker hover fill
+   clear WCAG AA on every theme (worst case teal: 4.62:1 / 6.21:1). */
+html.dark .btn-primary.project-live-btn,
+html.dark .mobile-menu-cta-wrap .btn-primary {
+  color: var(--color-brand-700);
+}
+html.dark .btn-primary.project-live-btn:hover,
+html.dark .mobile-menu-cta-wrap .btn-primary:hover {
+  color: var(--color-brand-800);
+}
