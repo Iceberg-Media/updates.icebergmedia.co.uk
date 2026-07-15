@@ -88,7 +88,7 @@ const locale = getLocaleFromPath(Astro.url.pathname);
         {(url || repo) && (
           <div class="flex flex-wrap gap-3 mb-[var(--space-stack-lg)]">
             {url && (
-              <Button href={url} target="_blank" rel="noopener noreferrer" size="md">
+              <Button href={url} target="_blank" rel="noopener noreferrer" size="md" class="project-live-btn">
                 <Icon name="external-link" size="sm" />
                 View live site
               </Button>
