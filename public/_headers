@@ -1,0 +1,5 @@
+/*
+  Link: </.well-known/api-catalog>; rel="api-catalog"
+  Link: </rss.xml>; rel="alternate"; type="application/rss+xml"; title="RSS Feed"
+  Link: </sitemap.xml>; rel="sitemap"; type="application/xml"
+  X-Robots-Tag: index, follow

@@ -1,9 +1,8 @@
 ---
-import HomeView from '@/components/pages/views/HomeView.astro';
+import BlogIndexView from '@/components/blog/views/BlogIndexView.astro';
 import { defaultLocale } from '@/i18n';
 
-// The landing page for the default locale. Additional locales are served by
-// `src/pages/[locale]/index.astro`, which renders the same view.
+// Iceberg Media updates blog — shows blog posts on the homepage
 ---
 
-<HomeView locale={defaultLocale} />
+<BlogIndexView locale={defaultLocale} />

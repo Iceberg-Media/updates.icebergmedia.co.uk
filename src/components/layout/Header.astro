@@ -191,6 +191,9 @@ function getSocialIconData(url: string): { icon: string; label: string } {
   if (url.includes('linkedin.com'))  return { icon: 'linkedin',  label: 'LinkedIn' };
   if (url.includes('bsky.app'))      return { icon: 'bluesky',   label: 'Bluesky' };
   if (url.includes('youtube.com'))   return { icon: 'youtube',   label: 'YouTube' };
+  if (url.includes('reviews.'))      return { icon: 'star',      label: 'Reviews' };
+  if (url.includes('/rss'))          return { icon: 'rss',       label: 'RSS' };
+  if (url.includes('google.com/maps') || url.includes('google.com/place')) return { icon: 'map-pin', label: 'Google' };
   return { icon: 'link', label: 'Social' };
 }
 
@@ -327,7 +330,7 @@ const buttonId = `${menuId}-button`;
                           : 'text-foreground-muted hover:text-foreground hover:bg-secondary/70'
                       )}
                     >
-                      <Icon name={icon} size="md" />
+                      <Icon name={icon} size="md" class={icon === 'star' ? 'text-yellow-400 fill-yellow-400' : ''} />
                     </a>
                   );
                 })}

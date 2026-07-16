@@ -14,9 +14,9 @@
     "sectionConnect": "Connect",
     "items": {
       "home": "Home",
-      "services": "Services",
+      "services": "Optimizations",
       "projects": "Projects",
-      "blog": "Blog",
+      "blog": "Updates",
       "about": "About",
       "contact": "Contact"
     }
@@ -33,7 +33,7 @@
     "home": "Home"
   },
   "blog": {
-    "title": "Blog",
+    "title": "Updates",
     "description": "Latest articles and updates",
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on {date}",
@@ -45,15 +45,15 @@
     "noPostsFound": "No posts found.",
     "tableOfContents": "Table of contents",
     "shareThisPost": "Share this post",
-    "relatedPosts": "Related Posts",
+    "relatedPosts": "Related Updates",
     "share": "Share:",
     "shareOn": "Share on {platform}",
     "copyLink": "Copy link",
-    "metaTitle": "Blog",
-    "metaDescription": "The Astro Rocket blog: practical guides to setting up, configuring, and building with the theme.",
-    "heroBadge": "All posts",
-    "heroDescription": "Everything you need to know about Astro\u00a0Rocket, explained in practical guides.",
-    "allPosts": "All posts",
+    "metaTitle": "Updates",
+    "metaDescription": "SEO, GBP, and digital marketing insights for UK businesses from Iceberg Media.",
+    "heroBadge": "All updates",
+    "heroDescription": "Practical SEO and marketing guides for UK businesses from Iceberg Media.",
+    "allPosts": "All updates",
     "noPosts": "No posts found",
     "pageMetaTitle": "Blog — Page {page}",
     "pageMetaDescription": "Page {page} of {total} — practical guides to setting up, configuring, and building with Astro Rocket.",
@@ -127,10 +127,10 @@
     "titleHighlight": "found.",
     "description": "This page has moved, been removed, or never existed in the first place. Let's get you back on track.",
     "backHome": "Back to home",
-    "browseBlog": "Browse the blog",
+    "browseBlog": "Browse updates",
     "tryInstead": "Try one of these instead",
     "projectsDesc": "Selected work and case studies.",
-    "blogDesc": "Notes on design, code, and the craft.",
+    "blogDesc": "Practical SEO and marketing guides for UK businesses.",
     "contactTitle": "Contact",
     "contactDesc": "Start a conversation about your project."
   },
@@ -181,8 +181,8 @@
     "watchOn": "Watch on YouTube"
   },
   "footer": {
-    "copyright": "© {year} {siteName}",
-    "credit": "Theme by <a href=\"https://hansmartens.dev\" class=\"text-brand-700 dark:text-brand-400 transition-colors hover:text-brand-800 dark:hover:text-brand-300\" target=\"_blank\" rel=\"noopener noreferrer\">Hans Martens Dev</a>",
+    "copyright": "",
+    "credit": "",
     "builtWith": "Built with Astro Rocket",
     "followOn": "Follow us on {platform}"
   },

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <rect x="60" y="40" width="1080" height="550" rx="16" fill="#1e293b"/>
+  <g transform="translate(100, 80)">
+    <rect width="400" height="120" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+    <text x="20" y="30" font-family="system-ui" font-size="12" fill="#64748b">GBP Post</text>
+    <text x="20" y="60" font-family="system-ui" font-size="18" font-weight="600" fill="#f1f5f9">Emergency <tspan fill="#14b8a6">plumber</tspan> in</text>
+    <text x="20" y="85" font-family="system-ui" font-size="18" font-weight="600" fill="#f1f5f9"><tspan fill="#14b8a6">Stockport</tspan> - 24/7 service</text>
+  </g>
+  <text x="700" y="200" font-family="system-ui" font-size="42" font-weight="800" fill="#f1f5f9">Write GBP</text>
+  <text x="700" y="260" font-family="system-ui" font-size="42" font-weight="800" fill="#f1f5f9">Posts That Rank</text>
+  <text x="700" y="320" font-family="system-ui" font-size="18" fill="#94a3b8">Keyword + location</text>
+  <text x="700" y="345" font-family="system-ui" font-size="18" fill="#94a3b8">in every single post</text>
+  <rect x="60" y="545" width="1080" height="45" fill="#0f172a"/>
+  <text x="80" y="572" font-family="system-ui" font-size="13" fill="#64748b">Iceberg Media</text>
+</svg>

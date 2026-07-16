@@ -1,0 +1,42 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { defaultLocale } from '@/i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.locale === defaultLocale && (import.meta.env.PROD ? data.draft !== true : true);
+  });
+
+  return posts.map((post) => {
+    const slug = post.id.replace(/^[a-z]{2}\//, '');
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, publishedAt, updatedAt, author, image, imageAlt, svgSlug, tags, uid, faqs } = post.data;
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+  author={author}
+  image={image}
+  imageAlt={imageAlt}
+  svgSlug={svgSlug}
+  tags={tags}
+  slug={post.id.replace(/^[a-z]{2}\//, '')}
+  uid={uid}
+  faqs={faqs}
+  headings={headings}
+  body={post.body}
+>
+  <Content />
+</BlogLayout>

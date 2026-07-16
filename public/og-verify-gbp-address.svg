@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#0f1729"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="60" y="40" width="1080" height="550" rx="16" fill="#141b2d" stroke="#1e293b" stroke-width="1"/>
+  
+  <!-- Number badge -->
+  <circle cx="150" cy="150" r="50" fill="#22c55e" opacity="0.15"/>
+  <text x="150" y="168" text-anchor="middle" font-family="system-ui, sans-serif" font-size="48" font-weight="800" fill="#22c55e">3</text>
+  
+  <!-- Title -->
+  <text x="250" y="140" font-family="system-ui, sans-serif" font-size="38" font-weight="800" fill="#f1f5f9">
+    <tspan x="250" dy="0">Why You Must Verify Your Google Business</tspan>
+    <tspan x="250" dy="48"> Profile Address</tspan>
+    <tspan x="250" dy="48"></tspan>
+  </text>
+  
+  <!-- Badge -->
+  <rect x="250" y="280" width="160" height="28" rx="14" fill="#22c55e" opacity="0.15" stroke="#22c55e" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="330" y="299" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#22c55e">GBP LOCAL SEO TIP #3</text>
+  
+  <!-- Stats -->
+  <g transform="translate(250, 340)">
+    <rect width="200" height="50" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="100" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#22c55e">Tier 1</text>
+    <text x="100" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Priority Level</text>
+  </g>
+  
+  <!-- Bottom bar -->
+  <rect x="60" y="545" width="1080" height="45" fill="#0d1320"/>
+  <text x="80" y="572" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Iceberg Media</text>
+  <text x="1120" y="572" text-anchor="end" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">updates.icebergmedia.co.uk</text>
+</svg>
