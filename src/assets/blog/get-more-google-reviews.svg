@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <rect x="60" y="40" width="1080" height="550" rx="16" fill="#1e293b"/>
+  <g transform="translate(80, 80)">
+    <text x="0" y="0" font-family="system-ui" font-size="72" font-weight="900" fill="#f59e0b">5.0</text>
+    <g transform="translate(0, 30)">
+      <polygon points="0,0 8,-28 16,0 44,0 20,18 30,46 0,26 -30,46 -20,18 -44,0" fill="#f59e0b" transform="translate(0,0) scale(0.6)"/>
+      <polygon points="0,0 8,-28 16,0 44,0 20,18 30,46 0,26 -30,46 -20,18 -44,0" fill="#f59e0b" transform="translate(55,0) scale(0.6)"/>
+      <polygon points="0,0 8,-28 16,0 44,0 20,18 30,46 0,26 -30,46 -20,18 -44,0" fill="#f59e0b" transform="translate(110,0) scale(0.6)"/>
+      <polygon points="0,0 8,-28 16,0 44,0 20,18 30,46 0,26 -30,46 -20,18 -44,0" fill="#f59e0b" transform="translate(165,0) scale(0.6)"/>
+      <polygon points="0,0 8,-28 16,0 44,0 20,18 30,46 0,26 -30,46 -20,18 -44,0" fill="#f59e0b" transform="translate(220,0) scale(0.6)"/>
+    </g>
+    <text x="0" y="100" font-family="system-ui" font-size="24" fill="#94a3b8">127 reviews · 4.9 average</text>
+  </g>
+  <text x="700" y="200" font-family="system-ui" font-size="42" font-weight="800" fill="#f1f5f9">Get More</text>
+  <text x="700" y="260" font-family="system-ui" font-size="42" font-weight="800" fill="#f1f5f9">Google Reviews</text>
+  <text x="700" y="320" font-family="system-ui" font-size="18" fill="#94a3b8">The #1 ranking factor for</text>
+  <text x="700" y="345" font-family="system-ui" font-size="18" fill="#94a3b8">the local map pack</text>
+  <rect x="60" y="545" width="1080" height="45" fill="#0f172a"/>
+  <text x="80" y="572" font-family="system-ui" font-size="13" fill="#64748b">Iceberg Media</text>
+</svg>

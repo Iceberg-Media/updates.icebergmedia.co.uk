@@ -44,7 +44,7 @@ export function getPostSlug(postId: string, locale: string = defaultLocale): str
  * canonical-id resolver in `lib/post-links`.
  */
 export function getPostUrl(postId: string, locale: string = defaultLocale): string {
-  return localizedPath(`/blog/${getPostSlug(postId, locale)}`, locale);
+  return localizedPath(`/${getPostSlug(postId, locale)}`, locale);
 }
 
 /** URL of the blog index for a locale (`/blog` or `/<locale>/blog`). */
@@ -62,7 +62,7 @@ export function getBlogPageUrl(page: number, locale: string = defaultLocale): st
 
 /** URL for a tag archive page, locale-aware. */
 export function getTagUrl(tag: string, locale: string = defaultLocale): string {
-  return localizedPath(`/blog/tag/${tagToSlug(tag)}`, locale);
+  return localizedPath(`/tag/${tagToSlug(tag)}`, locale);
 }
 
 /**

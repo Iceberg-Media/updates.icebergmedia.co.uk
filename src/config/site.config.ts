@@ -244,41 +244,41 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Astro Rocket',
+  name: 'Iceberg Media',
   description:
-    'Astro Rocket is a free, lightning-fast Astro 7 starter theme to build anything on — with 57+ designed components, 12 colour themes, dark mode, and built-in i18n on board.',
-  tagline: 'Astro 7 starter theme to build anything on',
-  footerNote: 'Free & open source · MIT licensed',
-  url: SITE_URL || 'https://astrorocket.dev',
-  ogImage: '/og-default.svg',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
+    'SEO, GBP, and digital marketing insights for UK businesses. Practical guides from Iceberg Media.',
+  tagline: 'SEO & digital marketing insights for UK businesses',
+  url: SITE_URL || 'https://updates.icebergmedia.co.uk',
+  ogImage: '/og-gbp-local-seo.svg',
+  author: 'Iceberg Media',
+  email: 'noreply@icebergmedia.co.uk',
+  phone: '+441613549017',
   address: {
-    street: '',
-    city: 'Amsterdam',
+    street: '14 Commercial St',
+    city: 'Manchester',
     state: '',
-    zip: '',
-    country: 'the Netherlands',
+    zip: 'M15 4PZ',
+    country: 'United Kingdom',
   },
   socialLinks: [
-    'https://github.com/hansmartensdev',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com',
-    'https://bsky.app/profile/hansmartensdev.bsky.social',
+    'https://reviews.icebergmedia.co.uk',
+    '/rss.xml',
+    'https://www.linkedin.com/company/iceberg-media',
+    'https://x.com/iceberg_media',
+    'https://www.google.com/maps/place/Iceberg+Media/@53.472916,-2.2501849,17z/data=!4m8!3m7!1s0x487bb1e8a655a5cb:0x4ba507a4689422b6!8m2!3d53.472916!4d-2.2501849!9m1!1b1!16s%2Fg%2F11c0rkj0jk',
   ],
   header: {
-    // Flip to `true` to show the social icons (incl. GitHub) in the header.
-    showSocialLinks: false,
+    showSocialLinks: true,
   },
   twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
+    site: 'https://x.com/iceberg_media',
+    creator: '@iceberg_media',
   },
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
+  authorImage: '/iceberg-logo.png',
   blogImageOverlay: true,
   effects: {
     cursorTrail: true,
@@ -346,12 +346,12 @@ const siteConfig: SiteConfig = {
   i18n: i18nConfig,
   branding: {
     logo: {
-      alt: 'Astro Rocket',
-      // image: '/logo.svg', // Optional: set to a file in public/ to use a custom logo image instead of the letter monogram.
-      imageUrl: '/favicon.svg',
+      alt: 'Iceberg Media',
+      image: '/iceberg-logo.png',
+      imageUrl: '/iceberg-logo.png',
     },
     favicon: {
-      svg: '/favicon.svg',
+      svg: '/iceberg-logo.png',
     },
     colors: {
       themeColor: '#0083fe',

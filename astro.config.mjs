@@ -6,65 +6,9 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
-import netlify from '@astrojs/netlify';
 import cloudflare from '@astrojs/cloudflare';
 import i18nConfig from './src/config/i18n.config.ts';
 
-/**
- * Deploy-target adapter selection. Vercel is the default; set
- * `DEPLOY_TARGET=netlify` or `DEPLOY_TARGET=cloudflare` to build for those
- * platforms instead. All three keep `output: 'static'`, so every page is
- * prerendered and only the `prerender = false` API routes (the contact form
- * and newsletter) ship as the platform's serverless/edge function — on
- * Cloudflare Pages, as a Pages Function.
- */
-const deployTarget = process.env.DEPLOY_TARGET;
-function resolveAdapter() {
-  switch (deployTarget) {
-    case 'netlify':
-      return netlify();
-    case 'cloudflare':
-      return cloudflare();
-    default:
-      return vercel();
-  }
-}
-
-/**
- * Pagefind static search index, generated after every `astro build`.
- *
- * Runs in the `astro:build:done` hook so it indexes the *actual* output
- * directory — the Vercel adapter writes to `.vercel/output/static`, Netlify,
- * Cloudflare, and plain static builds to `dist/` — without the build command
- * needing to know which. The index is served from `/pagefind/` and loaded lazily by
- * `src/components/layout/SearchModal.astro`; `astro dev` has no index, and
- * the search modal explains that instead of erroring.
- */
-function pagefind() {
-  return {
-    name: 'pagefind',
-    hooks: {
-      'astro:build:done': async ({ dir, logger }) => {
-        const sitePath = fileURLToPath(dir);
-        const outputPath = join(sitePath, 'pagefind');
-        const { createIndex, close } = await import('pagefind');
-        const { index } = await createIndex();
-        const { page_count } = await index.addDirectory({ path: sitePath });
-        await index.writeFiles({ outputPath });
-        await close();
-        logger.info(`indexed ${page_count} pages into ${outputPath}`);
-      },
-    },
-  };
-}
-
-/**
- * Native Astro i18n is only wired up when the user opts in *and* has
- * more than one locale configured. With i18n off (the default) this
- * block is undefined and the build emits the exact same routes as
- * before — no /en/ prefix, no extra pages.
- */
 const i18nEnabled = i18nConfig.enabled === true && i18nConfig.locales.length > 1;
 const astroI18nOptions = i18nEnabled
   ? {
@@ -79,19 +23,13 @@ const astroI18nOptions = i18nEnabled
 
 export default defineConfig({
   output: 'static',
-  adapter: resolveAdapter(),
-  site: process.env.SITE_URL || 'https://example.com',
+  adapter: cloudflare(),
+  site: process.env.SITE_URL || 'https://updates.icebergmedia.co.uk',
   ...(astroI18nOptions ? { i18n: astroI18nOptions } : {}),
-
-  // Astro 7 changed the default to 'jsx', which strips whitespace between
-  // inline elements (React-style). Pin to `true` to keep this theme's v6
-  // rendering — significant whitespace between inline tags is preserved.
   compressHTML: true,
-
   build: {
     inlineStylesheets: 'always',
   },
-
   env: {
     schema: {
       SITE_URL: envField.string({ context: 'server', access: 'public', optional: true }),
@@ -107,32 +45,25 @@ export default defineConfig({
       PUBLIC_PRIVACY_POLICY_URL: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
     },
   },
-
   image: {
     layout: 'constrained',
   },
-
   integrations: [
     react(),
     mdx(),
-    sitemap(),
+    sitemap({ customPages: [], changefreq: 'weekly', priority: 0.7, filenameBase: 'sitemap' }),
     icon(),
-    pagefind(),
   ],
-
   vite: {
     plugins: [tailwindcss()],
   },
-
   security: {
     checkOrigin: true,
   },
-
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
     },
   },
-
 });

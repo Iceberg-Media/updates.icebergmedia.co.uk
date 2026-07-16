@@ -1,15 +1,9 @@
-# Cloudflare configuration for the Astro Cloudflare adapter (Workers + static
-# assets).
-#
-# Build for Cloudflare with `DEPLOY_TARGET=cloudflare pnpm build`; the
-# @astrojs/cloudflare adapter then generates the full deploy config (the worker
-# entry plus the static-asset binding) under dist/. These root-level settings
-# are merged into that generated config at build time. Deploy with
-# `npx wrangler deploy`, or connect the repo in the Cloudflare dashboard.
+name = "updates-astro"
+compatibility_date = "2024-01-01"
 
-name = "astro-rocket"
-compatibility_date = "2026-01-31"
+[site]
+bucket = "./dist/client"
 
-# Astro's Workers runtime shim (and some dependencies) use Node built-ins, so
-# the on-demand routes — the contact form and newsletter — need nodejs_compat.
-compatibility_flags = ["nodejs_compat"]
+[[kv_namespaces]]
+binding = "SESSION"
+id = "47e555b96e6b4308a85bb32f88eb364c"
