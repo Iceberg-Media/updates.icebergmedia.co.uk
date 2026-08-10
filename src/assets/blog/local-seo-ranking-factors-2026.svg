@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Top badge -->
+  <rect x="60" y="40" width="200" height="32" rx="16" fill="#3b82f6" opacity="0.15"/>
+  <text x="160" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#60a5fa">DATA STUDY</text>
+  <!-- Title -->
+  <text x="60" y="120" font-family="system-ui, sans-serif" font-size="42" font-weight="900" fill="#f1f5f9">Local SEO Ranking Factors</text>
+  <text x="60" y="160" font-family="system-ui, sans-serif" font-size="22" fill="#94a3b8">16,098 Google Business Profiles analysed</text>
+  <!-- Divider -->
+  <rect x="60" y="190" width="1080" height="2" fill="#334155"/>
+  <!-- LEFT: Top 3 factors -->
+  <text x="60" y="240" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#f1f5f9">What Actually Moves the Needle</text>
+  <!-- Factor 1: Reviews -->
+  <rect x="60" y="270" width="340" height="140" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="80" y="310" font-family="system-ui, sans-serif" font-size="48" font-weight="900" fill="#f59e0b">79</text>
+  <text x="175" y="310" font-family="system-ui, sans-serif" font-size="16" fill="#94a3b8">median reviews at #1</text>
+  <text x="80" y="345" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#22c55e">Review Count</text>
+  <text x="80" y="370" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Strongest single signal</text>
+  <text x="80" y="395" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">73% top-3 at 201-500 reviews</text>
+  <!-- Factor 2: Photos -->
+  <rect x="430" y="270" width="340" height="140" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="450" y="310" font-family="system-ui, sans-serif" font-size="48" font-weight="900" fill="#60a5fa">44</text>
+  <text x="540" y="310" font-family="system-ui, sans-serif" font-size="16" fill="#94a3b8">median photos at #1</text>
+  <text x="450" y="345" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#22c55e">Photos</text>
+  <text x="450" y="370" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Only factor with NO ceiling</text>
+  <text x="450" y="395" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Still climbing at 500+ images</text>
+  <!-- Factor 3: Rating -->
+  <rect x="800" y="270" width="340" height="140" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="820" y="310" font-family="system-ui, sans-serif" font-size="48" font-weight="900" fill="#f87171">5.0</text>
+  <text x="920" y="310" font-family="system-ui, sans-serif" font-size="16" fill="#94a3b8">ranks WORSE than 4.9</text>
+  <text x="820" y="345" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#22c55e">The 5.0 Paradox</text>
+  <text x="820" y="370" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">4.9 = 69.1% top-3 rate</text>
+  <text x="820" y="395" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">5.0 = 53.6% top-3 rate</text>
+  <!-- Bottom: Key insight -->
+  <rect x="60" y="440" width="1080" height="140" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="80" y="485" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#f1f5f9">The Two Cliffs</text>
+  <text x="80" y="520" font-family="system-ui, sans-serif" font-size="15" fill="#94a3b8">#3 → #4: Leave the local pack (reviews drop 14, photos drop 2)</text>
+  <text x="80" y="550" font-family="system-ui, sans-serif" font-size="15" fill="#94a3b8">#10 → #11+: Leave page one (reviews drop 17, photos drop 6, address -7pp)</text>
+  <text x="80" y="575" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Source: Localo study of 16,098 GBP profiles · August 2026</text>
+</svg>
