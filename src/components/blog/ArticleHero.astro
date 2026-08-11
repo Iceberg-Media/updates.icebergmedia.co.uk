@@ -112,26 +112,43 @@ const readingTime = getReadingTime(body ?? description);
 
   {(svgSlug || image) && (
     <div class="relative z-[1] mx-auto max-w-5xl px-6 mt-[var(--space-section)] animate-hero-slide-up [animation-delay:450ms]">
-      {svgSlug ? (
-        <div
-          class="relative overflow-hidden rounded-xl media-shadow"
-          style="color: var(--brand-500);"
-        >
-          <BlogImageSVG slug={svgSlug} title={imageAlt || title} />
-        </div>
-      ) : image ? (
-        <div class="relative overflow-hidden rounded-xl media-shadow">
-          <Image
-            src={image}
-            alt={imageAlt || title}
-            layout="full-width"
-            widths={[640, 960, 1280, 1920]}
-            sizes="100vw"
-            class="aspect-video w-full object-cover"
-            loading="eager"
-          />
-        </div>
-      ) : null}
+      {(() => {
+        // Check for PNG override first (e.g. real screenshots), then SVG
+        const pngOverrides = ['gsc-platform-properties-global'];
+        const usePng = svgSlug && pngOverrides.includes(svgSlug);
+        if (usePng) {
+          return (
+            <div class="relative overflow-hidden rounded-xl media-shadow">
+              <img src={`/og/blog/${svgSlug}.png`} alt={imageAlt || title} class="aspect-video w-full object-cover" loading="eager" />
+            </div>
+          );
+        } else if (svgSlug) {
+          return (
+            <div
+              class="relative overflow-hidden rounded-xl media-shadow"
+              style="color: var(--brand-500);"
+            >
+              <BlogImageSVG slug={svgSlug} title={imageAlt || title} />
+            </div>
+          );
+        } else if (image) {
+          return (
+            <div class="relative overflow-hidden rounded-xl media-shadow">
+              <Image
+                src={image}
+                alt={imageAlt || title}
+                layout="full-width"
+                widths={[640, 960, 1280, 1920]}
+                sizes="100vw"
+                class="aspect-video w-full object-cover"
+                loading="eager"
+              />
+            </div>
+          );
+        } else {
+          return null;
+        }
+      })()}
     </div>
   )}
 </header>
