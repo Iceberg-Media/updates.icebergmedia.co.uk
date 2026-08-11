@@ -65,22 +65,37 @@ const readingTime = getReadingTime(body ?? description);
         bg-background-secondary bg-gradient-to-br from-brand-100/65 to-transparent dark:from-brand-900/60 dark:to-brand-600/25"
       style="color: var(--brand-500);"
     >
-      {svgSlug ? (
-        <div class="transition-transform duration-300 group-hover:scale-105">
-          <BlogImageSVG slug={svgSlug} title={title} />
-        </div>
-      ) : image ? (
-        <Image
-          src={image}
-          alt={title}
-          widths={[320, 640, 960]}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
-          class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-        />
-      ) : (
-        <div class="aspect-video w-full" />
-      )}
+      {(() => {
+        // Check for PNG override first (e.g. real screenshots), then SVG
+        const pngOverrides = ['gsc-platform-properties-global'];
+        const usePng = svgSlug && pngOverrides.includes(svgSlug);
+        if (usePng) {
+          return (
+            <div class="transition-transform duration-300 group-hover:scale-105">
+              <img src={`/og/blog/${svgSlug}.png`} alt={title} class="aspect-video w-full object-cover" loading="lazy" />
+            </div>
+          );
+        } else if (svgSlug) {
+          return (
+            <div class="transition-transform duration-300 group-hover:scale-105">
+              <BlogImageSVG slug={svgSlug} title={title} />
+            </div>
+          );
+        } else if (image) {
+          return (
+            <Image
+              src={image}
+              alt={title}
+              widths={[320, 640, 960]}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+              class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          );
+        } else {
+          return <div class="aspect-video w-full" />;
+        }
+      })()}
     </div>
 
     <h2 class="font-display text-xl font-bold text-foreground transition-colors group-hover:text-brand-600 dark:group-hover:text-brand-400 mb-2">
