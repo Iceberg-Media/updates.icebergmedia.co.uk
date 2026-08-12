@@ -119,7 +119,7 @@ const readingTime = getReadingTime(body ?? description);
         if (usePng) {
           return (
             <div class="relative overflow-hidden rounded-xl media-shadow">
-              <img src={`/og/blog/${svgSlug}.png`} alt={imageAlt || title} class="w-full object-contain" loading="eager" />
+              <img src={`/og/blog/${svgSlug}.png`} alt={imageAlt || title} class="aspect-video w-full object-cover" loading="eager" />
             </div>
           );
         } else if (svgSlug) {

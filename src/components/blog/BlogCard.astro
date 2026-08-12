@@ -72,7 +72,7 @@ const readingTime = getReadingTime(body ?? description);
         if (usePng) {
           return (
             <div class="transition-transform duration-300 group-hover:scale-105">
-              <img src={`/og/blog/${svgSlug}.png`} alt={title} class="w-full object-contain" loading="lazy" />
+              <img src={`/og/blog/${svgSlug}.png`} alt={title} class="aspect-video w-full object-cover" loading="lazy" />
             </div>
           );
         } else if (svgSlug) {
