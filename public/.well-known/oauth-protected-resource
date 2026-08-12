@@ -1,0 +1,6 @@
+{
+  "resource": "https://updates.icebergmedia.co.uk",
+  "authorization_servers": [],
+  "scopes_supported": [],
+  "bearer_methods_supported": ["header"]
+}

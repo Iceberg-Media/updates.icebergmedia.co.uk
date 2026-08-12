@@ -31,13 +31,14 @@ export interface ResolvedNavItem {
 export const navItems: NavItem[] = [
   { label: 'Updates', href: '/', order: 0 },
   { label: 'Optimizations', href: 'https://icebergmedia.co.uk', order: 1, external: true },
-  { label: 'Reviews', href: 'https://reviews.icebergmedia.co.uk', order: 2, external: true },
+  { label: 'Contact', href: '/contact', order: 2 },
 ];
 
 export const footerNavItems: NavItem[] = [
   { label: 'Updates', href: '/', order: 0 },
   { label: 'Optimizations', href: 'https://icebergmedia.co.uk', order: 1, external: true },
   { label: 'Reviews', href: 'https://reviews.icebergmedia.co.uk', order: 2, external: true },
+  { label: 'Contact', href: '/contact', order: 3 },
 ];
 
 export const legalLinks: LegalLink[] = [];

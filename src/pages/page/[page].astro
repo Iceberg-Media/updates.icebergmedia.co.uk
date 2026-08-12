@@ -1,0 +1,60 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { defaultLocale } from '@/i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.locale === defaultLocale && (import.meta.env.PROD ? data.draft !== true : true);
+  });
+  
+  const perPage = 12;
+  const totalPages = Math.ceil(posts.length / perPage);
+  
+  return Array.from({length: totalPages}, (_, i) => ({
+    params: { page: String(i + 1) },
+    props: { posts: posts.slice(i * perPage, (i + 1) * perPage), page: i + 1, totalPages },
+  }));
+}
+
+const { posts, page, totalPages } = Astro.props;
+---
+
+<BaseLayout title={`Updates — Page ${page}`} description="SEO and GBP insights for UK businesses">
+  <Header />
+  <main class="min-h-screen pt-16">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <h1 class="font-display text-4xl font-bold mb-8">Updates</h1>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map(post => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/${post.id.replace(/^[a-z]{2}\//, '')}`}
+            publishedAt={post.data.publishedAt}
+            tags={post.data.tags}
+            svgSlug={post.data.svgSlug}
+            body={post.body}
+          />
+        ))}
+      </div>
+      <div class="mt-8 flex justify-center gap-2">
+        {Array.from({length: totalPages}, (_, i) => (
+          <a
+            href={i + 1 === 1 ? '/' : `/page/${i + 1}`}
+            class:list={[
+              'px-4 py-2 rounded-lg text-sm font-medium transition',
+              i + 1 === page ? 'bg-brand-600 text-white' : 'bg-background border border-border hover:border-brand-500'
+            ]}
+          >
+            {i + 1}
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

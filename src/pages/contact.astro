@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+---
+
+<BaseLayout title="Contact" description="Get in touch with Iceberg Media for SEO and digital marketing services.">
+  <Header />
+  <main class="min-h-screen pt-16">
+    <div class="mx-auto max-w-2xl px-6 py-16 text-center">
+      <h1 class="font-display text-4xl font-bold mb-4">Contact Us</h1>
+      <p class="text-lg text-foreground-muted mb-8">Ready to grow your local business? Get in touch.</p>
+      
+      <div class="space-y-4 text-left bg-background-secondary rounded-xl p-8 border border-border">
+        <p class="text-foreground-muted">14 Commercial St, Manchester M15 4PZ, United Kingdom</p>
+        <p class="text-foreground-muted">Tel: <a href="tel:+441613549017" class="text-brand-600 hover:underline">0161 354 9017</a></p>
+        <p class="text-foreground-muted">Mon–Fri: 9 AM – 5 PM</p>
+      </div>
+
+      <div class="mt-8">
+        <a href="https://wa.me/441613549017?text=Hi%20Iceberg%20Media%2C%20I%27d%20like%20to%20discuss%20my%20project." class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700 transition">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
