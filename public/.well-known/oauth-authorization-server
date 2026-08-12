@@ -1,0 +1,11 @@
+{
+  "issuer": "https://updates.icebergmedia.co.uk",
+  "authorization_endpoint": "https://updates.icebergmedia.co.uk/contact",
+  "token_endpoint": null,
+  "registration_endpoint": null,
+  "scopes_supported": ["read"],
+  "response_types_supported": [],
+  "grant_types_supported": [],
+  "token_endpoint_auth_methods_supported": [],
+  "service_documentation": "https://updates.icebergmedia.co.uk/auth.md"
+}

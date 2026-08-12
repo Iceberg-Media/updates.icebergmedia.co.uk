@@ -1,0 +1,16 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://updates.icebergmedia.co.uk/",
+      "service-desc": [
+        { "href": "https://updates.icebergmedia.co.uk/sitemap.xml", "type": "application/xml" }
+      ],
+      "service-doc": [
+        { "href": "https://updates.icebergmedia.co.uk/", "type": "text/html" }
+      ],
+      "alternate": [
+        { "href": "https://updates.icebergmedia.co.uk/rss.xml", "type": "application/rss+xml" }
+      ]
+    }
+  ]
+}

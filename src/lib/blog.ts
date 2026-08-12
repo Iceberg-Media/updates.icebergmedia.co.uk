@@ -49,7 +49,7 @@ export function getPostUrl(postId: string, locale: string = defaultLocale): stri
 
 /** URL of the blog index for a locale (`/blog` or `/<locale>/blog`). */
 export function getBlogBaseUrl(locale: string = defaultLocale): string {
-  return localizedPath('/blog', locale);
+  return localizedPath('/', locale);
 }
 
 /**
@@ -57,7 +57,7 @@ export function getBlogBaseUrl(locale: string = defaultLocale): string {
  * (no `/page/1` segment), matching the routing in `blog/page/[page].astro`.
  */
 export function getBlogPageUrl(page: number, locale: string = defaultLocale): string {
-  return page <= 1 ? getBlogBaseUrl(locale) : localizedPath(`/blog/page/${page}`, locale);
+  return page <= 1 ? getBlogBaseUrl(locale) : localizedPath(`/page/${page}`, locale);
 }
 
 /** URL for a tag archive page, locale-aware. */

@@ -261,14 +261,15 @@ const siteConfig: SiteConfig = {
     country: 'United Kingdom',
   },
   socialLinks: [
-    'https://reviews.icebergmedia.co.uk',
-    '/rss.xml',
-    'https://www.linkedin.com/company/iceberg-media',
     'https://x.com/iceberg_media',
-    'https://www.google.com/maps/place/Iceberg+Media/@53.472916,-2.2501849,17z/data=!4m8!3m7!1s0x487bb1e8a655a5cb:0x4ba507a4689422b6!8m2!3d53.472916!4d-2.2501849!9m1!1b1!16s%2Fg%2F11c0rkj0jk',
+    'https://www.linkedin.com/company/iceberg-media',
   ],
   header: {
     showSocialLinks: true,
+    cta: {
+      text: 'Get a Quote',
+      href: '/contact',
+    },
   },
   twitter: {
     site: 'https://x.com/iceberg_media',

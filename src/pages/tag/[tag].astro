@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { defaultLocale } from '@/i18n';
+import { slugToTag } from '@/lib/tags';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.locale === defaultLocale && (import.meta.env.PROD ? data.draft !== true : true);
+  });
+
+  const tags = new Set<string>();
+  posts.forEach(post => post.data.tags?.forEach(t => tags.add(t)));
+
+  return Array.from(tags).map(tag => ({
+    params: { tag: tag.toLowerCase().replace(/\s+/g, '-') },
+    props: { tag, posts: posts.filter(p => p.data.tags?.includes(tag)) },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`${tag} — Updates`} description={`Posts tagged ${tag}`}>
+  <Header />
+  <main class="min-h-screen pt-16">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <h1 class="font-display text-4xl font-bold mb-8">#{tag}</h1>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map(post => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/${post.id.replace(/^[a-z]{2}\//, '')}`}
+            publishedAt={post.data.publishedAt}
+            tags={post.data.tags}
+            svgSlug={post.data.svgSlug}
+            body={post.body}
+          />
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
