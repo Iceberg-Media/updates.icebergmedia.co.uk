@@ -96,3 +96,31 @@ File: `.github/workflows/deploy.yml`
 - Include "Related" links at the bottom linking to other posts
 - Data-backed posts: cite the source at the end
 - No lorem ipsum, no filler
+
+## Cloudflare Deployment
+
+### Naming Convention
+All resources use domain name with dashes:
+- Namespace: `updates-icebergmedia-co-uk`
+- Repo: `updates-icebergmedia-co-uk`
+- R2: `updates-icebergmedia-co-uk`
+- Worker: `updates-icebergmedia-co-uk`
+
+### API Access
+- Token: `ALFRED_ADMIN_TOKEN` from vault
+- Account: `0870b0bdbc14bcd31f43fe5e82c3ee8e`
+
+### Deploy Commands
+```bash
+# Build
+npm run build
+
+# Deploy to Workers
+CLOUDFLARE_API_TOKEN={TOKEN} wrangler deploy
+
+# Push to Artifacts
+git -c http.extraHeader="Authorization: Bearer {TOKEN}" push {REMOTE} main
+```
+
+### Remote URLs
+- Artifacts: `https://0870b0bdbc14bcd31f43fe5e82c3ee8e.artifacts.cloudflare.net/git/updates-icebergmedia-co-uk/updates-icebergmedia-co-uk.git`
