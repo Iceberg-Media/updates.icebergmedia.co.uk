@@ -67,7 +67,7 @@ const readingTime = getReadingTime(body ?? description);
     >
       {(() => {
         // Check for PNG override first (e.g. real screenshots), then SVG
-        const pngOverrides = ['gsc-platform-properties-global'];
+        const pngOverrides = ['gsc-platform-properties-global', 'claude-ai-watermark'];
         const usePng = svgSlug && pngOverrides.includes(svgSlug);
         if (usePng) {
           return (

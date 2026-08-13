@@ -140,7 +140,7 @@ function safeHost(url: string): string {
 /** Path (relative to site root) for a blog post's dynamic OG image. */
 export function getBlogOgPath(slug: string): string {
   // Use PNG if available (e.g. real screenshots), otherwise SVG
-  const pngOverrides = ['gsc-platform-properties-global'];
+  const pngOverrides = ['gsc-platform-properties-global', 'claude-ai-watermark'];
   if (pngOverrides.includes(slug)) {
     return `/og/blog/${slug}.png`;
   }
